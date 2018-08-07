@@ -29,7 +29,7 @@ Once the project moves into development, the press release can be used as a touc
   > The traditional method of information delivery does not seamlessly display relevant information about points of interest, detracting from the overall user experience.
 
 ## Solution ##
-  > Our app simplifies this process, by providing all the neccesary web searches, and delivering the results, the books, with a kid-friendly user experience.
+  > Our app allows users to seamlessly learn about points of interest near them though an interactive user experience.
 
 ## Quote from You ##
   > "My son's gonna love finding books on this app!"
