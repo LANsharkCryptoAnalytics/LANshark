@@ -1,4 +1,4 @@
-# LANshark#
+# LANshark
 
 <!-- 
 > This material was originally posted [here](http://www.quora.com/What-is-Amazons-approach-to-product-development-and-product-management). It is reproduced here for posterities sake.
@@ -29,13 +29,13 @@ Once the project moves into development, the press release can be used as a touc
   > The traditional method of information delivery does not seamlessly display relevant information about points of interest, detracting from the overall user experience.
 
 ## Solution ##
-  > Our app allows users to seamlessly learn about points of interest near them though an interactive user experience.
+  > Our app allows users to seamlessly learn about points of interest near them, though an interactive AR user experience.
 
 ## Quote from You ##
-  > "My son's gonna love finding books on this app!"
+  > "I love using this app to learn new things about my city!"
 
 ## How to Get Started ##
-  > Sign in and the highest rated books for your age will immediately be displayed. Click on any books that interest you to begin reading.  Many books are availabe online for free.  Search for more books by title, author, genre, reading level, or ISBN.
+  > Sign in and look at the map to find points of interest near you. Switch to AR view and tap on the screen to see information about points of interest near you.
 
 ## Customer Quote ##
   > "Finding books is fun!"
