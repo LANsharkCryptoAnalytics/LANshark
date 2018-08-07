@@ -26,7 +26,7 @@ Once the project moves into development, the press release can be used as a touc
   > Allows people to use augmented reality on their mobile device to see points of interest their current area, and access that information by using their camera in real time to create an interactive cultural experience.
 
 ## Problem ##
-  > Finding a good age-appropriate book can be laborious, requiring searches to mulitple web sites.
+  > The traditional method of information delivery does not seamlessly display relevant information about points of interest, detracting from the overall user experience.
 
 ## Solution ##
   > Our app simplifies this process, by providing all the neccesary web searches, and delivering the results, the books, with a kid-friendly user experience.
