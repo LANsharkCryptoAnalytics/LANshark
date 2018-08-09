@@ -1,44 +1,28 @@
-# LANshark
-
-<!-- 
-> This material was originally posted [here](http://www.quora.com/What-is-Amazons-approach-to-product-development-and-product-management). It is reproduced here for posterities sake.
-
-There is an approach called "working backwards" that is widely used at Amazon. They work backwards from the customer, rather than starting with an idea for a product and trying to bolt customers onto it. While working backwards can be applied to any specific product decision, using this approach is especially important when developing new products or features.
-
-For new initiatives a product manager typically starts by writing an internal press release announcing the finished product. The target audience for the press release is the new/updated product's customers, which can be retail customers or internal users of a tool or technology. Internal press releases are centered around the customer problem, how current solutions (internal or external) fail, and how the new product will blow away existing solutions.
-
-If the benefits listed don't sound very interesting or exciting to customers, then perhaps they're not (and shouldn't be built). Instead, the product manager should keep iterating on the press release until they've come up with benefits that actually sound like benefits. Iterating on a press release is a lot less expensive than iterating on the product itself (and quicker!).
-
-If the press release is more than a page and a half, it is probably too long. Keep it simple. 3-4 sentences for most paragraphs. Cut out the fat. Don't make it into a spec. You can accompany the press release with a FAQ that answers all of the other business or execution questions so the press release can stay focused on what the customer gets. My rule of thumb is that if the press release is hard to write, then the product is probably going to suck. Keep working at it until the outline for each paragraph flows. 
-
-Oh, and I also like to write press-releases in what I call "Oprah-speak" for mainstream consumer products. Imagine you're sitting on Oprah's couch and have just explained the product to her, and then you listen as she explains it to her audience. That's "Oprah-speak", not "Geek-speak".
-
-Once the project moves into development, the press release can be used as a touchstone; a guiding light. The product team can ask themselves, "Are we building what is in the press release?" If they find they're spending time building things that aren't in the press release (overbuilding), they need to ask themselves why. This keeps product development focused on achieving the customer benefits and not building extraneous stuff that takes longer to build, takes resources to maintain, and doesn't provide real customer benefit (at least not enough to warrant inclusion in the press release).
- -->
  
 ## LANshark ##
-  <!-- > Name the product in a way the reader (i.e. your target customers) will understand. -->
+ > Working Title: Augmented History Tour
 
 ## Use Augmented Reality to discover facts about your city ##
-  <!-- > Describe who the market for the product is and what benefit they get. One sentence only underneath the title. -->
+  > This app is for history lovers and travelers who want to experience a new way of learning about the places they are in.
 
 ## Summary ##
-  > Allows people to use augmented reality on their mobile device to see points of interest their current area, and access that information by using their camera in real time to create an interactive cultural experience.
+  > Allows people to use augmented reality on their mobile device discover points of interest and facts related their current area, and, to access that information by using their smartPhones camera in real time to create an interactive cultural experience.
 
 ## Problem ##
-  > The traditional method of information delivery does not seamlessly display relevant information about points of interest, detracting from the overall user experience.
 
+  > Traditionally, discovering information about an area does not provide for a seamless, interactive and immersive experience. The user is required to look up information via external means such as search engines, travel guides, etc.
+  
 ## Solution ##
-  > Our app allows users to seamlessly learn about points of interest near them, though an interactive AR user experience.
+  > Our app allows users to seamlessly learn about points of interest near them,simple by pointing their smartphone at a structure, landmark or simpl by being present in a location.
 
 ## Quote from You ##
   > "I love using this app to learn new things about my city!"
 
 ## How to Get Started ##
-  > Sign in and look at the map to find points of interest near you. Switch to AR view and tap on the screen to see information about points of interest near you.
+  > Download the app from the app store, install and sign-in to experience your locale in a entirely new and immersive way. Point your phone and tap on the screen to discover and learn about the points of interest around you. View the Points of Interest Overview to find nearby landmarks, check in with your traveling companions and set locators to meet up, learn about history without breaking from viewing in real-time.
 
 ## Customer Quote ##
-  > "Finding books is fun!"
+  > "I was able to point my phone at a building in the French Quarter and the app told me how old it was, facts about it's history and even showed me historical photos of the neighborhood. Amazing!"
 
 ## Closing and Call to Action ##
-  > Begin the search for your next favorite book!
+  > Download the app ttoday and experience the historical landmarks of your locale like never before.
