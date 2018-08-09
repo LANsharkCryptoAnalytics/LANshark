@@ -6,11 +6,11 @@
   > This app is for history lovers and travelers who are seeking an immersive real-time history experience.
 
 ## Summary ##
-  > Allows the user to use augmented reality on their mobile device to discover points of interest and historical facts related their location using via their smartphone's camera.
+  > Allows the user to use augmented reality on their mobile device to discover points of interest and historical facts related their location via their smartphone's camera.
 
 ## Problem ##
 
-  > Traditionally, discovering historical information about an area hasn't been a seamless, interactive and immersive experience. The user is required to look up information via external means such as search engines, travel guides, etc which is distracting from the overall experience.
+  > Traditionally, discovering historical information about an area hasn't been a seamless, interactive, and immersive experience. The user has been required to look up information via external means such as search engines, travel guides, etc which distracts from the overall experience.
   
 ## Solution ##
   > Our app allows users to organically learn about points of interest near them, simply by being present in a location.
