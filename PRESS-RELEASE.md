@@ -22,7 +22,7 @@
   > Download the app from the app store, install and sign-in using your Google account to experience your locale in a entirely new and immersive way. Point your phone at something and tap on the screen to discover and learn about the points of interest around you. View the Points of Interest Overview map to find nearby landmarks and check in with your traveling companions by setting locators to meet up. Learn about where you are without having to search for anything!
 
 ## Customer Quote ##
-  > "I was able to point my phone at a building in the French Quarter and the app told me how old it was, facts about it's history and even showed me historical photos of the neighborhood. Amazing!"
+  > "I was able to point my phone at a building in the French Quarter and the app told me how old it was and get facts about its history. The app even showed me historical photos of the neighborhood, Amazing!"
 
 ## Closing and Call to Action ##
   > Download the app ttoday and experience the historical landmarks of your locale like never before.
