@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const helpers = require('./helpers.js');
+const db = require('./database-mySql/index.js');
 
 const app = express(); // (2)
 app.use(bodyParser.json());
