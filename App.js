@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { viroKey } from './config'
 import {
   AppRegistry,
   ActivityIndicator,
@@ -9,6 +10,7 @@ import {
   Image,
   Alert,
 } from 'react-native';
+
 
 import {
   ViroARSceneNavigator
@@ -43,7 +45,7 @@ export default class ViroSample extends Component {
   render() {
     return (
       <View style={localStyles.outer} >
-        <ViroARSceneNavigator style={localStyles.arView} apiKey="95FD53B8-4A90-4345-959B-EB8292660E2A"
+        <ViroARSceneNavigator style={localStyles.arView} apiKey={viroKey}
           initialScene={{scene:InitialARScene, passProps:{displayObject:this.state.displayObject}}}  viroAppProps={this.state.viroAppProps}
         />
 
