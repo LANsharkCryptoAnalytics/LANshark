@@ -105,7 +105,7 @@ export default class ViroSample extends Component {
     'Choose an object',
     'Select an object to place in the world!',
     [
-      {text: 'Flowers', onPress: () => this._onShowObject(1, "flowers", .290760)},
+      {text: 'Flowers', onPress: () => this._onShowObject(0, "flowers", .290760)},
     ],
     );
   }
