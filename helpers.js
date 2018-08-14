@@ -1,5 +1,6 @@
 const axios = require('axios');
-const MAPQUESTKEY = require('./config.js')
+const MAPQUESTKEY = require('./config.js');
+const fetch = require('node-fetch');
 //Cheerio is an html parser
 //get the entire http content for the first search result
 exports.getPOINarrow = (lat, long)=> {
@@ -11,7 +12,6 @@ exports.getPOINarrow = (lat, long)=> {
         console.log(error);
       });
 };
-//not working right yet
 exports.getNeighborhood = (lat, long)=> {
   const endpointUrl = 'https://query.wikidata.org/sparql',
   sparqlQuery = `SELECT ?place ?location ?distance ?placeLabel WHERE {
@@ -26,25 +26,15 @@ exports.getNeighborhood = (lat, long)=> {
   fullUrl = endpointUrl + '?query=' + encodeURIComponent(sparqlQuery),
   headers = { 'Accept': 'application/sparql-results+json' };
 
-    axios.get(`https://en.wikivoyage.org/wiki/Special:Nearby#/coord/${lat},${long}`).then(function (res) {
-        console.log(res.data);
-        return res.data;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-      axios({
-        method:'get',
-        url: fullUrl,
-        headers: headers
-      })
-      .then(function (res) {
-        console.log(res.data.query);
-        return res.data.query;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+fetch( fullUrl, { headers } ).then( body => body.json() ).then( json => {
+const { head: { vars }, results } = json;
+for ( const result of results.bindings ) {
+    for ( const variable of vars ) {
+        console.log( '%s: %o', variable, result[variable] );
+    }
+    console.log( '---' );
+}
+} );
       
 }
 //get the address at the current lat and long
