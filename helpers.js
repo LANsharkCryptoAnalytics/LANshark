@@ -52,6 +52,7 @@ exports.getAddress = (lat, long)=> {
   }
 
     exports.searchByAddress = (add)=> {
+      add = add.split(' ').join('+');
       axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${add}+New+Orleans`).then(function (res) {
         console.log(res.data.query);
         return res.data.query;
