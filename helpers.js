@@ -31,14 +31,19 @@ exports.getNeighborhood = (lat, long, req, res)=> {
   fullUrl = endpointUrl + '?query=' + encodeURIComponent(sparqlQuery),
   headers = { 'Accept': 'application/sparql-results+json' };
 const hood = [];
+const place = {};
 fetch( fullUrl, { headers } ).then( body => body.json() ).then( json => {
 const { head: { vars }, results } = json;
 for ( const result of results.bindings ) {
+  hood.push(result)
     for ( const variable of vars ) {
-      console.log( variable, result[variable] );
-        hood.push(variable, result[variable]);
+      // console.log( variable, result[variable] );
+        place[variable] = result[variable];
     }
 }
+hood.forEach(place =>{
+  console.log(place.placeLabel.value);
+});
 // console.log(hood);
 res.send(hood);
 } );  
