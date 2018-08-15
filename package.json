@@ -19,13 +19,15 @@
     "eslint-plugin-react": "^7.11.0",
     "express": "^4.16.3",
     "it": "^1.1.1",
+    "mysql": "^2.16.0",
+    "mysql2": "^1.6.1",
     "node-fetch": "^2.2.0",
     "react": "16.3.1",
     "react-native": "0.55.1",
     "react-viro": "2.9.0",
     "scrape": "^0.2.3",
     "scrape-it": "^5.0.5",
-    "mysql": "latest"
+    "sequelize": "^4.38.0"
   },
   "devDependencies": {
     "babel-jest": "23.4.2",

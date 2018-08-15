@@ -8,12 +8,17 @@ const app = express(); // (2)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/', (req, res) => {
+    // res.send('LANSHARK');
+    // helpers.getFullPage('Garden District, New Orleans', req, res);
+    // helpers.getNeighborhood(29.92878, -90.08422, req, res);
+});
+// helpers.getPOINarrow(29.92878, -90.08422);
 
-// helpers.getNeighborhoodMap(29.92878, -90.08422);
+
 // helpers.searchByAddress('1403 Washington Ave');
 // helpers.searchByTitle('Garden District, New Orleans');
-helpers.getFullPage('Garden District, New Orleans');
+// helpers.getFullPage('Garden District, New Orleans');
 app.listen( 8200, function() { 
     console.log('App listening on port 8200');
 });
