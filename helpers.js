@@ -1,6 +1,11 @@
 const axios = require('axios');
 const MAPQUESTKEY = require('./config.js');
 const fetch = require('node-fetch');
+const cheerio = require('cheerio');
+const scrapeIt = require("scrape-it");
+
+// https://en.wikipedia.org/wiki/Garden_District,_New_Orleans
+
 //Cheerio is an html parser
 //get the entire http content for the first search result
 exports.getPOINarrow = (lat, long)=> {
@@ -12,6 +17,7 @@ exports.getPOINarrow = (lat, long)=> {
         console.log(error);
       });
 };
+
 exports.getNeighborhood = (lat, long)=> {
   const endpointUrl = 'https://query.wikidata.org/sparql',
   sparqlQuery = `SELECT ?place ?location ?distance ?placeLabel WHERE {
@@ -22,7 +28,7 @@ exports.getNeighborhood = (lat, long)=> {
     bd:serviceParam wikibase:distance ?distance .
      } 
     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-    } ORDER BY ?distance LIMIT 100`,
+    } ORDER BY ?distance LIMIT 10`,
   fullUrl = endpointUrl + '?query=' + encodeURIComponent(sparqlQuery),
   headers = { 'Accept': 'application/sparql-results+json' };
 
@@ -34,8 +40,50 @@ for ( const result of results.bindings ) {
     }
     console.log( '---' );
 }
+} );  
+}
+exports.getFullPage = (title)=> {
+  title = title.split(' ').join('_');
+  scrapeIt(`https://en.wikipedia.org/wiki/${title}`, {
+    title: 'h1',
+    paragraph: 'p',
+    
+}).then(({ data, response }) => {
+    let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
+    results = results.replace(/[\r\n]/g, "");
+    results = results.split('.');
+    console.log(results);
+    return results;
+}).catch(function (error) {
+  console.log(error);
+});
+};
+exports.getNeighborhoodMap = (lat, long)=> {
+  const endpointUrl = 'https://query.wikidata.org/sparql',
+      sparqlQuery = `#defaultView:Map{"layer":"?instance_ofLabel"}
+SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instance_ofLabel WHERE {
+  SERVICE wikibase:around {
+    ?place wdt:P625 ?coordinate_location.
+    bd:serviceParam wikibase:center "Point(${long} ${lat})"^^geo:wktLiteral .
+    bd:serviceParam wikibase:radius "1".
+    bd:serviceParam wikibase:distance ?dist.
+  }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+  OPTIONAL { ?place wdt:P18 ?image. }
+  OPTIONAL { ?place wdt:P31 ?instance_of. }
+}`,
+      fullUrl = endpointUrl + '?query=' + encodeURIComponent( sparqlQuery ),
+      headers = { 'Accept': 'application/sparql-results+json' };
+
+fetch( fullUrl, { headers } ).then( body => body.json() ).then( json => {
+    const { head: { vars }, results } = json;
+    for ( const result of results.bindings ) {
+        for ( const variable of vars ) {
+            console.log( '%s: %o', variable, result[variable] );
+        }
+        console.log( '---' );
+    }
 } );
-      
 }
 //get the address at the current lat and long
 // MapQuet API key is required
@@ -52,6 +100,7 @@ exports.getAddress = (lat, long)=> {
   }
 
     exports.searchByAddress = (add)=> {
+      add = add.split(' ').join('+');
       axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${add}+New+Orleans`).then(function (res) {
         console.log(res.data.query);
         return res.data.query;
@@ -59,9 +108,15 @@ exports.getAddress = (lat, long)=> {
       .catch(function (error) {
         console.log(error);
       });
-
-      
-
-        
+    }
+      exports.searchByTitle = (title)=> {
+        title = title.split(' ').join('+');
+        axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${title}`).then(function (res) {
+          console.log(res.data.query);
+          return res.data.query;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });   
 
 }
