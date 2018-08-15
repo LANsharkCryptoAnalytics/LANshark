@@ -1,16 +1,33 @@
-// const mysql = require('mysql');
-// const mysqlConfig = require('./../config.js');
-// const connection = mysql.createConnection(mysqlConfig);
+const dbConfig = require('./config.js');
+const Sequelize = require('sequelize');
+
+const sequelize = new Sequelize( null, dbConfig.user, dbConfig.password, {
+  host: dbConfig.host,
+  dialect: 'mysql',
+  port: 3306,
+  dialectOptions: {
+    ssl:'Amazon RDS'
+},
+  operatorsAliases: false,
+
+  pool: {
+    max: 5,
+    min: 0,
+    acquire: 30000,
+    idle: 10000
+  }
+});
 
 
 
-// connection.connect( (err)=>{
-//   console.log('attempting to connect to database');
-//   if (err) { 
-//     console.error(err); 
-//     return;  
-//   }
-//   console.log( "connected to database" );
-// });
 
-// module.exports = connection; 
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Connection has been established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
+
+module.exports = sequelize; 
