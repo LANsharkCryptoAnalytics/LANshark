@@ -13,13 +13,15 @@ app.get('/', (req, res) => res.send('Hello World!'));
 // helpers.getNeighborhoodMap(29.92878, -90.08422);
 // helpers.searchByAddress('1403 Washington Ave');
 // helpers.searchByTitle('Garden District, New Orleans');
-helpers.getFullPage('Garden District, New Orleans');
+// helpers.getFullPage('Garden District, New Orleans');
 app.listen( 8200, function() { 
     console.log('App listening on port 8200');
 });
 
+
 //This is what I had to do to get the Amazone EC2 instance to redirect
 //from 8200 to 80. Works until we update the env file on the server or some
-//other solution
+//other solution: something similar to this:
+// https://forums.aws.amazon.com/thread.jspa?threadID=109440
 
 //ec2 ip address: ec2-34-238-240-14.compute-1.amazonaws.com
