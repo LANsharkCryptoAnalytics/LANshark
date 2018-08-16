@@ -9,7 +9,7 @@ const places= [
   {"title":"Touro Infirmary Foundation","coord":"Point(-90.088866 29.925778)","dist":"0.558"},
   {"title":"Q49505355","coord":"Point(-90.08063 29.92382)","dist":"0.651"},
   {"title":"Anshe Sfard","coord":"Point(-90.08184 29.93432)","dist":"0.657"},
-  {"title":"Irish Channel","coord":"Point(-90.0819 29.9231)","dist":"0.67"}]
+  {"title":"Irish Channel","coord":"Point(-90.0819 29.9231)","dist":"0.67"}];
   
   export default function request(url) {
     return new Promise((resolve, reject) => {
