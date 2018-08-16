@@ -30,6 +30,8 @@ var textArray = [
   'make the changes',
   'to Text',
   ];
+  var dataCounter = 0;
+  var dataLength = textArray.length;
 
 export default class ViroSample extends Component {
   constructor() {
@@ -145,9 +147,6 @@ export default class ViroSample extends Component {
   //   });
   // }
   _onShowText(objIndex, objUniqueName, yOffset){
-    this.setState({
-      viroAppProps:{displayObject: false},
-    })
     this.setState({
       displayText: true,
         // text: 'hello',
