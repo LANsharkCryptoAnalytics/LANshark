@@ -25,17 +25,17 @@ import renderIf from './js/helpers/renderIf';
 var InitialARScene = require('./js/ARHitTestSample');
 
 // Array of 3d models that we use in this sample. This app switches between this these models.
-var objArray = [
-  // require('./js/res/object_flowers/object_flowers.vrx'),
-  
-
+var textArray = [
+  'Testing how to',
+  'make the changes',
+  'to Text',
   ];
 
 export default class ViroSample extends Component {
   constructor() {
     super();
 
-    this._onShowObject = this._onShowObject.bind(this);
+    // this._onShowObject = this._onShowObject.bind(this);
     this._onShowText = this._onShowText.bind(this);
     this._onShowText2 = this._onShowText2.bind(this);
     this._onRemoveText = this._onRemoveText.bind(this);
@@ -47,11 +47,10 @@ export default class ViroSample extends Component {
     this._onLoadEnd = this._onLoadEnd.bind(this);
 
     this.state = {
-      viroAppProps: {displayObject:false, objectSource:objArray[0], yOffset:0, _onLoadEnd: this._onLoadEnd, _onLoadStart: this._onLoadStart, _onTrackingInit:this._onTrackingInit},
+      viroAppProps: {displayObject:false, objectSource:null, yOffset:0, _onLoadEnd: this._onLoadEnd, _onLoadStart: this._onLoadStart, _onTrackingInit:this._onTrackingInit},
       trackingInitialized: false,
       isLoading: false,
       displayText: false,
-      text: 'hello'
     }
   }
 
@@ -138,13 +137,13 @@ export default class ViroSample extends Component {
     );
   }
 
-  _onShowObject(objIndex, objUniqueName, yOffset) {
-    this.setState({
-        // displayText: true,
-        // text: 'hello'
-        viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:objArray[objIndex]},
-    });
-  }
+  // _onShowObject(objIndex, objUniqueName, yOffset) {
+  //   this.setState({
+  //       // displayText: true,
+  //       // text: 'hello'
+  //       viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:objArray[objIndex]},
+  //   });
+  // }
   _onShowText(objIndex, objUniqueName, yOffset){
     this.setState({
       viroAppProps:{displayObject: false},
@@ -162,7 +161,7 @@ export default class ViroSample extends Component {
   }
   _onRemoveText(objIndex, objUniqueName, yOffset){
     this.setState({
-      viroAppProps:{...this.state.viroAppProps, displayObject: false, yOffset: yOffset, displayObjectName: 10, objectSource:'cha cha changes'},
+      viroAppProps:{...this.state.viroAppProps, displayObject: false},
     })
   }
 }
