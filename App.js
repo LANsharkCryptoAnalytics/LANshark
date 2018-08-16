@@ -25,14 +25,15 @@ import renderIf from './js/helpers/renderIf';
 var InitialARScene = require('./js/ARHist');
 
 // Array of 3d models that we use in this sample. This app switches between this these models.
-var textArray = [
-  'Testing how to',
-  'make the changes',
-  'to Text',
-  ];
-  
+// var textArray = [
+//   'Testing how to',
+//   'make the changes',
+//   'to Text',
+//   ];
+var textArray = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.')
+
   var dataCounter = 0;
-  var dataLength = textArray.length;
+  var dataLength = textArray.length - 1;
 
 export default class ViroSample extends Component {
   constructor(props) {
@@ -184,7 +185,7 @@ export default class ViroSample extends Component {
   }
   _onShowText2(objIndex, objUniqueName, yOffset){
     dataCounter++
-    if(dataCounter > textArray.length - 1){
+    if(dataCounter > dataLength){
       dataCounter = 0;
     }
     this.setState({

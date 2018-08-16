@@ -34,7 +34,7 @@ const ARHist = createReactClass({
   getInitialState: function() {
     return {
       objPosition: [0,0,0],
-      scale:[.2, .2, .2],
+      scale:[5, 5, 5],
       rotation:[0,0,0],
       shouldBillboard : false,
     }
@@ -67,7 +67,7 @@ const ARHist = createReactClass({
         position={this.state.objPosition}
         onDrag={()=>{}}
         ref={this._setARNodeRef}
-        scale={[.5, .5, .5]} 
+        scale={[5, 5, 5]} 
         // scale={this.state.scale}
         rotation={this.state.rotation}
         dragType="FixedToWorld" key={this.props.arSceneNavigator.viroAppProps.displayObjectName}>
@@ -88,9 +88,9 @@ const ARHist = createReactClass({
           extrusionDepth={8}
           source={this.props.arSceneNavigator.viroAppProps.objectSource}
           materials={["frontMaterial", "backMaterial", "sideMaterial"]}
-          scale={[.5, .5, .5]} 
+          scale={[2, 2, 2]} 
           // position={[0, 0, -1.2]} 
-          position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -1.5]}
+          position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -2.5]}
           style={styles.helloWorldTextStyle} />
 
         {/* <Viro3DObject
@@ -261,7 +261,7 @@ var styles = StyleSheet.create({
   helloWorldTextStyle: {
     fontFamily: 'Arial',
     fontStyle: 'italic',
-    fontSize: 22,
+    fontSize: 12,
     color: '#ffffff',
     textAlignVertical: 'center',
     textAlign: 'center',  
