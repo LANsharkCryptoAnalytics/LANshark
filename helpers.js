@@ -32,6 +32,7 @@ exports.getNeighborhood = (lat, long, req, res)=> {
   headers = { 'Accept': 'application/sparql-results+json' };
 const hood = [];
 const place = {};
+const places = [];
 fetch( fullUrl, { headers } ).then( body => body.json() ).then( json => {
 const { head: { vars }, results } = json;
 for ( const result of results.bindings ) {
@@ -42,11 +43,12 @@ for ( const result of results.bindings ) {
     }
 }
 hood.forEach(place =>{
-  console.log(place.placeLabel.value);
+  places.push({ title: place.placeLabel.value, coord: place.location.value, dist: place.distance.value })
 });
-// console.log(hood);
-res.send(hood);
-} );  
+console.log(places);
+res.send(places);
+} ).catch(error=> console.error(error));  
+
 }
 exports.getFullPage = (title, req, res)=> {
   title = title.split(' ').join('_');
