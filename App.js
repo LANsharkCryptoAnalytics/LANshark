@@ -58,7 +58,7 @@ export default class ViroSample extends Component {
   render() {
     return (
       <View style={localStyles.outer} >
-        <ViroARSceneNavigator style={localStyles.arView} apiKey={viroKey}
+        <ViroARSceneNavigator style={localStyles.arView} apiKey={process.env.viroKey}
           initialScene={{scene:InitialARScene, passProps:{displayObject:this.state.displayObject}}}  viroAppProps={this.state.viroAppProps}
         />
 
