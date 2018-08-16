@@ -34,10 +34,24 @@ var textArray = [
   var dataLength = textArray.length;
 
 export default class ViroSample extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          error: null,
+        });
+      },
+      (error) => this.setState({ error: error.message }),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
+    
 
     // this._onShowObject = this._onShowObject.bind(this);
+    this._onShowLoc = this._onShowLoc.bind(this);
     this._onShowText = this._onShowText.bind(this);
     this._onShowText2 = this._onShowText2.bind(this);
     this._onRemoveText = this._onRemoveText.bind(this);
@@ -53,15 +67,21 @@ export default class ViroSample extends Component {
       trackingInitialized: false,
       isLoading: false,
       displayText: false,
+      posComp: true,
+      latitude: null,
+      longitude: null,
+      error: null,
     }
   }
 
   render() {
     return (
       <View style={localStyles.outer} >
+       {renderIf(this.state.posComp,
         <ViroARSceneNavigator style={localStyles.arView} apiKey={viroKey}
-          initialScene={{scene:InitialARScene, passProps:{displayObject:this.state.displayObject}}}  viroAppProps={this.state.viroAppProps}
+          initialScene={{scene:InitialARScene, passProps:{displayObject:this.state.displayObject}}} ref="scene" viroAppProps={this.state.viroAppProps}
         />
+       )}
 
         {this._renderTrackingText()}
 
@@ -104,7 +124,7 @@ export default class ViroSample extends Component {
   _renderTrackingText() {
     if(this.state.trackingInitialized) {
       return (<View style={{position: 'absolute', backgroundColor:"#ffffff22", left: 30, right: 30, top: 30, alignItems: 'center'}}>
-        <Text style={{fontSize:12, color:"#ffffff"}}>{Object.keys(this.state.viroAppProps)}Tracking initialized.</Text>
+        <Text style={{fontSize:12, color:"#ffffff"}}>{this.loc}Tracking initialized.</Text>
       </View>);
     } else {
       return (<View style={{position: 'absolute', backgroundColor:"#ffffff22", left: 30, right: 30, top:30, alignItems: 'center'}}>
@@ -124,8 +144,9 @@ export default class ViroSample extends Component {
     'Choose an object',
     'Select an object to place in the world!',
     [
-      {text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, .290760)},
-      {text: 'Next Fact', onPress: () => this._onShowText2(0, dataCounter, .290760)}, 
+      {text: 'Loc', onPress: () => this._onShowLoc(0, dataCounter, .148 )},
+      {text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, .148 )},
+      {text: 'Next Fact', onPress: () => this._onShowText2(0, dataCounter, .148)}, 
     ],
     );
   }
@@ -153,19 +174,28 @@ export default class ViroSample extends Component {
         viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:textArray[dataCounter]},
     });
   }
+  _onShowLoc(objIndex, objUniqueName, yOffset){
+    this.setState({
+      displayText: true,
+        // text: 'hello',
+        viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:String(this.state.latitude) + String(this.state.longitude)},
+    });
+  }
   _onShowText2(objIndex, objUniqueName, yOffset){
     dataCounter++
     if(dataCounter > textArray.length - 1){
       dataCounter = 0;
     }
     this.setState({
-      viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:textArray[dataCounter]},
+      viroAppProps:{ ...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:textArray[dataCounter]},
     })
   }
   _onRemoveText(objIndex, objUniqueName, yOffset){
     this.setState({
       viroAppProps:{...this.state.viroAppProps, displayObject: false},
-    })
+      posComp: false,
+    }, () => this.setState({posComp: true}))
+    
   }
 }
 

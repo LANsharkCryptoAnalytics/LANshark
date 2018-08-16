@@ -89,8 +89,8 @@ const ARHist = createReactClass({
           source={this.props.arSceneNavigator.viroAppProps.objectSource}
           materials={["frontMaterial", "backMaterial", "sideMaterial"]}
           scale={[.5, .5, .5]} 
-          position={[0, 0, -1.2]} 
-          // position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, 0]}
+          // position={[0, 0, -1.2]} 
+          position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -1.5]}
           style={styles.helloWorldTextStyle} />
 
         {/* <Viro3DObject
