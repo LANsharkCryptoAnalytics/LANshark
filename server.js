@@ -2,9 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const helpers = require('./helpers.js');
 const db = require('./database-mySql/index.js');
-
+require('dotenv').config();
 const app = express(); // (2)
-
+console.log(process.env.MAPQUESTKEY, 'MAPS');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
