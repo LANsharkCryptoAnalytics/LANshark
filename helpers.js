@@ -99,7 +99,7 @@ fetch( fullUrl, { headers } ).then( body => body.json() ).then( json => {
 // MapQuet API key is required
 // https://www.mapquestapi.com/geocoding/v1/reverse?key=KEY&location=29.92878%2C-90.08422&outFormat=json&thumbMaps=false
 exports.getAddress = (lat, long, req, res)=> {
-  axios.get(`https://www.mapquestapi.com/geocoding/v1/reverse?key=${MAPQUESTKEY.MAPQUESTKEY}&location=${lat}%2C${long}&outFormat=json&thumbMaps=false`).then(function (res) {
+  axios.get(`https://www.mapquestapi.com/geocoding/v1/reverse?key=${process.env.MAPQUESTKEY}&location=${lat}%2C${long}&outFormat=json&thumbMaps=false`).then(function (res) {
       console.log(res.data.results[0].locations[0].street);
       return res.data.results[0].locations[0].street;
     })

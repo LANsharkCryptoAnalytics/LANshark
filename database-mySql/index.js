@@ -2,8 +2,8 @@ const dbConfig = require('./config.js');
 const Sequelize = require('sequelize');
 // const dbHelpers = require('./dbHelpers.js');
 // const user = require('./models/user.js')
-
-const sequelize = new Sequelize(`mysql://${dbConfig.user}:${dbConfig.password}@${dbConfig.host}/ARHISTORY`);
+require('dotenv').config();
+const sequelize = new Sequelize(`mysql://${process.env.DBUSER}:${process.env.DBPASSWORD}@${process.env.DBHOST}/ARHISTORY`);
 
 sequelize
   .authenticate()
