@@ -1,5 +1,6 @@
 const dbConfig = require('./config.js');
 const Sequelize = require('sequelize');
+// const dbHelpers = require('./dbHelpers.js');
 // const user = require('./models/user.js')
 
 const sequelize = new Sequelize(`mysql://${dbConfig.user}:${dbConfig.password}@${dbConfig.host}/ARHISTORY`);
@@ -13,47 +14,53 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
- const User = sequelize.define('user', {
-     firstName: {
-       type: Sequelize.STRING
-     },
-     lastName: {
-       type: Sequelize.STRING
-     },
-     
-     email: {
-       type: Sequelize.STRING
-     },
-     favorites: Sequelize.STRING//needs to be an array of strings really
-     //foreign keys etc.
-   });
+const User = sequelize.define('user', {
+  // id: {
+  //   type: Sequelize.INTEGER,
+  //   autoIncrement: true,
+  //   primaryKey: true,
+  //   unique: true
+  // },
+  firstName: {
+    type: Sequelize.STRING
+  },
+  lastName: {
+    type: Sequelize.STRING
+  },
+  email: {
+    type: Sequelize.STRING,
+    // unique: true
 
-   // force: true will drop the table if it already exists
-   User.sync({force: true}).then(() => {
-     // Table created
+  },
+  favorites: Sequelize.STRING //needs to be an array of strings really
+  //foreign keys etc.
+});
 
-     return User.create({
-       firstName: 'John',
-       lastName: 'Hancock',
-       email: 'me@me.com',
-       favorites: '123123'
-     });
-   }).then(()=>{
-    User.findAll().then((users)=> {
-      console.log('findAll', users[0].dataValues);
-    }
-   );
+// force: true will drop the table if it already exists
+User.sync({
+    force: true
+  }).then(() => {
+    // Table created
+
+    return User.create({
+      firstName: 'John',
+      lastName: 'Hancock',
+      email: 'me@me.com',
+      favorites: '123123'
+    });
+  })
+  .then(() => {
+    User.findAll().then((users) => {
+      console.log('find all');
+      users.forEach((user) => {
+        console.log(user.dataValues);
+      })
+      // console.log('findAll', users[0].dataValues);
+    });
   });
 
-  //  User.findAll().then(console.log('findAll'));
-  
-  //  User.findAll().then(users => {
-    //    console.log('users', users);
-    //  })
-    
-    
-    module.exports = {
-      sequelize,
-      User
-      //poi goes here 
-    };
+module.exports = {
+  sequelize,
+  User
+  //poi goes here 
+};
