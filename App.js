@@ -124,8 +124,8 @@ export default class ViroSample extends Component {
     'Choose an object',
     'Select an object to place in the world!',
     [
-      {text: 'General Fact', onPress: () => this._onShowText(0, 10, .290760)},
-      {text: 'Next Fact', onPress: () => this._onShowText2(0, 10, .290760)}, 
+      {text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, .290760)},
+      {text: 'Next Fact', onPress: () => this._onShowText2(0, dataCounter, .290760)}, 
     ],
     );
   }
@@ -150,12 +150,16 @@ export default class ViroSample extends Component {
     this.setState({
       displayText: true,
         // text: 'hello',
-        viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: 10, objectSource:'Testing Where this shit comes from!'},
+        viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:textArray[dataCounter]},
     });
   }
   _onShowText2(objIndex, objUniqueName, yOffset){
+    dataCounter++
+    if(dataCounter > textArray.length - 1){
+      dataCounter = 0;
+    }
     this.setState({
-      viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: 10, objectSource:'cha cha changes'},
+      viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:textArray[dataCounter]},
     })
   }
   _onRemoveText(objIndex, objUniqueName, yOffset){

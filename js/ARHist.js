@@ -67,7 +67,8 @@ const ARHist = createReactClass({
         position={this.state.objPosition}
         onDrag={()=>{}}
         ref={this._setARNodeRef}
-        scale={this.state.scale}
+        scale={[.5, .5, .5]} 
+        // scale={this.state.scale}
         rotation={this.state.rotation}
         dragType="FixedToWorld" key={this.props.arSceneNavigator.viroAppProps.displayObjectName}>
 
