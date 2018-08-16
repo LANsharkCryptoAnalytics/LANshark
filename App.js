@@ -30,6 +30,7 @@ var textArray = [
   'make the changes',
   'to Text',
   ];
+  
   var dataCounter = 0;
   var dataLength = textArray.length;
 
