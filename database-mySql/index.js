@@ -1,4 +1,3 @@
-// const dbConfig = require('./config.js');
 const Sequelize = require('sequelize');
 // const dbHelpers = require('./dbHelpers.js');
 // const user = require('./models/user.js')
