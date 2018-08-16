@@ -77,9 +77,14 @@ export default class ViroSample extends Component {
   render() {
     return (
       <View style={localStyles.outer} >
+<<<<<<< HEAD
        {renderIf(this.state.posComp,
         <ViroARSceneNavigator style={localStyles.arView} apiKey={viroKey}
           initialScene={{scene:InitialARScene, passProps:{displayObject:this.state.displayObject}}} ref="scene" viroAppProps={this.state.viroAppProps}
+=======
+        <ViroARSceneNavigator style={localStyles.arView} apiKey={process.env.viroKey}
+          initialScene={{scene:InitialARScene, passProps:{displayObject:this.state.displayObject}}}  viroAppProps={this.state.viroAppProps}
+>>>>>>> c76c6b902b472e02e359c77bd7436e04a8ddd448
         />
        )}
 

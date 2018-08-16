@@ -1,25 +1,8 @@
 const dbConfig = require('./config.js');
 const Sequelize = require('sequelize');
-
-const sequelize = new Sequelize( null, dbConfig.user, dbConfig.password, {
-  host: dbConfig.host,
-  dialect: 'mysql',
-  port: 3306,
-  dialectOptions: {
-    ssl:'Amazon RDS'
-},
-  operatorsAliases: false,
-
-  pool: {
-    max: 5,
-    min: 0,
-    acquire: 30000,
-    idle: 10000
-  }
-});
-
-
-
+// const user = require('./models/user.js')
+require('dotenv').config();
+const sequelize = new Sequelize(`mysql://${process.env.DBUSER}:${process.env.DBPASSWORD}@${process.env.DBHOST}/ARHISTORY`);
 
 sequelize
   .authenticate()
@@ -30,4 +13,47 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
-module.exports = sequelize; 
+ const User = sequelize.define('user', {
+     firstName: {
+       type: Sequelize.STRING
+     },
+     lastName: {
+       type: Sequelize.STRING
+     },
+     
+     email: {
+       type: Sequelize.STRING
+     },
+     favorites: Sequelize.STRING//needs to be an array of strings really
+     //foreign keys etc.
+   });
+
+   // force: true will drop the table if it already exists
+   User.sync({force: true}).then(() => {
+     // Table created
+
+     return User.create({
+       firstName: 'John',
+       lastName: 'Hancock',
+       email: 'me@me.com',
+       favorites: '123123'
+     });
+   }).then(()=>{
+    User.findAll().then((users)=> {
+      console.log('findAll', users[0].dataValues);
+    }
+   );
+  });
+
+  //  User.findAll().then(console.log('findAll'));
+  
+  //  User.findAll().then(users => {
+    //    console.log('users', users);
+    //  })
+    
+    
+    module.exports = {
+      sequelize,
+      User
+      //poi goes here 
+    };
