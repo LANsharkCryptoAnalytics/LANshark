@@ -108,7 +108,6 @@ exports.getAddress = (lat, long, req, res)=> {
     });
     // https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=1403+Washington+Ave
   }
-
     exports.searchByAddress = (add, req, res)=> {
       add = add.split(' ').join('+');
       axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${add}+New+Orleans`).then(function (res) {
