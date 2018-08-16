@@ -13,7 +13,12 @@ import {
 
 
 import {
-  ViroARSceneNavigator
+  ViroARScene,
+  ViroARSceneNavigator,
+  ViroNode,
+  ViroSphere,
+  ViroText,
+  ViroMaterials,
 } from 'react-viro';
 
 import renderIf from './js/helpers/renderIf';
@@ -21,7 +26,9 @@ var InitialARScene = require('./js/ARHitTestSample');
 
 // Array of 3d models that we use in this sample. This app switches between this these models.
 var objArray = [
-  require('./js/res/object_flowers/object_flowers.vrx'),
+  // require('./js/res/object_flowers/object_flowers.vrx'),
+  
+
   ];
 
 export default class ViroSample extends Component {
@@ -29,6 +36,10 @@ export default class ViroSample extends Component {
     super();
 
     this._onShowObject = this._onShowObject.bind(this);
+    this._onShowText = this._onShowText.bind(this);
+    this._onShowText2 = this._onShowText2.bind(this);
+    this._onRemoveText = this._onRemoveText.bind(this);
+    this._onDisplayDialog2 = this._onDisplayDialog2.bind(this);
     this._renderTrackingText = this._renderTrackingText.bind(this);
     this._onTrackingInit = this._onTrackingInit.bind(this);
     this._onDisplayDialog = this._onDisplayDialog.bind(this);
@@ -39,6 +50,8 @@ export default class ViroSample extends Component {
       viroAppProps: {displayObject:false, objectSource:objArray[0], yOffset:0, _onLoadEnd: this._onLoadEnd, _onLoadStart: this._onLoadStart, _onTrackingInit:this._onTrackingInit},
       trackingInitialized: false,
       isLoading: false,
+      displayText: false,
+      text: 'hello'
     }
   }
 
@@ -52,14 +65,19 @@ export default class ViroSample extends Component {
         {this._renderTrackingText()}
 
         {renderIf(this.state.isLoading,
-          <View style={{position:'absolute', left:0, right:0, top:0, bottom:0, alignItems: 'center', justifyContent:'center'}}>
+          <View style={{position:'absolute', left:0, right:0, top:0, bottom:0,  justifyContent:'center'}}>
             <ActivityIndicator size='large' animating={this.state.isLoading} color='#ffffff'/>
           </View>)
         }
 
-        <View style={{position: 'absolute',  left: 0, right: 0, bottom: 77, alignItems: 'center'}}>
+        <View style={{position: 'absolute',  left: 0, right: 0, bottom: 77, alignItems: 'center', justifyContent: 'space-between',}}>
           <TouchableHighlight style={localStyles.buttons}
             onPress={this._onDisplayDialog}
+            underlayColor={'#00000000'} >
+            <Image source={require("./js/res/btn_mode_objects.png")} />
+          </TouchableHighlight>
+          <TouchableHighlight style={localStyles.buttons}
+            onPress={this._onDisplayDialog2}
             underlayColor={'#00000000'} >
             <Image source={require("./js/res/btn_mode_objects.png")} />
           </TouchableHighlight>
@@ -85,7 +103,7 @@ export default class ViroSample extends Component {
   _renderTrackingText() {
     if(this.state.trackingInitialized) {
       return (<View style={{position: 'absolute', backgroundColor:"#ffffff22", left: 30, right: 30, top: 30, alignItems: 'center'}}>
-        <Text style={{fontSize:12, color:"#ffffff"}}>Tracking initialized.</Text>
+        <Text style={{fontSize:12, color:"#ffffff"}}>{Object.keys(this.state.viroAppProps)}Tracking initialized.</Text>
       </View>);
     } else {
       return (<View style={{position: 'absolute', backgroundColor:"#ffffff22", left: 30, right: 30, top:30, alignItems: 'center'}}>
@@ -105,15 +123,47 @@ export default class ViroSample extends Component {
     'Choose an object',
     'Select an object to place in the world!',
     [
-      {text: 'Flowers', onPress: () => this._onShowObject(0, "flowers", .290760)},
+      {text: 'General Fact', onPress: () => this._onShowText(0, 10, .290760)},
+      {text: 'Next Fact', onPress: () => this._onShowText2(0, 10, .290760)}, 
+    ],
+    );
+  }
+  _onDisplayDialog2() {
+    Alert.alert(
+    'Choose an object',
+    'Select an object to place in the world!',
+    [
+      {text: 'Clear All Facts', onPress: () => this._onRemoveText(0, 10, .290760)}, 
     ],
     );
   }
 
   _onShowObject(objIndex, objUniqueName, yOffset) {
     this.setState({
+        // displayText: true,
+        // text: 'hello'
         viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:objArray[objIndex]},
     });
+  }
+  _onShowText(objIndex, objUniqueName, yOffset){
+    this.setState({
+      viroAppProps:{displayObject: false},
+    })
+    this.setState({
+      displayText: true,
+        // text: 'hello',
+        viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: 10, objectSource:'Testing Where this shit comes from!'},
+    });
+  }
+  _onShowText2(objIndex, objUniqueName, yOffset){
+    this.setState({
+      viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: 10, objectSource:'cha cha changes'},
+    })
+  }
+  _onRemoveText(objIndex, objUniqueName, yOffset){
+    this.setState({
+      viroAppProps:{...this.state.viroAppProps, displayObject: false, yOffset: yOffset, displayObjectName: 10, objectSource:'cha cha changes'},
+    })
   }
 }
 
@@ -121,11 +171,9 @@ var localStyles = StyleSheet.create({
   outer : {
     flex : 1,
   },
-
   arView: {
     flex:1,
   },
-
   buttons : {
     height: 80,
     width: 80,
@@ -138,6 +186,28 @@ var localStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ffffff00',
   }
+});
+ViroMaterials.createMaterials({
+  frontMaterial: {
+    diffuseColor: '#FFFFFF',
+  },
+  backMaterial: {
+    diffuseColor: '#FF0000',
+  },
+  sideMaterial: {
+    diffuseColor: '#0000FF',
+  },
+});
+
+var styles = StyleSheet.create({
+  helloWorldTextStyle: {
+    fontFamily: 'Arial',
+    fontStyle: 'italic',
+    fontSize: 12,
+    color: '#ffffff',
+    textAlignVertical: 'center',
+    textAlign: 'center',  
+  },
 });
 
 module.exports = ViroSample

@@ -4720,7 +4720,7 @@ mysql2@^1.6.1:
     seq-queue "0.0.5"
     sqlstring "2.3.1"
 
-mysql@latest:
+mysql@^2.16.0:
   version "2.16.0"
   resolved "https://registry.yarnpkg.com/mysql/-/mysql-2.16.0.tgz#b23b22ab5de44fc2d5d32bd4f5af6653fc45e2ba"
   dependencies:

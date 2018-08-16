@@ -7,26 +7,28 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 import React, { Component } from 'react';
+import { StyleSheet } from 'react-native';
 
 import {
   ViroARScene,
   ViroAmbientLight,
   ViroARPlane,
-  ViroMaterials,
   ViroNode,
   ViroUtils,
   ViroQuad,
   ViroSpotLight,
   Viro3DObject,
   ViroAnimations,
+  ViroMaterials,
+  ViroText,
 } from 'react-viro';
 
 import TimerMixin from 'react-timer-mixin';
 import PropTypes from 'prop-types';
 
-var createReactClass = require('create-react-class');
+const createReactClass = require('create-react-class');
 
-var ARHitTestSample = createReactClass({
+const ARHitTestSample = createReactClass({
   mixins: [TimerMixin],
 
   getInitialState: function() {
@@ -34,7 +36,7 @@ var ARHitTestSample = createReactClass({
       objPosition: [0,0,0],
       scale:[.2, .2, .2],
       rotation:[0,0,0],
-      shouldBillboard : true,
+      shouldBillboard : false,
     }
   },
 
@@ -48,7 +50,7 @@ var ARHitTestSample = createReactClass({
   },
 
   _getModel() {
-    var modelArray = [];
+    const modelArray = [];
     if(!this.props.arSceneNavigator.viroAppProps.displayObject || this.props.arSceneNavigator.viroAppProps.displayObjectName === undefined) {
       return;
     }
@@ -58,7 +60,7 @@ var ARHitTestSample = createReactClass({
       transformBehaviors.transformBehaviors = this.state.shouldBillboard ? "billboardY" : [];
     }
 
-     var bitMask = 4;
+     const bitMask = 4;
       modelArray.push(<ViroNode
         {...transformBehaviors}
         visible={this.props.arSceneNavigator.viroAppProps.displayObject}
@@ -81,12 +83,21 @@ var ARHitTestSample = createReactClass({
           shadowOpacity={.9}
           ref={this._setSpotLightRef}/>
 
-        <Viro3DObject
+        <ViroText text={this.props.arSceneNavigator.viroAppProps.objectSource} 
+          extrusionDepth={8}
+          source={this.props.arSceneNavigator.viroAppProps.objectSource}
+          materials={["frontMaterial", "backMaterial", "sideMaterial"]}
+          scale={[.5, .5, .5]} 
+          position={[0, 0, -1.2]} 
+          // position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, 0]}
+          style={styles.helloWorldTextStyle} />
+
+        {/* <Viro3DObject
           position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, 0]}
           source={this.props.arSceneNavigator.viroAppProps.objectSource}
           type = "VRX" onLoadEnd={this._onLoadEnd} onLoadStart={this._onLoadStart}
           onRotate={this._onRotate}
-          onPinch={this._onPinch} />
+          onPinch={this._onPinch} /> */}
 
           <ViroQuad
             rotation={[-90, 0, 0]}
@@ -135,7 +146,7 @@ var ARHitTestSample = createReactClass({
    to the final value and store it in state.
    */
   _onPinch(pinchState, scaleFactor, source) {
-    var newScale = this.state.scale.map((x)=>{return x * scaleFactor})
+    const newScale = this.state.scale.map((x)=>{return x * scaleFactor})
 
     if (pinchState == 3) {
       this.setState({
@@ -171,10 +182,10 @@ var ARHitTestSample = createReactClass({
 
     // Filter the hit test results based on the position.
     if (results.length > 0) {
-      for (var i = 0; i < results.length; i++) {
+      for (const i = 0; i < results.length; i++) {
         let result = results[i];
         if (result.type == "ExistingPlaneUsingExtent") {
-          var distance = Math.sqrt(((result.transform.position[0] - position[0]) * (result.transform.position[0] - position[0])) + ((result.transform.position[1] - position[1]) * (result.transform.position[1] - position[1])) + ((result.transform.position[2] - position[2]) * (result.transform.position[2] - position[2])));
+          const distance = Math.sqrt(((result.transform.position[0] - position[0]) * (result.transform.position[0] - position[0])) + ((result.transform.position[1] - position[1]) * (result.transform.position[1] - position[1])) + ((result.transform.position[2] - position[2]) * (result.transform.position[2] - position[2])));
           if(distance > .2 && distance < 10) {
             // If we found a plane greater than .2 and less than 10 meters away then choose it!
             hitResultPosition = result.transform.position;
@@ -183,7 +194,7 @@ var ARHitTestSample = createReactClass({
         } else if (result.type == "FeaturePoint" && !hitResultPosition) {
           // If we haven't found a plane and this feature point is within range, then we'll use it
           // as the initial display point.
-          var distance = this._distance(position, result.transform.position);
+          const distance = this._distance(position, result.transform.position);
           if (distance > .2  && distance < 10) {
             hitResultPosition = result.transform.position;
           }
@@ -229,9 +240,31 @@ var ARHitTestSample = createReactClass({
 
   // Calculate distance between two vectors
   _distance(vectorOne, vectorTwo) {
-    var distance = Math.sqrt(((vectorTwo[0] - vectorOne[0]) * (vectorTwo[0] - vectorOne[0])) + ((vectorTwo[1] - vectorOne[1]) * (vectorTwo[1] - vectorOne[1])) + ((vectorTwo[2] - vectorOne[2]) * (vectorTwo[2] - vectorOne[2])));
+    const distance = Math.sqrt(((vectorTwo[0] - vectorOne[0]) * (vectorTwo[0] - vectorOne[0])) + ((vectorTwo[1] - vectorOne[1]) * (vectorTwo[1] - vectorOne[1])) + ((vectorTwo[2] - vectorOne[2]) * (vectorTwo[2] - vectorOne[2])));
     return distance;
   }
+});
+ViroMaterials.createMaterials({
+  frontMaterial: {
+    diffuseColor: '#FFFFFF',
+  },
+  backMaterial: {
+    diffuseColor: '#FF0000',
+  },
+  sideMaterial: {
+    diffuseColor: '#0000FF',
+  },
+});
+
+var styles = StyleSheet.create({
+  helloWorldTextStyle: {
+    fontFamily: 'Arial',
+    fontStyle: 'italic',
+    fontSize: 22,
+    color: '#ffffff',
+    textAlignVertical: 'center',
+    textAlign: 'center',  
+  },
 });
 
 module.exports = ARHitTestSample;

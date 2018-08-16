@@ -19,7 +19,7 @@
     "eslint-plugin-react": "^7.11.0",
     "express": "^4.16.3",
     "it": "^1.1.1",
-    "mysql": "latest",
+    "mysql": "^2.16.0",
     "mysql2": "^1.6.1",
     "node-fetch": "^2.2.0",
     "react": "16.3.1",
