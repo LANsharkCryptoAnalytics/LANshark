@@ -28,7 +28,7 @@ import PropTypes from 'prop-types';
 
 const createReactClass = require('create-react-class');
 
-const ARHitTestSample = createReactClass({
+const ARHist = createReactClass({
   mixins: [TimerMixin],
 
   getInitialState: function() {
@@ -67,7 +67,8 @@ const ARHitTestSample = createReactClass({
         position={this.state.objPosition}
         onDrag={()=>{}}
         ref={this._setARNodeRef}
-        scale={this.state.scale}
+        scale={[.5, .5, .5]} 
+        // scale={this.state.scale}
         rotation={this.state.rotation}
         dragType="FixedToWorld" key={this.props.arSceneNavigator.viroAppProps.displayObjectName}>
 
@@ -88,8 +89,8 @@ const ARHitTestSample = createReactClass({
           source={this.props.arSceneNavigator.viroAppProps.objectSource}
           materials={["frontMaterial", "backMaterial", "sideMaterial"]}
           scale={[.5, .5, .5]} 
-          position={[0, 0, -1.2]} 
-          // position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, 0]}
+          // position={[0, 0, -1.2]} 
+          position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -1.5]}
           style={styles.helloWorldTextStyle} />
 
         {/* <Viro3DObject
@@ -267,4 +268,4 @@ var styles = StyleSheet.create({
   },
 });
 
-module.exports = ARHitTestSample;
+module.exports = ARHist;
