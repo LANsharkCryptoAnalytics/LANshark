@@ -36,8 +36,10 @@ export default class ViroSample extends Component {
     super();
 
     this._onShowObject = this._onShowObject.bind(this);
-    this._onShowObject = this._onShowText.bind(this);
-    this._onShowObject = this._onShowText2.bind(this);
+    this._onShowText = this._onShowText.bind(this);
+    this._onShowText2 = this._onShowText2.bind(this);
+    this._onRemoveText = this._onRemoveText.bind(this);
+    this._onDisplayDialog2 = this._onDisplayDialog2.bind(this);
     this._renderTrackingText = this._renderTrackingText.bind(this);
     this._onTrackingInit = this._onTrackingInit.bind(this);
     this._onDisplayDialog = this._onDisplayDialog.bind(this);
@@ -75,7 +77,7 @@ export default class ViroSample extends Component {
             <Image source={require("./js/res/btn_mode_objects.png")} />
           </TouchableHighlight>
           <TouchableHighlight style={localStyles.buttons}
-            onPress={() => this._onDisplayDialog}
+            onPress={this._onDisplayDialog2}
             underlayColor={'#00000000'} >
             <Image source={require("./js/res/btn_mode_objects.png")} />
           </TouchableHighlight>
@@ -126,6 +128,15 @@ export default class ViroSample extends Component {
     ],
     );
   }
+  _onDisplayDialog2() {
+    Alert.alert(
+    'Choose an object',
+    'Select an object to place in the world!',
+    [
+      {text: 'Clear All Facts', onPress: () => this._onRemoveText(0, 10, .290760)}, 
+    ],
+    );
+  }
 
   _onShowObject(objIndex, objUniqueName, yOffset) {
     this.setState({
@@ -147,6 +158,11 @@ export default class ViroSample extends Component {
   _onShowText2(objIndex, objUniqueName, yOffset){
     this.setState({
       viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: 10, objectSource:'cha cha changes'},
+    })
+  }
+  _onRemoveText(objIndex, objUniqueName, yOffset){
+    this.setState({
+      viroAppProps:{...this.state.viroAppProps, displayObject: false, yOffset: yOffset, displayObjectName: 10, objectSource:'cha cha changes'},
     })
   }
 }
