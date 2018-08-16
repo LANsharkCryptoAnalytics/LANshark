@@ -87,7 +87,10 @@ const ARHitTestSample = createReactClass({
           extrusionDepth={8}
           source={this.props.arSceneNavigator.viroAppProps.objectSource}
           materials={["frontMaterial", "backMaterial", "sideMaterial"]}
-          scale={[.5, .5, .5]} position={[0, 0, -1.2]} style={styles.helloWorldTextStyle} />
+          scale={[.5, .5, .5]} 
+          position={[0, 0, -1.2]} 
+          // position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, 0]}
+          style={styles.helloWorldTextStyle} />
 
         {/* <Viro3DObject
           position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, 0]}
@@ -257,7 +260,7 @@ var styles = StyleSheet.create({
   helloWorldTextStyle: {
     fontFamily: 'Arial',
     fontStyle: 'italic',
-    fontSize: 12,
+    fontSize: 22,
     color: '#ffffff',
     textAlignVertical: 'center',
     textAlign: 'center',  
