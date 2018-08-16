@@ -28,7 +28,7 @@ import PropTypes from 'prop-types';
 
 const createReactClass = require('create-react-class');
 
-const ARHitTestSample = createReactClass({
+const ARHist = createReactClass({
   mixins: [TimerMixin],
 
   getInitialState: function() {
@@ -267,4 +267,4 @@ var styles = StyleSheet.create({
   },
 });
 
-module.exports = ARHitTestSample;
+module.exports = ARHist;

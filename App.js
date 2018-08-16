@@ -22,7 +22,7 @@ import {
 } from 'react-viro';
 
 import renderIf from './js/helpers/renderIf';
-var InitialARScene = require('./js/ARHitTestSample');
+var InitialARScene = require('./js/ARHist');
 
 // Array of 3d models that we use in this sample. This app switches between this these models.
 var textArray = [
