@@ -37,6 +37,12 @@
     "react-test-renderer": "16.3.1"
   },
   "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ],
     "preset": "react-native"
   }
 }
