@@ -36,6 +36,8 @@ export default class ViroSample extends Component {
     super();
 
     this._onShowObject = this._onShowObject.bind(this);
+    this._onShowObject = this._onShowText.bind(this);
+    this._onShowObject = this._onShowText2.bind(this);
     this._renderTrackingText = this._renderTrackingText.bind(this);
     this._onTrackingInit = this._onTrackingInit.bind(this);
     this._onDisplayDialog = this._onDisplayDialog.bind(this);
@@ -61,14 +63,19 @@ export default class ViroSample extends Component {
         {this._renderTrackingText()}
 
         {renderIf(this.state.isLoading,
-          <View style={{position:'absolute', left:0, right:0, top:0, bottom:0, alignItems: 'center', justifyContent:'center'}}>
+          <View style={{position:'absolute', left:0, right:0, top:0, bottom:0,  justifyContent:'center'}}>
             <ActivityIndicator size='large' animating={this.state.isLoading} color='#ffffff'/>
           </View>)
         }
 
-        <View style={{position: 'absolute',  left: 0, right: 0, bottom: 77, alignItems: 'center'}}>
+        <View style={{position: 'absolute',  left: 0, right: 0, bottom: 77, alignItems: 'center', justifyContent: 'space-between',}}>
           <TouchableHighlight style={localStyles.buttons}
             onPress={this._onDisplayDialog}
+            underlayColor={'#00000000'} >
+            <Image source={require("./js/res/btn_mode_objects.png")} />
+          </TouchableHighlight>
+          <TouchableHighlight style={localStyles.buttons}
+            onPress={() => this._onDisplayDialog}
             underlayColor={'#00000000'} >
             <Image source={require("./js/res/btn_mode_objects.png")} />
           </TouchableHighlight>
@@ -114,7 +121,8 @@ export default class ViroSample extends Component {
     'Choose an object',
     'Select an object to place in the world!',
     [
-      {text: 'Flowers', onPress: () => this._onShowText(0, "flowers", .290760)},
+      {text: 'General Fact', onPress: () => this._onShowText(0, 10, .290760)},
+      {text: 'Next Fact', onPress: () => this._onShowText2(0, 10, .290760)}, 
     ],
     );
   }
@@ -128,10 +136,18 @@ export default class ViroSample extends Component {
   }
   _onShowText(objIndex, objUniqueName, yOffset){
     this.setState({
+      viroAppProps:{displayObject: false},
+    })
+    this.setState({
       displayText: true,
         // text: 'hello',
-        viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:'Testing Where this shit comes from!'},
+        viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: 10, objectSource:'Testing Where this shit comes from!'},
     });
+  }
+  _onShowText2(objIndex, objUniqueName, yOffset){
+    this.setState({
+      viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: 10, objectSource:'cha cha changes'},
+    })
   }
 }
 
