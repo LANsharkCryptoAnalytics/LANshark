@@ -9,10 +9,26 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
+    res.send('LANSHARK');
+
+
+});
+app.get('/broad', (req, res) => {
     // res.send('LANSHARK');
+    //
+    helpers.getNeighborhood(29.92878, -90.08422).then(body => body.json()).then((json)=>{  
+        let place = helpers.formatNeighborhoodData(json)[0].title;
+    helpers.getFullPage(`${place}, New Orleans`, req, res);
+    }).catch(error => { console.error(error)});
+    // console.log('neigh', helpers.getNeighborhood(29, -90, req, res));
+//    helpers.getFullPage('Garden District, New Orleans', req, res);
+
+    
+});
+app.get('/test', (req, res) => {
     
     helpers.getFullPage('Garden District, New Orleans', req, res);
-    // helpers.getNeighborhood(29.92878, -90.08422, req, res);
+    
 });
 // helpers.getPOINarrow(29.92878, -90.08422);
 
