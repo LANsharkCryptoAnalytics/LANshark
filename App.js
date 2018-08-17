@@ -255,7 +255,7 @@ var localStyles = StyleSheet.create({
 });
 ViroMaterials.createMaterials({
   frontMaterial: {
-    bloomThreshold: 0.1255,
+    // bloomThreshold: 0.1255,
     // specularTexture: textIMG,
     // lightingModel: 'Constant'
     diffuseColor: '#FFFFFF',
@@ -265,16 +265,16 @@ ViroMaterials.createMaterials({
     diffuseColor: '#FFFFFF',
   },
   sideMaterial: {
-    shininess: 2.0,
-    bloomThreshold: 0.5,
+    // shininess: 2.0,
+    bloomThreshold: 1,
     diffuseColor: '#333333',
   },
 });
 //"Comic Sans MS", cursive, sans-serif
 var styles = StyleSheet.create({
   helloWorldTextStyle: {
-    fontFamily: 'Arial',
-    fontStyle: 'italic',
+    fontFamily: 'Roboto',
+    // fontStyle: 'italic',
     fontSize: 8,
     color: '#ffffff',
     textAlignVertical: 'center',
