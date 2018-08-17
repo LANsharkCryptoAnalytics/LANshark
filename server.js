@@ -10,7 +10,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
     // res.send('LANSHARK');
-    // helpers.getFullPage('Garden District, New Orleans', req, res);
+    
+    helpers.getFullPage('Garden District, New Orleans', req, res);
     // helpers.getNeighborhood(29.92878, -90.08422, req, res);
 });
 // helpers.getPOINarrow(29.92878, -90.08422);

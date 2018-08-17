@@ -12,15 +12,12 @@ findUser = (userInfo) => {
 
 createUser = (userInfo, sequelize) => {
     console.log('create user fired userInfo:', userInfo);
-    // if (!findUser(userInfo)){
      return User.create({
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
         email: userInfo.email,
-        favorites: userInfo.favorites //must be an array of strings-foreign keys
+        favorites: userInfo.favorites //maybe must be an array of strings-foreign keys
       });
-    // }
-    // console.log('user already exists');
 }
 
 addToUserFavorites = ((user, favoritesToAdd) => {
@@ -32,8 +29,34 @@ addToUserFavorites = ((user, favoritesToAdd) => {
     // });
 });
 
+createNeighborhood = ((neighborHoodInfo)=>{
+    console.log('createNeighborHood fired');
+    return Neighborhood.create({
+        name: neighborHoodInfo.name,
+        lat: neighborHoodInfo.lat,
+        long: neighborHoodInfo.long,
+        fullPage: neighborHoodInfo.fullPage, 
+        pois: neighborHoodInfo.pois
+      });
+});
+
+//not sure if we're going to need this but...
+createPoi = ((poiInfo)=>{
+    console.log('createPoi fired');
+    return poi.create({
+        name: poiInfo.name,
+        lat: poiInfo.lat,
+        long: poiInfo.long,
+        fullPage: poiInfo.fullPage, 
+      });
+});
+
+
 module.exports = {
     createUser,
     findUser,
-    addToUserFavorites
+    addToUserFavorites,
+    createNeighborhood,
+    createPoi
+
 };
