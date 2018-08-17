@@ -90,9 +90,9 @@ const ARHist = createReactClass({
           source={this.props.arSceneNavigator.viroAppProps.objectSource}
           materials={["frontMaterial", "backMaterial", "sideMaterial"]}
           scale={[.5, .5, .5]} 
-          outerStroke={{type:"DropShadow", width:2, color:'#444444'}}
+          outerStroke={{type:"Outline", width:8, color:'#FF0000'}}
           // position={[0, 0, -1.2]} 
-          position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -.75]}
+          position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -.689]}
           style={styles.helloWorldTextStyle} />
 
         {/* <Viro3DObject
@@ -262,6 +262,7 @@ ViroMaterials.createMaterials({
   backMaterial: {
     shininess: 2.0,
     lightingModel: "Lambert",
+    bloomThreshold: 1,
     diffuseColor: '#FFFFFF',
   },
   sideMaterial: {
@@ -275,8 +276,9 @@ var styles = StyleSheet.create({
   helloWorldTextStyle: {
     fontFamily: 'Roboto',
     // fontStyle: 'italic',
-    fontSize: 12,
-    color: '#ffffff',
+    fontSize: 10,
+    fontWeight: '600',
+    // color: '#ffffff',
     textAlignVertical: 'center',
     textAlign: 'center',  
   },
