@@ -1,6 +1,7 @@
 const axios = require('axios');
 const fetch = require('node-fetch');
 const scrapeIt = require("scrape-it");
+const db = require('./database-mySql/dbHelpers.js')
 
 // https://en.wikipedia.org/wiki/Garden_District,_New_Orleans
 
@@ -126,5 +127,16 @@ exports.getAddress = (lat, long, req, res)=> {
         .catch(function (error) {
           console.log(error);
         });   
+
+}
+/////////////////////////////////////////////
+exports.loginUser = (user, response, reject )=>{
+  console.log('login user helper fired');
+  db.findUser(user).then((response)=>{
+    console.log(`response ${response}`);
+    console.log('do whatever we need to do here to log them in');
+    res.end;
+  }).catch( (err)=> { console.log(err)});
+  
 
 }
