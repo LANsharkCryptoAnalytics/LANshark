@@ -30,7 +30,7 @@ app.get('/narrow', (req, res) => {
         console.log(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
         let results = stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/ *\[[^)]*\] */g, " ");
         results = results.replace(/<[^>]*>/g, "")
-        results = results.replace(/[\r\n]/g, "");
+        results = results.replace(/[\r\n]/g, " ");
         results = results.split('.');
         console.log(results);
         res.send(results);
