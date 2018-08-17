@@ -36,18 +36,8 @@ app.get('/test', (req, res) => {
 app.post('/login', (req, res) =>{
     console.log("server post login endpoint");
     helpers.loginUser(req, res).then( ()=> { console.log('login successfull, maybe...')}).catch((res)=>{console.log("failed to login")});
+    // helpers.createUser(req, res).then(()=>{}).catch( ()=>{ console.log('failed to create');});
 });
-
-app.post('/test', (req, res) =>{
-//     console.log("tester endpoint");
-//     let jackson = {
-//         name: "Jackson Square",
-//         lat: 30,
-//         long: -90,
-//         fullPage: "tetyu"
-//     }
-// createPoi(jackson);
-})
 
 // helpers.searchByTitle('Garden District, New Orleans');
 // helpers.getFullPage('Garden District, New Orleans');

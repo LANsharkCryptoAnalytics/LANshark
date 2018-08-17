@@ -5,10 +5,11 @@ const { User, Poi, Neighborhood,  sequelize } = require('./index.js');
 findUser = (userInfo) => {
     //works and find the user by email- postman tested w email in header
     console.log('currently looking for headers for info may need to be changed');
-    console.log("findUser, user sought: ", userInfo.headers)
-    return User.findOne({ where: {email: userInfo.headers.email} }).then( user => {
-        console.log('userFound', user);
+    console.log('-----------------------------');
 
+    console.log("findUser, user sought: ", userInfo)
+    return User.findOne({ where: {email: userInfo.email} }).then( user => {
+        console.log('userFound', user);
         return user;
     })
 }
