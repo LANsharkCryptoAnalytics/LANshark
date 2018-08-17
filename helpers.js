@@ -3,7 +3,7 @@ const fetch = require('node-fetch');
 const scrapeIt = require("scrape-it");
 
 // https://en.wikipedia.org/wiki/Garden_District,_New_Orleans
-
+//
 //Cheerio is an html parser
 //get the entire http content for the first search result
 // exports.getPOINarrow = (lat, long)=> {
