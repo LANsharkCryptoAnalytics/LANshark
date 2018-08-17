@@ -56,6 +56,7 @@ export default class ViroSample extends Component {
     this._onShowLoc = this._onShowLoc.bind(this);
     this._onShowText = this._onShowText.bind(this);
     this._onShowText2 = this._onShowText2.bind(this);
+    this._onShowText3 = this._onShowText3.bind(this);
     this._onRemoveText = this._onRemoveText.bind(this);
     this._onDisplayDialog2 = this._onDisplayDialog2.bind(this);
     this._renderTrackingText = this._renderTrackingText.bind(this);
@@ -96,11 +97,6 @@ export default class ViroSample extends Component {
         <View style={{position: 'absolute',  left: 0, right: 0, bottom: 77, alignItems: 'center', justifyContent: 'space-between',}}>
           <TouchableHighlight style={localStyles.buttons}
             onPress={this._onDisplayDialog}
-            underlayColor={'#00000000'} >
-            <Image source={require("./js/res/btn_mode_objects.png")} />
-          </TouchableHighlight>
-          <TouchableHighlight style={localStyles.buttons}
-            onPress={this._onDisplayDialog2}
             underlayColor={'#00000000'} >
             <Image source={require("./js/res/btn_mode_objects.png")} />
           </TouchableHighlight>
@@ -146,9 +142,11 @@ export default class ViroSample extends Component {
     'Choose an object',
     'Select an object to place in the world!',
     [
-      {text: 'Loc', onPress: () => this._onShowLoc(0, dataCounter, .148 )},
-      {text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, .148 )},
-      {text: 'Next Fact', onPress: () => this._onShowText2(0, dataCounter, .148)}, 
+      // {text: 'Loc', onPress: () => this._onShowLoc(0, dataCounter, .148 )},
+      {text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0 )},
+      {text: 'Next Fact', onPress: () => this._onShowText2(0, dataCounter, 0)}, 
+      {text: 'Previous Fact', onPress: () => this._onShowText3(0, dataCounter, 0 )},
+      {text: 'New Location', onPress: () => this._onRemoveText()}, 
     ],
     );
   }
@@ -157,7 +155,7 @@ export default class ViroSample extends Component {
     'Choose an object',
     'Select an object to place in the world!',
     [
-      {text: 'Clear All Facts', onPress: () => this._onRemoveText(0, 10, .290760)}, 
+      {text: 'Clear All Facts', onPress: () => this._onRemoveText()}, 
     ],
     );
   }
@@ -192,7 +190,17 @@ export default class ViroSample extends Component {
       viroAppProps:{ ...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:textArray[dataCounter]},
     })
   }
-  _onRemoveText(objIndex, objUniqueName, yOffset){
+  _onShowText3(objIndex, objUniqueName, yOffset){
+    dataCounter--
+    if(dataCounter < 0){
+      dataCounter = 0;
+    }
+    this.setState({
+      viroAppProps:{ ...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:textArray[dataCounter]},
+    })
+  }
+
+  _onRemoveText(){
     this.setState({
       viroAppProps:{...this.state.viroAppProps, displayObject: false},
       posComp: false,
@@ -226,10 +234,14 @@ ViroMaterials.createMaterials({
     diffuseColor: '#FFFFFF',
   },
   backMaterial: {
-    diffuseColor: '#FF0000',
+    shininess: 2.0,
+    lightingModel: "Lambert",
+    diffuseColor: '#FFFFFF',
   },
   sideMaterial: {
-    diffuseColor: '#0000FF',
+    shininess: 2.0,
+    lightingModel: "Lambert",
+    diffuseColor: '#333333',
   },
 });
 
