@@ -3,19 +3,6 @@ const fetch = require('node-fetch');
 const scrapeIt = require("scrape-it");
 const db = require('./database-mySql/dbHelpers.js')
 
-// https://en.wikipedia.org/wiki/Garden_District,_New_Orleans
-//
-//Cheerio is an html parser
-//get the entire http content for the first search result
-// exports.getPOINarrow = (lat, long)=> {
-//     axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&prop=coordinates%7Cpageimages%7Cpageterms%7Cextracts&exlimit=5&generator=geosearch&colimit=1&piprop=thumbnail&pithumbsize=144&pilimit=10&wbptterms=description&ggscoord=${lat}%7C${long}&ggsradius=500&ggslimit=1`).then(function (res) {
-//         console.log(res.data.query);
-//         return res.data.query;
-//       })
-//       .catch(function (error) {
-//         console.log(error);
-//       });
-// };
 
 exports.getNeighborhood = (lat, long)=> {
   const endpointUrl = 'https://query.wikidata.org/sparql',
@@ -32,7 +19,6 @@ exports.getNeighborhood = (lat, long)=> {
   headers = { 'Accept': 'application/sparql-results+json' };
 
 return fetch( fullUrl, { headers });
-// console.log(places);
 }
 exports.formatNeighborhoodData = ( json => {
   const hood = [];
@@ -47,9 +33,12 @@ const places = [];
   }
   hood.forEach(place =>{
     //filter out results that don't have a title
+    console.log(place);
     if(place.placeLabel.value[0] !== 'Q'&& place.placeLabel.value.length !== 9){
-      places.push({ title: place.placeLabel.value, coord: place.location.value, dist: place.distance.value })
+      places.push({ title: place.placeLabel.value, coord: place.location.value, dist: place.distance.value, dist: place.place.value })
     }
+    // console.log(places);
+
   });
   return places;
 });
@@ -69,6 +58,7 @@ exports.getFullPage = (title, req, res)=> {
   console.log(error);
 });
 };
+
 exports.getNeighborhoodMap = (lat, long, req, res)=> {
   const endpointUrl = 'https://query.wikidata.org/sparql',
       sparqlQuery = `#defaultView:Map{"layer":"?instance_ofLabel"}
@@ -96,6 +86,10 @@ fetch( fullUrl, { headers } ).then( body => body.json() ).then( json => {
     }
 } );
 }
+exports.getPOINarrow = (lat, long)=> {
+    return axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&prop=coordinates%7Cpageimages%7Cpageterms%7Cextracts&exlimit=5&generator=geosearch&colimit=1&piprop=thumbnail&pithumbsize=144&pilimit=10&wbptterms=description&ggscoord=${lat}%7C${long}&ggsradius=500&ggslimit=1`);
+};
+
 //get the address at the current lat and long
 // MapQuet API key is required
 // https://www.mapquestapi.com/geocoding/v1/reverse?key=KEY&location=29.92878%2C-90.08422&outFormat=json&thumbMaps=false
@@ -112,8 +106,7 @@ exports.getAddress = (lat, long, req, res)=> {
     exports.searchByAddress = (add, req, res)=> {
       add = add.split(' ').join('+');
       axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${add}+New+Orleans`).then(function (res) {
-        console.log(res.data.query);
-        return res.data.query;
+        res.data.query;
       })
       .catch(function (error) {
         console.log(error);

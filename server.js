@@ -17,13 +17,37 @@ app.get('/broad', (req, res) => {
     // res.send('LANSHARK');
     //
     helpers.getNeighborhood(29.92878, -90.08422).then(body => body.json()).then((json)=>{  
-        let place = helpers.formatNeighborhoodData(json)[0].title;
+        let place = helpers.formatNeighborhoodData(json)[2].title;
     helpers.getFullPage(`${place}, New Orleans`, req, res);
     }).catch(error => { console.error(error)});
     // console.log('neigh', helpers.getNeighborhood(29, -90, req, res));
 //    helpers.getFullPage('Garden District, New Orleans', req, res);
+});
 
-    
+// helpers.searchByTitle('Christ Church Cathedral, New Orleans');
+app.get('/narrow', (req, res) => {
+    helpers.getPOINarrow(29.92878, -90.08422).then(stuff=> {
+        console.log(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
+        let results = stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/ *\[[^)]*\] */g, " ");
+        results = results.replace(/<[^>]*>/g, "")
+        results = results.replace(/[\r\n]/g, "");
+        results = results.split('.');
+        console.log(results);
+        res.send(results);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+    // helpers.getFullPage(`Touro Infirmary Foundation`, req, res);
+    // var count = 1;
+    // helpers.getNeighborhood(29.92878, -90.08422).then(body => body.json()).then((json)=>{  
+    //     // console.log(helpers.formatNeighborhoodData(json)[0].title);
+    //     let place = helpers.formatNeighborhoodData(json)[0].title;
+    // helpers.getFullPage(`${place}, New Orleans`, req, res);
+    // count++;
+    // }).catch(error => { console.error(error)});
+    // console.log('neigh', helpers.getNeighborhood(29, -90, req, res));
+//    helpers.getFullPage('Garden District', req, res);
 });
 app.get('/test', (req, res) => {
     
