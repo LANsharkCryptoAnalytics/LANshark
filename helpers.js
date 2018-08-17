@@ -133,11 +133,39 @@ exports.getAddress = (lat, long, req, res)=> {
 /////////////////////////////////////////////
 exports.loginUser = (user, response, reject )=>{
   console.log('login user helper fired');
-  db.findUser(user).then((response)=>{
-    console.log(`response ${response}`);
+  db.findUser(user).then((userData)=>{
+    console.log(`response ${userData}`);
     console.log('do whatever we need to do here to log them in');
-    res.end;
+    
   }).catch( (err)=> { console.log(err)});
-  
+}
 
+exports.poiCreate = (poi, response, reject )=>{
+  console.log('poiCreate');
+  db.createPoi(poi).then( (response)=>{
+    console.log('poi created', response);
+    res.end;
+  }).catch((reject)=>{
+    console.log('reject');
+  })
+}
+
+exports.neighborhoodCreate = (neighborhood, response, reject )=>{
+  console.log('neighborhoodCreate');
+  db.createNeighborhood(neighborhood).then( (response)=>{
+    console.log('hood created', response);
+    res.end;
+  }).catch((reject)=>{
+    console.log('reject');
+  })
+}
+//addToUserFavorites
+exports.addToUserFavorites = (favorite, response, reject )=>{
+  console.log('addToUserFavorites');
+  db.addToUserFavorites(favorite).then( (response)=>{
+    console.log('favorite added', response);
+    res.end;
+  }).catch((reject)=>{
+    console.log('reject');
+  })
 }

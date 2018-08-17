@@ -8,6 +8,7 @@ console.log(process.env.MAPQUESTKEY, 'MAPS');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+
 app.get('/', (req, res) => {
     res.send('LANSHARK');
 
@@ -34,9 +35,19 @@ app.get('/test', (req, res) => {
 
 app.post('/login', (req, res) =>{
     console.log("server post login endpoint");
-    helpers.loginUser(req);
+    helpers.loginUser(req, res).then( ()=> { console.log('login successfull, maybe...')}).catch((res)=>{console.log("failed to login")});
 });
 
+app.post('/test', (req, res) =>{
+//     console.log("tester endpoint");
+//     let jackson = {
+//         name: "Jackson Square",
+//         lat: 30,
+//         long: -90,
+//         fullPage: "tetyu"
+//     }
+// createPoi(jackson);
+})
 
 // helpers.searchByTitle('Garden District, New Orleans');
 // helpers.getFullPage('Garden District, New Orleans');

@@ -1,11 +1,14 @@
-const { User, sequelize } = require('./index.js');
+const { User, Poi, Neighborhood,  sequelize } = require('./index.js');
 
 
 
 findUser = (userInfo) => {
-    console.log("findUser, user: ", userInfo)
-    User.findOne({ where: {email: userInfo.email} }).then( user => {
-        console.log(user);
+    //works and find the user by email- postman tested w email in header
+    console.log('currently looking for headers for info may need to be changed');
+    console.log("findUser, user sought: ", userInfo.headers)
+    return User.findOne({ where: {email: userInfo.headers.email} }).then( user => {
+        console.log('userFound', user);
+
         return user;
     })
 }
@@ -20,6 +23,17 @@ createUser = (userInfo, sequelize) => {
       });
 }
 
+createNeighborhood = ((neighborHoodInfo)=>{
+    console.log('createNeighborHood fired');
+    return Neighborhood.create({
+        name: neighborHoodInfo.name,
+        lat: neighborHoodInfo.lat,
+        long: neighborHoodInfo.long,
+        fullPage: neighborHoodInfo.fullPage, 
+        pois: neighborHoodInfo.pois
+      });
+});
+
 addToUserFavorites = ((user, favoritesToAdd) => {
     // not tested yet
     console.log(`add to favorites, userName: ${user.firstName} ${user}`);
@@ -27,6 +41,18 @@ addToUserFavorites = ((user, favoritesToAdd) => {
     user.favorites = user.favorites + favoritesToAdd;
     // user.update({ title: 'foooo', description: 'baaaaaar'}, {fields: ['title']}).then(() => {
     // });
+});
+
+
+//not sure if we're going to need this but...
+createPoi = ((poiInfo)=>{
+    console.log('createPoi fired');
+    return Poi.create({
+        name: poiInfo.name,
+        lat: poiInfo.lat,
+        long: poiInfo.long,
+        fullPage: poiInfo.fullPage, 
+      });
 });
 
 createNeighborhood = ((neighborHoodInfo)=>{
@@ -40,16 +66,6 @@ createNeighborhood = ((neighborHoodInfo)=>{
       });
 });
 
-//not sure if we're going to need this but...
-createPoi = ((poiInfo)=>{
-    console.log('createPoi fired');
-    return poi.create({
-        name: poiInfo.name,
-        lat: poiInfo.lat,
-        long: poiInfo.long,
-        fullPage: poiInfo.fullPage, 
-      });
-});
 
 
 module.exports = {
