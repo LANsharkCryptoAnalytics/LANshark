@@ -82,19 +82,19 @@ export default class ViroSample extends Component {
       longitude: null,
       error: null,
       generalData: textArray,
-      posPhone: false,
+      phonePos: false,
     }
   }
 
   render() {
     return (
       <View style={localStyles.outer} >
-      {renderIf(this.state.posPhone,
+      {renderIf(this.state.phonePos,
         <View>
         <Text>Sorry your phone sucks! heres some data for you anyway{this.state.generalData[dataCounter]}</Text>
       </View>
       )}
-       {renderIf(this.state.posComp && !this.state.posPhone,
+       {renderIf(this.state.posComp && !this.state.phonePos,
         <ViroARSceneNavigator style={localStyles.arView} apiKey={viroKey}
           initialScene={{scene:InitialARScene, passProps:{displayObject:this.state.displayObject}}} ref="scene" viroAppProps={this.state.viroAppProps}
         />
@@ -126,7 +126,7 @@ export default class ViroSample extends Component {
   }
   _handleARNotSupported() {
     this.setState({
-      posPhone: true
+      phonePos: true
     })
   }
   // Invoked when a model has started to load, we show a loading indictator.
