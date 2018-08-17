@@ -30,6 +30,7 @@ var InitialARScene = require('./js/ARHist');
 //   'make the changes',
 //   'to Text',
 //   ];
+var textIMG = require('./js/res/cracked-wallpaper-9.jpg');
 var textArray = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.')
 
   var dataCounter = 0;
@@ -231,16 +232,18 @@ var localStyles = StyleSheet.create({
 });
 ViroMaterials.createMaterials({
   frontMaterial: {
+    bloomThreshold: 0.1255,
+    // specularTexture: textIMG,
+    // lightingModel: 'Constant'
     diffuseColor: '#FFFFFF',
   },
   backMaterial: {
-    shininess: 2.0,
     lightingModel: "Lambert",
     diffuseColor: '#FFFFFF',
   },
   sideMaterial: {
     shininess: 2.0,
-    lightingModel: "Lambert",
+    bloomThreshold: 0.5,
     diffuseColor: '#333333',
   },
 });

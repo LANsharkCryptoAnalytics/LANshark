@@ -90,6 +90,7 @@ const ARHist = createReactClass({
           source={this.props.arSceneNavigator.viroAppProps.objectSource}
           materials={["frontMaterial", "backMaterial", "sideMaterial"]}
           scale={[.5, .5, .5]} 
+          outerStroke={{type:"DropShadow", width:2, color:'#444444'}}
           // position={[0, 0, -1.2]} 
           position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -.5]}
           style={styles.helloWorldTextStyle} />
