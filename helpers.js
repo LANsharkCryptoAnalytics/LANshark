@@ -123,6 +123,21 @@ exports.getAddress = (lat, long, req, res)=> {
         });   
 
 }
+exports.getFullPageURI = (uri, req, res)=> {
+  scrapeIt(uri, {
+    title: 'h1',
+    paragraph: 'p',
+    
+}).then(({ data, response }) => {
+    let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
+    results = results.replace(/[\r\n]/g, "");
+    results = results.split('.');
+    console.log(results);
+    res.send(results)
+}).catch(function (error) {
+  console.log(error);
+});
+};
 /////////////////////////////////////////////
 exports.loginUser = (user, response, reject )=>{
   console.log('login user helper fired');

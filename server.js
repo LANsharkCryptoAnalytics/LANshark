@@ -25,15 +25,11 @@ app.get('/broad', (req, res) => {
 });
 
 // helpers.searchByTitle('Christ Church Cathedral, New Orleans');
-app.get('/narrow', (req, res) => {
-    helpers.getPOINarrow(29.92878, -90.08422).then(stuff=> {
-        console.log(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
-        let results = stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/ *\[[^)]*\] */g, " ");
-        results = results.replace(/<[^>]*>/g, "")
-        results = results.replace(/[\r\n]/g, " ");
-        results = results.split('.');
-        console.log(results);
-        res.send(results);
+app.get('/prenarrow', (req, res) => {
+    helpers.getPOINarrow(29.957203, -90.063067).then(stuff=> {
+        // console.log(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
+        
+        res.send(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
     })
     .catch(function (error) {
       console.log(error);
@@ -49,12 +45,14 @@ app.get('/narrow', (req, res) => {
     // console.log('neigh', helpers.getNeighborhood(29, -90, req, res));
 //    helpers.getFullPage('Garden District', req, res);
 });
+app.get('/narrow', (req, res) => {
+    helpers.getFullPageURI('http://172.24.7.173:8100/prenarrow', req, res);
+});
 app.get('/test', (req, res) => {
     
     helpers.getFullPage('Garden District, New Orleans', req, res);
     
 });
-// helpers.getPOINarrow(29.92878, -90.08422);
 
 app.post('/login', (req, res) =>{
     console.log("server post login endpoint");
@@ -64,7 +62,7 @@ app.post('/login', (req, res) =>{
 
 // helpers.searchByTitle('Garden District, New Orleans');
 // helpers.getFullPage('Garden District, New Orleans');
-app.listen( 8200, function() { 
+app.listen( 8100, function() { 
     console.log('App listening on port 8200');
 });
 
