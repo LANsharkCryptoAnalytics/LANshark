@@ -47,9 +47,10 @@ hood.forEach(place =>{
   }
 });
 console.log(places);
-res.send(places);
-} ).catch(error=> console.error(error));  
-
+//  res.send(places);
+// } ).catch(error=> console.error(error));  
+});
+return places;
 }
 exports.getFullPage = (title, req, res)=> {
   title = title.split(' ').join('_');
