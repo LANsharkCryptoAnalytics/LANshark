@@ -58,8 +58,55 @@ User.sync({
     });
   });
 
+  const NeighborHood = sequelize.define('neighborHood', {
+    id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      unique: true
+    },
+    name: {
+      type: Sequelize.STRING
+    //  unique: true
+    },
+    lat: {
+      type: Sequelize.STRING//may need to be int
+    },
+    long: {
+      type: Sequelize.STRING//may need to be int
+    },
+    fullPage: {
+      type: Sequelize.STRING,
+    },
+    pois: {
+      type: Sequelize.STRING
+    }
+    
+  });
+  const Poi = sequelize.define('poi', {
+    id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      unique: true
+    },
+    name: {
+      type: Sequelize.STRING
+    },
+    lat: {
+      type: Sequelize.STRING//may need to be int
+    },
+    long: {
+      type: Sequelize.STRING//may need to be int
+    },
+    fullPage: {
+      type: Sequelize.STRING,
+      // unique: true
+    },
+  });
+
 module.exports = {
   sequelize,
-  User
-  //poi goes here 
+  User, 
+  Poi
 };
