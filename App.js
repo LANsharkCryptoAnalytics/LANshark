@@ -11,6 +11,8 @@ import {
   Alert,
 } from 'react-native';
 
+import axios from 'axios'
+
 
 import {
   ViroARScene,
@@ -75,6 +77,7 @@ export default class ViroSample extends Component {
       latitude: null,
       longitude: null,
       error: null,
+      generalData: textArray,
     }
   }
 
@@ -172,7 +175,7 @@ export default class ViroSample extends Component {
     this.setState({
       displayText: true,
         // text: 'hello',
-        viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:textArray[dataCounter]},
+        viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:this.state.generalData[dataCounter]},
     });
   }
   _onShowLoc(objIndex, objUniqueName, yOffset){
@@ -188,7 +191,7 @@ export default class ViroSample extends Component {
       dataCounter = 0;
     }
     this.setState({
-      viroAppProps:{ ...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:textArray[dataCounter]},
+      viroAppProps:{ ...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:this.state.generalData[dataCounter]},
     })
   }
   _onShowText3(objIndex, objUniqueName, yOffset){
@@ -197,7 +200,7 @@ export default class ViroSample extends Component {
       dataCounter = 0;
     }
     this.setState({
-      viroAppProps:{ ...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:textArray[dataCounter]},
+      viroAppProps:{ ...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:this.state.generalData[dataCounter]},
     })
   }
 
