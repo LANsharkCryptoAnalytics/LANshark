@@ -34,7 +34,7 @@ const ARHist = createReactClass({
   getInitialState: function() {
     return {
       objPosition: [0,0,0],
-      scale:[.2, .2, .2],
+      scale:[.5, .5, .5],
       rotation:[0,0,0],
       shouldBillboard : false,
     }
@@ -67,7 +67,7 @@ const ARHist = createReactClass({
         position={this.state.objPosition}
         onDrag={()=>{}}
         ref={this._setARNodeRef}
-        scale={[.5, .5, .5]} 
+        scale={[5, 5, 5]} 
         // scale={this.state.scale}
         rotation={this.state.rotation}
         dragType="FixedToWorld" key={this.props.arSceneNavigator.viroAppProps.displayObjectName}>
@@ -78,19 +78,21 @@ const ARHist = createReactClass({
           direction={[0,-1,0]}
           position={[0, 4, 0]}
           color="#ffffff"
-          castsShadow={true}
-          shadowNearZ={.1}
-          shadowFarZ={6}
-          shadowOpacity={.9}
+          castsShadow={false}
+          // shadowNearZ={.1}
+          // shadowFarZ={6}
+          // shadowOpacity={.9}
           ref={this._setSpotLightRef}/>
 
-        <ViroText text={this.props.arSceneNavigator.viroAppProps.objectSource} 
-          extrusionDepth={8}
+        <ViroText text={this.props.arSceneNavigator.viroAppProps.objectSource}
+          // animation={{name:'animateImage',run:true}}
+          extrusionDepth={5.5}
           source={this.props.arSceneNavigator.viroAppProps.objectSource}
           materials={["frontMaterial", "backMaterial", "sideMaterial"]}
           scale={[.5, .5, .5]} 
+          outerStroke={{type:"DropShadow", width:2, color:'#444444'}}
           // position={[0, 0, -1.2]} 
-          position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -1.5]}
+          position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -.5]}
           style={styles.helloWorldTextStyle} />
 
         {/* <Viro3DObject
@@ -245,15 +247,27 @@ const ARHist = createReactClass({
     return distance;
   }
 });
+
+ViroAnimations.registerAnimations({
+  animateImage:{properties:{scaleX:2, scaleY:2, scaleZ:2, opacity: 1},  
+        easing:"Linear", duration: 2400},
+});
+
 ViroMaterials.createMaterials({
   frontMaterial: {
+    shininess: 2.0,
+    lightingModel: "Lambert",
     diffuseColor: '#FFFFFF',
   },
   backMaterial: {
-    diffuseColor: '#FF0000',
+    shininess: 2.0,
+    lightingModel: "Lambert",
+    diffuseColor: '#FFFFFF',
   },
   sideMaterial: {
-    diffuseColor: '#0000FF',
+    shininess: 2.0,
+    lightingModel: "Lambert",
+    diffuseColor: '#FFFFFF',
   },
 });
 
@@ -261,7 +275,7 @@ var styles = StyleSheet.create({
   helloWorldTextStyle: {
     fontFamily: 'Arial',
     fontStyle: 'italic',
-    fontSize: 22,
+    fontSize: 12,
     color: '#ffffff',
     textAlignVertical: 'center',
     textAlign: 'center',  

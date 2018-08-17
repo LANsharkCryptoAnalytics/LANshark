@@ -25,14 +25,16 @@ import renderIf from './js/helpers/renderIf';
 var InitialARScene = require('./js/ARHist');
 
 // Array of 3d models that we use in this sample. This app switches between this these models.
-var textArray = [
-  'Testing how to',
-  'make the changes',
-  'to Text',
-  ];
-  
+// var textArray = [
+//   'Testing how to',
+//   'make the changes',
+//   'to Text',
+//   ];
+var textIMG = require('./js/res/cracked-wallpaper-9.jpg');
+var textArray = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.')
+
   var dataCounter = 0;
-  var dataLength = textArray.length;
+  var dataLength = textArray.length - 1;
 
 export default class ViroSample extends Component {
   constructor(props) {
@@ -55,6 +57,7 @@ export default class ViroSample extends Component {
     this._onShowLoc = this._onShowLoc.bind(this);
     this._onShowText = this._onShowText.bind(this);
     this._onShowText2 = this._onShowText2.bind(this);
+    this._onShowText3 = this._onShowText3.bind(this);
     this._onRemoveText = this._onRemoveText.bind(this);
     this._onDisplayDialog2 = this._onDisplayDialog2.bind(this);
     this._renderTrackingText = this._renderTrackingText.bind(this);
@@ -96,12 +99,7 @@ export default class ViroSample extends Component {
           <TouchableHighlight style={localStyles.buttons}
             onPress={this._onDisplayDialog}
             underlayColor={'#00000000'} >
-            <Image source={require("./js/res/btn_mode_objects.png")} />
-          </TouchableHighlight>
-          <TouchableHighlight style={localStyles.buttons}
-            onPress={this._onDisplayDialog2}
-            underlayColor={'#00000000'} >
-            <Image source={require("./js/res/btn_mode_objects.png")} />
+            <Image source={require("./js/res/MainBTTN.png")} />
           </TouchableHighlight>
         </View>
       </View>
@@ -145,9 +143,11 @@ export default class ViroSample extends Component {
     'Choose an object',
     'Select an object to place in the world!',
     [
-      {text: 'Loc', onPress: () => this._onShowLoc(0, dataCounter, .148 )},
-      {text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, .148 )},
-      {text: 'Next Fact', onPress: () => this._onShowText2(0, dataCounter, .148)}, 
+      // {text: 'Loc', onPress: () => this._onShowLoc(0, dataCounter, .148 )},
+      {text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0 )},
+      {text: 'Next Fact', onPress: () => this._onShowText2(0, dataCounter, 0)}, 
+      {text: 'Previous Fact', onPress: () => this._onShowText3(0, dataCounter, 0 )},
+      {text: 'New Location', onPress: () => this._onRemoveText()}, 
     ],
     );
   }
@@ -156,7 +156,7 @@ export default class ViroSample extends Component {
     'Choose an object',
     'Select an object to place in the world!',
     [
-      {text: 'Clear All Facts', onPress: () => this._onRemoveText(0, 10, .290760)}, 
+      {text: 'Clear All Facts', onPress: () => this._onRemoveText()}, 
     ],
     );
   }
@@ -184,14 +184,24 @@ export default class ViroSample extends Component {
   }
   _onShowText2(objIndex, objUniqueName, yOffset){
     dataCounter++
-    if(dataCounter > textArray.length - 1){
+    if(dataCounter > dataLength){
       dataCounter = 0;
     }
     this.setState({
       viroAppProps:{ ...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:textArray[dataCounter]},
     })
   }
-  _onRemoveText(objIndex, objUniqueName, yOffset){
+  _onShowText3(objIndex, objUniqueName, yOffset){
+    dataCounter--
+    if(dataCounter < 0){
+      dataCounter = 0;
+    }
+    this.setState({
+      viroAppProps:{ ...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:textArray[dataCounter]},
+    })
+  }
+
+  _onRemoveText(){
     this.setState({
       viroAppProps:{...this.state.viroAppProps, displayObject: false},
       posComp: false,
@@ -222,21 +232,27 @@ var localStyles = StyleSheet.create({
 });
 ViroMaterials.createMaterials({
   frontMaterial: {
+    bloomThreshold: 0.1255,
+    // specularTexture: textIMG,
+    // lightingModel: 'Constant'
     diffuseColor: '#FFFFFF',
   },
   backMaterial: {
-    diffuseColor: '#FF0000',
+    lightingModel: "Lambert",
+    diffuseColor: '#FFFFFF',
   },
   sideMaterial: {
-    diffuseColor: '#0000FF',
+    shininess: 2.0,
+    bloomThreshold: 0.5,
+    diffuseColor: '#333333',
   },
 });
-
+//"Comic Sans MS", cursive, sans-serif
 var styles = StyleSheet.create({
   helloWorldTextStyle: {
     fontFamily: 'Arial',
     fontStyle: 'italic',
-    fontSize: 12,
+    fontSize: 8,
     color: '#ffffff',
     textAlignVertical: 'center',
     textAlign: 'center',  
