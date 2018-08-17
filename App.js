@@ -99,7 +99,7 @@ export default class ViroSample extends Component {
           <TouchableHighlight style={localStyles.buttons}
             onPress={this._onDisplayDialog}
             underlayColor={'#00000000'} >
-            <Image source={require("./js/res/btn_mode_objects.png")} />
+            <Image source={require("./js/res/MainBTTN.png")} />
           </TouchableHighlight>
         </View>
       </View>
@@ -247,12 +247,12 @@ ViroMaterials.createMaterials({
     diffuseColor: '#333333',
   },
 });
-
+//"Comic Sans MS", cursive, sans-serif
 var styles = StyleSheet.create({
   helloWorldTextStyle: {
     fontFamily: 'Arial',
     fontStyle: 'italic',
-    fontSize: 12,
+    fontSize: 8,
     color: '#ffffff',
     textAlignVertical: 'center',
     textAlign: 'center',  
