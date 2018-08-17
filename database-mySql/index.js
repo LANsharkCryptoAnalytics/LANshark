@@ -28,7 +28,7 @@ const User = sequelize.define('user', {
   },
   email: {
     type: Sequelize.STRING,
-    // unique: true
+    unique: true
 
   },
   favorites: Sequelize.STRING //needs to be an array of strings really
