@@ -29,6 +29,11 @@ app.get('/test', (req, res) => {
 });
 // helpers.getPOINarrow(29.92878, -90.08422);
 
+app.post('/login', (req, res) =>{
+    console.log("server post login endpoint");
+    helpers.loginUser(req);
+});
+
 
 // helpers.searchByTitle('Garden District, New Orleans');
 // helpers.getFullPage('Garden District, New Orleans');
