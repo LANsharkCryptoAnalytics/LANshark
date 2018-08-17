@@ -21,10 +21,14 @@ import {
   ViroSphere,
   ViroText,
   ViroMaterials,
+  ViroUtils,
 } from 'react-viro';
 
 import renderIf from './js/helpers/renderIf';
+
 var InitialARScene = require('./js/ARHist');
+var isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
+
 
 // Array of 3d models that we use in this sample. This app switches between this these models.
 // var textArray = [
@@ -78,13 +82,19 @@ export default class ViroSample extends Component {
       longitude: null,
       error: null,
       generalData: textArray,
+      posPhone: false,
     }
   }
 
   render() {
     return (
       <View style={localStyles.outer} >
-       {renderIf(this.state.posComp,
+      {renderIf(this.state.posPhone,
+        <View>
+        <Text>Sorry your phone sucks! heres some data for you anyway{this.state.generalData[dataCounter]}</Text>
+      </View>
+      )}
+       {renderIf(this.state.posComp && !this.state.posPhone,
         <ViroARSceneNavigator style={localStyles.arView} apiKey={viroKey}
           initialScene={{scene:InitialARScene, passProps:{displayObject:this.state.displayObject}}} ref="scene" viroAppProps={this.state.viroAppProps}
         />
@@ -108,7 +118,17 @@ export default class ViroSample extends Component {
       </View>
     );
   }
-
+  componentDidMount() {
+    isARSupportedOnDevice(this._handleARNotSupported, this._handleARSupported);
+  }
+  _handleARSupported() {
+    console.log('yeah');
+  }
+  _handleARNotSupported() {
+    this.setState({
+      posPhone: true
+    })
+  }
   // Invoked when a model has started to load, we show a loading indictator.
   _onLoadStart() {
     this.setState({
