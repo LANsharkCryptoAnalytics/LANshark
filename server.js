@@ -15,7 +15,7 @@ app.get('/', (req, res) => {
 });
 app.get('/broad', (req, res) => {
     // res.send('LANSHARK');
-    //
+    console.log('coord', req.query);
     helpers.getNeighborhood(29.92878, -90.08422).then(body => body.json()).then((json)=>{  
         let place = helpers.formatNeighborhoodData(json)[2].title;
     helpers.getFullPage(`${place}, New Orleans`, req, res);
@@ -46,7 +46,7 @@ app.get('/prenarrow', (req, res) => {
 //    helpers.getFullPage('Garden District', req, res);
 });
 app.get('/narrow', (req, res) => {
-    helpers.getFullPageURI('http://172.24.7.173:8100/prenarrow', req, res);
+    helpers.getFullPageURI('http://ec2-34-238-240-14.compute-1.amazonaws.com/prenarrow', req, res);
 });
 app.get('/test', (req, res) => {
     
@@ -62,7 +62,7 @@ app.post('/login', (req, res) =>{
 
 // helpers.searchByTitle('Garden District, New Orleans');
 // helpers.getFullPage('Garden District, New Orleans');
-app.listen( 8100, function() { 
+app.listen( 8200, function() { 
     console.log('App listening on port 8200');
 });
 
