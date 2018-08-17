@@ -1,5 +1,7 @@
 const db = require('./dbHelpers.js');
-const { User } = require('./index.js');
+const {
+    User
+} = require('./index.js');
 
 
 const joe = {
@@ -8,13 +10,15 @@ const joe = {
     email: 'buttsjosef@gmail.com',
     favorites: 'qwerqwerqwer'
 }
- createUser(joe).then((user)=>{
-     console.log('create user', user);
- });
+createUser(joe).then((user) => {
+    console.log('create user', user);
+});
 
-User.findAll().then((users)=> {
+findUser(joe);
+
+User.findAll().then((users) => {
     // console.log('findAll', users[0].dataValues);
     users.forEach((user) => {
         console.log(user.dataValues);
-      })
-  })
+    })
+})
