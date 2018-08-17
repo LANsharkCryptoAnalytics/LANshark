@@ -17,7 +17,7 @@ const db = require('./database-mySql/dbHelpers.js')
 //       });
 // };
 
-exports.getNeighborhood = (lat, long, req, res)=> {
+exports.getNeighborhood = (lat, long)=> {
   const endpointUrl = 'https://query.wikidata.org/sparql',
   sparqlQuery = `SELECT ?place ?location ?distance ?placeLabel WHERE {
     SERVICE wikibase:around { 
@@ -30,28 +30,29 @@ exports.getNeighborhood = (lat, long, req, res)=> {
     } ORDER BY ?distance LIMIT 10`,
   fullUrl = endpointUrl + '?query=' + encodeURIComponent(sparqlQuery),
   headers = { 'Accept': 'application/sparql-results+json' };
-const hood = [];
+
+return fetch( fullUrl, { headers });
+// console.log(places);
+}
+exports.formatNeighborhoodData = ( json => {
+  const hood = [];
 const place = {};
 const places = [];
-fetch( fullUrl, { headers } ).then( body => body.json() ).then( json => {
-const { head: { vars }, results } = json;
-for ( const result of results.bindings ) {
-  hood.push(result)
-    for ( const variable of vars ) {
-        place[variable] = result[variable];
-    }
-}
-hood.forEach(place =>{
-  //filter out results that don't have a title
-  if(place.placeLabel.value[0] !== 'Q'&& place.placeLabel.value.length !== 9){
-    places.push({ title: place.placeLabel.value, coord: place.location.value, dist: place.distance.value })
+  const { head: { vars }, results } = json;
+  for ( const result of results.bindings ) {
+    hood.push(result)
+      for ( const variable of vars ) {
+          place[variable] = result[variable];
+      }
   }
+  hood.forEach(place =>{
+    //filter out results that don't have a title
+    if(place.placeLabel.value[0] !== 'Q'&& place.placeLabel.value.length !== 9){
+      places.push({ title: place.placeLabel.value, coord: place.location.value, dist: place.distance.value })
+    }
+  });
+  return places;
 });
-console.log(places);
-res.send(places);
-} ).catch(error=> console.error(error));  
-
-}
 exports.getFullPage = (title, req, res)=> {
   title = title.split(' ').join('_');
   scrapeIt(`https://en.wikipedia.org/wiki/${title}`, {
