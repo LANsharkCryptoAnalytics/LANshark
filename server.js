@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
     res.send('LANSHARK');
 
 
-});
+}); 
 app.get('/broad', (req, res) => {
     console.log('coord', req.query);
     console.log( req.query.latitude, req.query.longitude) ;
