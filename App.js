@@ -45,7 +45,15 @@ var textArray = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam 
 export default class ViroSample extends Component {
   constructor(props) {
     super(props);
+    axios.get(`http://localhost:8200/broad`, {
+      params: {
 
+        latitude: '29.957203',
+        longitude: '-90.063067',
+      }
+    })
+      .then(res => {
+        const generalData = res.data;
     navigator.geolocation.getCurrentPosition(
       (position) => {
         this.setState({
@@ -53,6 +61,9 @@ export default class ViroSample extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
+       
+      this.setState({ generalData });
+    })
       },
       (error) => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
@@ -121,16 +132,7 @@ export default class ViroSample extends Component {
   }
   componentDidMount() {
     isARSupportedOnDevice(this._handleARNotSupported, this._handleARSupported);
-    axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/broad`, {
-      params: {
-        latitude: this.state.latitude,
-        longitude: this.state.longitude,
-      }
-    })
-    .then(res => {
-      const generalData = res.data;
-      this.setState({ generalData });
-    })
+    
   }
   _handleARSupported() {
     console.log('yeah');
