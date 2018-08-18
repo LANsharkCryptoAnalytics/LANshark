@@ -121,7 +121,7 @@ export default class ViroSample extends Component {
   }
   componentDidMount() {
     isARSupportedOnDevice(this._handleARNotSupported, this._handleARSupported);
-    axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/broad?${this.state.latitude},${this.state.longitude}`)
+    axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/broad?lat=${this.state.latitude}&long=${this.state.longitude}`)
     .then(res => {
       const generalData = res.data;
       this.setState({ generalData });
