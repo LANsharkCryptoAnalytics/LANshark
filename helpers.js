@@ -46,24 +46,15 @@ const places = [];
     // console.log(places);
 
   });
-  
+  console.log(places);
   return places;
 });
 
 exports.getFullPage = (title, req, res)=> {
   title = title.split(' ').join('_');
-  scrapeIt(`https://en.wikipedia.org/wiki/${title}`, {
+  return scrapeIt(`https://en.wikipedia.org/wiki/${title}`, {
     title: 'h1',
     paragraph: 'p',
-    
-}).then(({ data, response }) => {
-    let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
-    results = results.replace(/[\r\n]/g, " ");
-    results = results.split('.');
-    console.log(data);
-    res.send(results)
-}).catch(function (error) {
-  console.log(error);
 });
 };
 

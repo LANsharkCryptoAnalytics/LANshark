@@ -19,17 +19,35 @@ app.get('/', (req, res) => {
 
 app.get('/neighborhood', (req, res) => {
     
-    console.log( req.query.latitude.slice(0,9), req.query.longitude.slice(0,9)) ;
-    helpers.getNeighborhood(req.query.latitude.slice(0,9), req.query.longitude.slice(0,9)).then(body => body.json()).then((json)=>{  
+    // console.log( req.query.latitude.slice(0,9), req.query.longitude.slice(0,9)) ;
+    // old opSpark 29.945851,-90.068331
+    // broadmoor 29.940796,-90.107823
+    //29.9461047,-90.1055788
+    helpers.getNeighborhood(29.9461047, -90.1055788).then(body => body.json()).then((json)=>{  
         let neighborhoods = helpers.formatNeighborhoodData(json).filter(n => {
             return n.type === "neighborhood";
         });
         const long = neighborhoods[0].coord.split(' ')[0];
         const lat = neighborhoods[0].coord.split(' ')[1];
         console.log(neighborhoods[0].title);
-        helpers.getFullPage(`${neighborhoods[0].title}`, req, res);
+        helpers.getFullPage(`${neighborhoods[0].title}`).then(({ data, response }) => {
+            let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
+            results = results.replace(/[\r\n]/g, " ");
+            results = results.split('.');
+            if(results.length < 100){
+                helpers.getFullPage(`${neighborhoods[0].title},_New_Orleans`).then(({ data, response }) => {
+                    let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
+                    results = results.replace(/[\r\n]/g, " ");
+                    results = results.split('.');
+                    res.send(results);
+                })
+            }else{
+            res.send(results);
+            }
+        }).catch(function (error) {
+          console.log(error);
+        });
 
-        // res.send(neighborhoods);
     //     helpers.getPOINarrow(lat, long).then(stuff=> {
     //         // console.log(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
     //         results = stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, "");
@@ -49,7 +67,7 @@ app.get('/neighborhood', (req, res) => {
 // helpers.searchByTitle('Christ Church Cathedral, New Olocationrleans');
 app.get('/broad', (req, res) => {
     // console.log( req.query.latitude.slice(0,9), req.query.longitude.slice(0,9)) ;
-    helpers.getPOINarrow(req.query.latitude.slice(0,9), req.query.longitude.slice(0,9)).then(stuff=> {
+    helpers.getPOINarrow(29.976196, -90.076359).then(stuff=> {
         // console.log(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
         results = stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, "");
         results = results.replace(/<[^>]+>/g, ' ')
