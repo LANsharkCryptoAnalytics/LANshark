@@ -239,6 +239,17 @@ export default class ViroSample extends Component {
   }
 
   _onRemoveText(){
+    axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/narrow`, {
+          params: {
+            latitude: this.state.latitude,
+          longitude: this.state.longitude,
+          }
+        })
+        .then(res => {
+          const generalData = res.data;
+          this.setState({ generalData });
+        })
+        .catch((err) => this.state.error = err)
     this.setState({
       viroAppProps:{...this.state.viroAppProps, displayObject: false},
       posComp: false,
