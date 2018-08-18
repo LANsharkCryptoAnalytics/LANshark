@@ -122,6 +122,11 @@ export default class ViroSample extends Component {
         }
 
         <View style={{position: 'absolute',  left: 0, right: 0, bottom: 77, alignItems: 'center', justifyContent: 'space-between',}}>
+        <TouchableHighlight style={localStyles.buttons}
+            onPress={this._onDisplayDialog}
+            underlayColor={'#00000000'} >
+            <Image source={require("./js/res/MainBTTN.png")} />
+          </TouchableHighlight>
           <TouchableHighlight style={localStyles.buttons}
             onPress={this._onDisplayDialog}
             underlayColor={'#00000000'} >
@@ -257,6 +262,9 @@ var localStyles = StyleSheet.create({
   buttons : {
     height: 80,
     width: 80,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     // paddingTop:20,
     // paddingBottom:20,
     // marginTop: 10,
