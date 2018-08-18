@@ -152,6 +152,18 @@ exports.loginUser = (user, response, reject )=>{
   // }).catch( (err)=> { console.log(err)});
 }
 
+exports.createUser = (user, response, reject )=>{
+  console.log('create user helper fired');
+  
+  db.createUser = (userInfo, sequelize) => {
+    (user.body).then((userData)=>{
+    console.log(`response ${userData}`);
+    console.log('do whatever we need to do here to log them in');
+    res.end
+  }).catch( (err)=> { console.log(err)});
+}
+}
+
 //addToUserFavorites
 exports.addToFavorites = (favorite, response, reject )=>{
   console.log('addToUserFavorites');

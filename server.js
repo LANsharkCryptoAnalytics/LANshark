@@ -59,9 +59,9 @@ app.get('/test', (req, res) => {
 
 app.post('/login', (req, res) =>{
     console.log("server post login endpoint");
-    helpers.loginUser(req, res);
-    // helpers.createUser(req, res).then(()=>{}).catch( ()=>{ console.log('failed to create');});
-});
+    // helpers.loginUser(req, res);
+    helpers.createUser(req, res);
+})
 
 app.patch('/addToFavorites', (req, res)=>{
     console.log('add to user favorites');

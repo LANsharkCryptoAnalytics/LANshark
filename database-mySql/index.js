@@ -37,25 +37,27 @@ const User = sequelize.define('user', {
 
 // force: true will drop the table if it already exists
 User.sync({
-    force: true
+    force: false
   }).then(() => {
     // Table created
     //sample user made here
-    return User.create({
-      firstName: 'John',
-      lastName: 'Hancock',
-      email: 'me@me.com',
-      favorites: '123123'
-    });
+    // return User.create({
+    //   firstName: 'John',
+    //   lastName: 'Hancock',
+    //   email: 'me@me.com',
+    //   favorites: '123123'
+    // });
+    return;
   }).then(() => {
     // Table created
     //sample user made here
-    return User.create({
-      firstName: 'Bruce',
-      lastName: 'Lee',
-      email: 'blee@kungfu.com',
-      favorites: '123123'
-    });
+    // return User.create({
+    //   firstName: 'Bruce',
+    //   lastName: 'Lee',
+    //   email: 'blee@kungfu.com',
+    //   favorites: '123123'
+    // });
+    return;
   })
   .then(() => {
     User.findAll().then((users) => {
