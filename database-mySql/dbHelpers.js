@@ -21,6 +21,15 @@ createUser = (userInfo, sequelize) => {
       });
 }
 
+addToUserFavorites = ((user, favoritesToAdd) => {
+    // not tested yet
+    console.log(`add to favorites, userName: ${user.firstName} ${user}`);
+    // again untested
+    user.favorites = user.favorites + favoritesToAdd;
+    // user.update({ title: 'foooo', description: 'baaaaaar'}, {fields: ['title']}).then(() => {
+    // });
+});
+
 createNeighborhood = ((neighborHoodInfo)=>{
     console.log('createNeighborHood fired');
     return Neighborhood.create({
@@ -30,15 +39,6 @@ createNeighborhood = ((neighborHoodInfo)=>{
         fullPage: neighborHoodInfo.fullPage, 
         pois: neighborHoodInfo.pois
       });
-});
-
-addToUserFavorites = ((user, favoritesToAdd) => {
-    // not tested yet
-    console.log(`add to favorites, userName: ${user.firstName} ${user}`);
-    // again untested
-    user.favorites = user.favorites + favoritesToAdd;
-    // user.update({ title: 'foooo', description: 'baaaaaar'}, {fields: ['title']}).then(() => {
-    // });
 });
 
 
@@ -52,18 +52,6 @@ createPoi = ((poiInfo)=>{
         fullPage: poiInfo.fullPage, 
       });
 });
-
-createNeighborhood = ((neighborHoodInfo)=>{
-    console.log('createNeighborHood fired');
-    return Neighborhood.create({
-        name: neighborHoodInfo.name,
-        lat: neighborHoodInfo.lat,
-        long: neighborHoodInfo.long,
-        fullPage: neighborHoodInfo.fullPage, 
-        pois: neighborHoodInfo.pois
-      });
-});
-
 
 
 module.exports = {

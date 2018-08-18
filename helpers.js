@@ -131,6 +131,8 @@ exports.getAddress = (lat, long, req, res)=> {
 
 }
 /////////////////////////////////////////////
+//   USER RELATED FUNCTIONS                //
+/////////////////////////////////////////////
 exports.loginUser = (user, response, reject )=>{
   console.log('login user helper fired');
   //the below works but this isn't really the proper place for it
@@ -140,6 +142,30 @@ exports.loginUser = (user, response, reject )=>{
   //   console.log('do whatever we need to do here to log them in');
     
   // }).catch( (err)=> { console.log(err)});
+}
+
+//addToUserFavorites
+exports.addToFavorites = (favorite, response, reject )=>{
+  console.log('addToUserFavorites');
+  db.addToUserFavorites(favorite).then( (response)=>{
+    console.log('favorite added', response);
+    res.end;
+  }).catch((reject)=>{
+    console.log('reject');
+  })
+}
+
+/////////////////////////////////////////////////////////
+// END OF USER RELATED FUNCTIONS                       //
+/////////////////////////////////////////////////////////
+exports.neighborhoodCreate = (neighborhood, response, reject )=>{
+  console.log('neighborhoodCreate');
+  db.createNeighborhood(neighborhood).then( (response)=>{
+    console.log('hood created', response);
+    res.end;
+  }).catch((reject)=>{
+    console.log('reject');
+  })
 }
 
 exports.poiCreate = (poi, response, reject )=>{
@@ -152,22 +178,4 @@ exports.poiCreate = (poi, response, reject )=>{
   })
 }
 
-exports.neighborhoodCreate = (neighborhood, response, reject )=>{
-  console.log('neighborhoodCreate');
-  db.createNeighborhood(neighborhood).then( (response)=>{
-    console.log('hood created', response);
-    res.end;
-  }).catch((reject)=>{
-    console.log('reject');
-  })
-}
-//addToUserFavorites
-exports.addToUserFavorites = (favorite, response, reject )=>{
-  console.log('addToUserFavorites');
-  db.addToUserFavorites(favorite).then( (response)=>{
-    console.log('favorite added', response);
-    res.end;
-  }).catch((reject)=>{
-    console.log('reject');
-  })
-}
+

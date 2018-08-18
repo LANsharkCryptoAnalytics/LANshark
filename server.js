@@ -33,11 +33,17 @@ app.get('/test', (req, res) => {
 });
 // helpers.getPOINarrow(29.92878, -90.08422);
 
+
 app.post('/login', (req, res) =>{
     console.log("server post login endpoint");
     helpers.loginUser(req, res);
     // helpers.createUser(req, res).then(()=>{}).catch( ()=>{ console.log('failed to create');});
 });
+
+app.patch('/addToFavorites', (req, res)=>{
+    console.log('add to user favorites');
+    helper.addToFavorites(req, res);
+})
 
 // helpers.searchByTitle('Garden District, New Orleans');
 // helpers.getFullPage('Garden District, New Orleans');
