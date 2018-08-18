@@ -40,11 +40,20 @@ User.sync({
     force: true
   }).then(() => {
     // Table created
-
+    //sample user made here
     return User.create({
       firstName: 'John',
       lastName: 'Hancock',
       email: 'me@me.com',
+      favorites: '123123'
+    });
+  }).then(() => {
+    // Table created
+    //sample user made here
+    return User.create({
+      firstName: 'Bruce',
+      lastName: 'Lee',
+      email: 'blee@kungfu.com',
       favorites: '123123'
     });
   })

@@ -1,11 +1,12 @@
-const { User, sequelize } = require('./index.js');
+const { User, Poi, Neighborhood,  sequelize } = require('./index.js');
 
 
 
 findUser = (userInfo) => {
-    console.log("findUser, user: ", userInfo)
-    User.findOne({ where: {email: userInfo.email} }).then( user => {
-        console.log(user);
+    console.log('-----------------------------');
+    console.log("findUser, user sought: ", userInfo)
+    return User.findOne({ where: {email: userInfo.email} }).then( user => {
+        console.log('userFound', user);
         return user;
     })
 }
@@ -40,10 +41,11 @@ createNeighborhood = ((neighborHoodInfo)=>{
       });
 });
 
+
 //not sure if we're going to need this but...
 createPoi = ((poiInfo)=>{
     console.log('createPoi fired');
-    return poi.create({
+    return Poi.create({
         name: poiInfo.name,
         lat: poiInfo.lat,
         long: poiInfo.long,

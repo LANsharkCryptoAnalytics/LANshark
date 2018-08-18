@@ -139,13 +139,51 @@ exports.getFullPageURI = (uri, req, res)=> {
 });
 };
 /////////////////////////////////////////////
+//   USER RELATED FUNCTIONS                //
+/////////////////////////////////////////////
 exports.loginUser = (user, response, reject )=>{
   console.log('login user helper fired');
-  db.findUser(user).then((response)=>{
-    console.log(`response ${response}`);
-    console.log('do whatever we need to do here to log them in');
-    res.end;
-  }).catch( (err)=> { console.log(err)});
-  
-
+  //the below works but this isn't really the proper place for it
+  //possible shift to findAndUPdate or something similar
+  // db.findUser(user.body).then((userData)=>{
+  //   console.log(`response ${userData}`);
+  //   console.log('do whatever we need to do here to log them in');
+    
+  // }).catch( (err)=> { console.log(err)});
 }
+
+//addToUserFavorites
+exports.addToFavorites = (favorite, response, reject )=>{
+  console.log('addToUserFavorites');
+  db.addToUserFavorites(favorite).then( (response)=>{
+    console.log('favorite added', response);
+    res.end;
+  }).catch((reject)=>{
+    console.log('reject');
+  })
+}
+
+/////////////////////////////////////////////////////////
+// END OF USER RELATED FUNCTIONS                       //
+/////////////////////////////////////////////////////////
+exports.neighborhoodCreate = (neighborhood, response, reject )=>{
+  console.log('neighborhoodCreate');
+  db.createNeighborhood(neighborhood).then( (response)=>{
+    console.log('hood created', response);
+    res.end;
+  }).catch((reject)=>{
+    console.log('reject');
+  })
+}
+
+exports.poiCreate = (poi, response, reject )=>{
+  console.log('poiCreate');
+  db.createPoi(poi).then( (response)=>{
+    console.log('poi created', response);
+    res.end;
+  }).catch((reject)=>{
+    console.log('reject');
+  })
+}
+
+
