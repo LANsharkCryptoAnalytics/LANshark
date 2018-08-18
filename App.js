@@ -304,21 +304,21 @@ var localStyles = StyleSheet.create({
 });
 ViroMaterials.createMaterials({
   frontMaterial: {
-    // bloomThreshold: 0.5,
+    // bloomThreshold: 0.1,
     // specularTexture: textIMG,
     // lightingModel: 'Constant',
     diffuseColor: '#FFFFFF',
   },
   backMaterial: {
     // lightingModel: "Lambert",
-    bloomThreshold: .5,
+    bloomThreshold: .6,
 
-    diffuseColor: '#fcdc25',
+    diffuseColor: '#3041c1',
   },
   sideMaterial: {
     // shininess: 2.0,
     // bloomThreshold: 1,
-    diffuseColor: '#333333',
+    diffuseColor: '#1226bc',
   },
 });
 //"Comic Sans MS", cursive, sans-serif
