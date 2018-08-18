@@ -246,7 +246,7 @@ export default class ViroSample extends Component {
     //       longitude: position.coords.longitude,
     //       error: null,
     //     });
-    //     axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/broad`, {
+    //     axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/narrow`, {
     //       params: {
     //         latitude: position.coords.latitude,
     //       longitude: position.coords.longitude,
@@ -293,18 +293,20 @@ var localStyles = StyleSheet.create({
 });
 ViroMaterials.createMaterials({
   frontMaterial: {
-    // bloomThreshold: 0.1255,
+    // bloomThreshold: 0.5,
     // specularTexture: textIMG,
-    // lightingModel: 'Constant'
+    // lightingModel: 'Constant',
     diffuseColor: '#FFFFFF',
   },
   backMaterial: {
-    lightingModel: "Lambert",
-    diffuseColor: '#FFFFFF',
+    // lightingModel: "Lambert",
+    bloomThreshold: .5,
+
+    diffuseColor: '#fcdc25',
   },
   sideMaterial: {
     // shininess: 2.0,
-    bloomThreshold: 1,
+    // bloomThreshold: 1,
     diffuseColor: '#333333',
   },
 });
