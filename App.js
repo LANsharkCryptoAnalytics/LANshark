@@ -121,12 +121,24 @@ export default class ViroSample extends Component {
           </View>)
         }
 
+        <View style={{position: 'absolute',  left: 150, right: 0, bottom: 77, alignItems: 'center', justifyContent: 'space-between',}}>
+        <TouchableHighlight style={localStyles.buttons}
+            onPress={this._onDisplayDialog}
+            underlayColor={'#00000000'} >
+            <Image source={require("./js/res/MainBTTN.png")} />
+          </TouchableHighlight>
+        </View>
+
         <View style={{position: 'absolute',  left: 0, right: 0, bottom: 77, alignItems: 'center', justifyContent: 'space-between',}}>
         <TouchableHighlight style={localStyles.buttons}
             onPress={this._onDisplayDialog}
             underlayColor={'#00000000'} >
             <Image source={require("./js/res/MainBTTN.png")} />
           </TouchableHighlight>
+        </View>
+
+
+          <View style={{position: 'absolute',  left: 0, right: 150, bottom: 77, alignItems: 'center', justifyContent: 'space-between',}}>
           <TouchableHighlight style={localStyles.buttons}
             onPress={this._onDisplayDialog}
             underlayColor={'#00000000'} >
@@ -168,7 +180,7 @@ export default class ViroSample extends Component {
         <Text style={{fontSize:12, color:"#ffffff"}}>{this.loc}Tracking initialized.</Text>
       </View>);
     } else {
-      return (<View style={{position: 'absolute', backgroundColor:"#ffffff22", left: 30, right: 30, top:30, alignItems: 'center'}}>
+      return (<View style={{position: 'absolute', backgroundColor:"#ffffff22", left: 30, right: 30, top:30, alignItems: 'center', flex: 1, flexDirection: 'row',}}>
         <Text style={{fontSize:12, color:"#ffffff"}}>Waiting for tracking to initialize.</Text>
         </View>);
     }
