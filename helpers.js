@@ -5,17 +5,22 @@ const db = require('./database-mySql/dbHelpers.js')
 
 exports.getNeighborhood = (lat, long)=> {
   const endpointUrl = 'https://query.wikidata.org/sparql',
-  sparqlQuery = `SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instance_ofLabel WHERE {
-    SERVICE wikibase:around {
-      ?place wdt:P625 ?coordinate_location.
-      bd:serviceParam wikibase:center "Point(${long} ${lat})"^^geo:wktLiteral.
-      bd:serviceParam wikibase:radius "1".
-      bd:serviceParam wikibase:distance ?dist.
-    }
-    SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-    OPTIONAL { ?place wdt:P18 ?image. }
-    OPTIONAL { ?place wdt:P31 ?instance_of. }
-  }`,
+  sparqlQuery = 
+  `PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+
+SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instance_ofLabel WHERE {
+  SERVICE wikibase:around {
+    ?place wdt:P625 ?coordinate_location.
+    bd:serviceParam wikibase:center "Point(${long} ${lat})"^^geo:wktLiteral.
+    bd:serviceParam wikibase:radius "1".
+    bd:serviceParam wikibase:distance ?dist.
+  }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+  OPTIONAL { ?place wdt:P18 ?image. }
+  OPTIONAL { ?place wdt:P31 ?instance_of. }
+}
+ORDER BY ASC(?dist)
+LIMIT 100`,
   fullUrl = endpointUrl + '?query=' + encodeURIComponent(sparqlQuery),
   headers = { 'Accept': 'application/sparql-results+json' };
 
@@ -46,24 +51,18 @@ const places = [];
     // console.log(places);
 
   });
-  
+  // console.log('////////////////////////////////////////////////////////////////////////////////////////////////////////////////');
+  console.log(places);
   return places;
 });
 
 exports.getFullPage = (title, req, res)=> {
   title = title.split(' ').join('_');
-  scrapeIt(`https://en.wikipedia.org/wiki/${title}`, {
+  const url = `https://en.wikipedia.org/wiki/${title}`;
+  // console.log(url);
+  return scrapeIt(url, {
     title: 'h1',
     paragraph: 'p',
-    
-}).then(({ data, response }) => {
-    let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
-    results = results.replace(/[\r\n]/g, " ");
-    results = results.split('.');
-    console.log(data);
-    res.send(results)
-}).catch(function (error) {
-  console.log(error);
 });
 };
 
