@@ -33,7 +33,7 @@ const places = [];
   }
   hood.forEach(place =>{
     //filter out results that don't have a title
-    console.log(place);
+    // console.log(place);
     if(place.placeLabel.value[0] !== 'Q'&& place.placeLabel.value.length !== 9){
       places.push({ title: place.placeLabel.value, coord: place.location.value, dist: place.distance.value, dist: place.place.value })
     }
@@ -52,7 +52,7 @@ exports.getFullPage = (title, req, res)=> {
     let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
     results = results.replace(/[\r\n]/g, "");
     results = results.split('.');
-    console.log(results);
+    // console.log(results);
     res.send(results)
 }).catch(function (error) {
   console.log(error);
@@ -132,7 +132,7 @@ exports.getFullPageURI = (uri, req, res)=> {
     let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
     results = results.replace(/[\r\n]/g, "");
     results = results.split('.');
-    console.log(results);
+    // console.log(results);
     res.send(results)
 }).catch(function (error) {
   console.log(error);
