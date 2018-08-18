@@ -1,4 +1,6 @@
 const express = require('express');
+const axios = require('axios');
+
 const bodyParser = require('body-parser');
 const helpers = require('./helpers.js');
 const db = require('./database-mySql/index.js');
@@ -14,24 +16,30 @@ app.get('/', (req, res) => {
 
 
 }); 
-app.get('/broad', (req, res) => {
-    console.log('coord', req.query);
-    console.log( req.query.latitude, req.query.longitude) ;
-    helpers.getNeighborhood(29.92878, -90.08422).then(body => body.json()).then((json)=>{  
+
+// app.get('/broad', (req, res) => {
+    
+//     console.log('coord', req.query);
+//     console.log( req.query.latitude, req.query.longitude) ;
+//     helpers.getNeighborhood(req.query.latitude, req.query.longitude).then(body => body.json()).then((json)=>{  
         
-        let place = helpers.formatNeighborhoodData(json)[0].title;
-    helpers.getFullPage(`${place}, New Orleans`, req, res);
-    }).catch(error => { console.error(error)});
-    // console.log('neigh', helpers.getNeighborhood(29, -90, req, res));
-//    helpers.getFullPage('Garden District, New Orleans', req, res);
-});
+//         let place = helpers.formatNeighborhoodData(json)[0].title;
+//     helpers.getFullPage(`${place}, New Orleans`, req, res);
+//     }).catch(error => { console.error(error)});
+//     // console.log('neigh', helpers.getNeighborhood(29, -90, req, res));
+// //    helpers.getFullPage('Garden District, New Orleans', req, res);
+// });
 
 // helpers.searchByTitle('Christ Church Cathedral, New Orleans');
-app.get('/prenarrow', (req, res) => {
-    helpers.getPOINarrow(29.957203, -90.063067).then(stuff=> {
+app.get('/broad', (req, res) => {
+    
+    helpers.getPOINarrow(29.976196, -90.076359).then(stuff=> {
         // console.log(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
-        
-        res.send(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
+        results = stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, "");
+        results = results.replace(/<[^>]+>/g, ' ')
+        results = results.replace('  ', ' ').trim();
+        results = results.split('.');
+        res.send(results);
     })
     .catch(function (error) {
       console.log(error);
