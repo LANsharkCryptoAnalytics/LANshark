@@ -15,11 +15,10 @@ app.get('/', (req, res) => {
 
 });
 app.get('/broad', (req, res) => {
-    // res.send('LANSHARK');
-    
+    console.log('coord', req.query);
     helpers.getNeighborhood(29.92878, -90.08422).then(body => body.json()).then((json)=>{  
-        console.log('coord', req.query);
-        let place = helpers.formatNeighborhoodData(json)[2].title;
+        
+        let place = helpers.formatNeighborhoodData(json)[0].title;
     helpers.getFullPage(`${place}, New Orleans`, req, res);
     }).catch(error => { console.error(error)});
     // console.log('neigh', helpers.getNeighborhood(29, -90, req, res));
