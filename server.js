@@ -19,30 +19,40 @@ app.get('/', (req, res) => {
 
 app.get('/neighborhood', (req, res) => {
     
-    // console.log( req.query.latitude.slice(0,9), req.query.longitude.slice(0,9)) ;
+    // console.log( req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)) ;
     // old opSpark 29.945851,-90.068331
     // broadmoor 29.940796,-90.107823
     //29.9461047,-90.1055788
-    helpers.getNeighborhood(29.9461047, -90.1055788).then(body => body.json()).then((json)=>{  
+    //29.9193179,-90.0876095
+    //29.9557346,-90.0665082
+    //29.9628768,-90.0766454
+    //29.955278,-90.055278
+    //29.9756517,-90.0768586
+    //29.9666281,-90.0914401
+    //40.747214,-74.007082
+    helpers.getNeighborhood(40.747214, -74.007082).then(body => body.json()).then((json)=>{  
         let neighborhoods = helpers.formatNeighborhoodData(json).filter(n => {
             return n.type === "neighborhood";
         });
         const long = neighborhoods[0].coord.split(' ')[0];
         const lat = neighborhoods[0].coord.split(' ')[1];
-        console.log(neighborhoods[0].title);
-        helpers.getFullPage(`${neighborhoods[0].title}`).then(({ data, response }) => {
+        helpers.getFullPage(neighborhoods[0].title).then(({ data, response }) => {
             let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
             results = results.replace(/[\r\n]/g, " ");
             results = results.split('.');
-            if(results.length < 100){
+
+            if(data.paragraph.length > 100){
+                res.send(results);
+            }else{
                 helpers.getFullPage(`${neighborhoods[0].title},_New_Orleans`).then(({ data, response }) => {
                     let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
                     results = results.replace(/[\r\n]/g, " ");
                     results = results.split('.');
                     res.send(results);
-                })
-            }else{
-            res.send(results);
+                });
+                if(data.paragraph.length > 100){
+                    res.send(neighborhoods[0].title);
+                }
             }
         }).catch(function (error) {
           console.log(error);
@@ -66,7 +76,7 @@ app.get('/neighborhood', (req, res) => {
 
 // helpers.searchByTitle('Christ Church Cathedral, New Olocationrleans');
 app.get('/broad', (req, res) => {
-    // console.log( req.query.latitude.slice(0,9), req.query.longitude.slice(0,9)) ;
+    // console.log( req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)) ;
     helpers.getPOINarrow(29.976196, -90.076359).then(stuff=> {
         // console.log(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
         results = stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, "");
