@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
 });
 app.get('/broad', (req, res) => {
     console.log('coord', req.query);
+    console.log( req.query.latitude, req.query.longitude) ;
     helpers.getNeighborhood(29.92878, -90.08422).then(body => body.json()).then((json)=>{  
         
         let place = helpers.formatNeighborhoodData(json)[0].title;
