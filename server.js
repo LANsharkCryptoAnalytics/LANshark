@@ -17,23 +17,39 @@ app.get('/', (req, res) => {
 
 }); 
 
-// app.get('/broad', (req, res) => {
+app.get('/neighborhood', (req, res) => {
     
-//     console.log('coord', req.query);
-//     console.log( req.query.latitude, req.query.longitude) ;
-//     helpers.getNeighborhood(req.query.latitude, req.query.longitude).then(body => body.json()).then((json)=>{  
-        
-//         let place = helpers.formatNeighborhoodData(json)[0].title;
-//     helpers.getFullPage(`${place}, New Orleans`, req, res);
-//     }).catch(error => { console.error(error)});
-//     // console.log('neigh', helpers.getNeighborhood(29, -90, req, res));
-// //    helpers.getFullPage('Garden District, New Orleans', req, res);
-// });
-
-// helpers.searchByTitle('Christ Church Cathedral, New Orleans');
-app.get('/broad', (req, res) => {
     console.log( req.query.latitude.slice(0,9), req.query.longitude.slice(0,9)) ;
-    helpers.getPOINarrow(29.976196, -90.076359).then(stuff=> {
+    helpers.getNeighborhood(req.query.latitude.slice(0,9), req.query.longitude.slice(0,9)).then(body => body.json()).then((json)=>{  
+        let neighborhoods = helpers.formatNeighborhoodData(json).filter(n => {
+            return n.type === "neighborhood";
+        });
+        const long = neighborhoods[0].coord.split(' ')[0];
+        const lat = neighborhoods[0].coord.split(' ')[1];
+        console.log(neighborhoods[0].title);
+        helpers.getFullPage(`${neighborhoods[0].title}`, req, res);
+
+        // res.send(neighborhoods);
+    //     helpers.getPOINarrow(lat, long).then(stuff=> {
+    //         // console.log(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
+    //         results = stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, "");
+    //         results = results.replace(/<[^>]+>/g, ' ')
+    //         results = results.replace('  ', ' ').trim();
+    //         results = results.split('.');
+    //         res.send(results);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    //     // let place = helpers.formatNeighborhoodData(json)[0].title;
+    // }).catch(error => { console.error(error)});
+    // console.log('neigh', helpers.getNeighborhood(29, -90, req, res));
+});
+
+// helpers.searchByTitle('Christ Church Cathedral, New Olocationrleans');
+app.get('/broad', (req, res) => {
+    // console.log( req.query.latitude.slice(0,9), req.query.longitude.slice(0,9)) ;
+    helpers.getPOINarrow(req.query.latitude.slice(0,9), req.query.longitude.slice(0,9)).then(stuff=> {
         // console.log(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
         results = stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, "");
         results = results.replace(/<[^>]+>/g, ' ')

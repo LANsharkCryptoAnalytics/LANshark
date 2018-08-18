@@ -5,15 +5,17 @@ const db = require('./database-mySql/dbHelpers.js')
 
 exports.getNeighborhood = (lat, long)=> {
   const endpointUrl = 'https://query.wikidata.org/sparql',
-  sparqlQuery = `SELECT ?place ?location ?distance ?placeLabel WHERE {
-    SERVICE wikibase:around { 
-    ?place wdt:P625 ?location . 
-    bd:serviceParam wikibase:center "Point(${long} ${lat})"^^geo:wktLiteral .
-    bd:serviceParam wikibase:radius "1" . 
-    bd:serviceParam wikibase:distance ?distance .
-     } 
+  sparqlQuery = `SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instance_ofLabel WHERE {
+    SERVICE wikibase:around {
+      ?place wdt:P625 ?coordinate_location.
+      bd:serviceParam wikibase:center "Point(${long} ${lat})"^^geo:wktLiteral.
+      bd:serviceParam wikibase:radius "1".
+      bd:serviceParam wikibase:distance ?dist.
+    }
     SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-    } ORDER BY ?distance LIMIT 10`,
+    OPTIONAL { ?place wdt:P18 ?image. }
+    OPTIONAL { ?place wdt:P31 ?instance_of. }
+  }`,
   fullUrl = endpointUrl + '?query=' + encodeURIComponent(sparqlQuery),
   headers = { 'Accept': 'application/sparql-results+json' };
 
@@ -32,15 +34,22 @@ const places = [];
   }
   hood.forEach(place =>{
     //filter out results that don't have a title
-    // console.log(place);
+    let type = null;
+    let dist = null;
+    if(place.instance_ofLabel !== undefined){ type = place.instance_ofLabel.value; } 
+    if(place.dist !== undefined){ dist = place.dist.value; } 
     if(place.placeLabel.value[0] !== 'Q'&& place.placeLabel.value.length !== 9){
-      places.push({ title: place.placeLabel.value, coord: place.location.value, dist: place.distance.value, dist: place.place.value })
+      places.push({ title: place.placeLabel.value, coord: place.coordinate_location.value.slice(6, -1), dist: dist, type: type})
     }
+  
+    //, type: place.instance_ofLabel.value
     // console.log(places);
 
   });
+  
   return places;
 });
+
 exports.getFullPage = (title, req, res)=> {
   title = title.split(' ').join('_');
   scrapeIt(`https://en.wikipedia.org/wiki/${title}`, {
@@ -49,9 +58,9 @@ exports.getFullPage = (title, req, res)=> {
     
 }).then(({ data, response }) => {
     let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
-    results = results.replace(/[\r\n]/g, "");
+    results = results.replace(/[\r\n]/g, " ");
     results = results.split('.');
-    // console.log(results);
+    console.log(data);
     res.send(results)
 }).catch(function (error) {
   console.log(error);
