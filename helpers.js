@@ -2,8 +2,16 @@ const axios = require('axios');
 const fetch = require('node-fetch');
 const scrapeIt = require("scrape-it");
 const db = require('./database-mySql/dbHelpers.js')
+// axios.get(`http://localhost:8200/broad`, {
+//       params: {
 
-
+//         latitude: '29.957203',
+//         longitude: '-90.063067',
+//       }
+//     })
+//       .then(res => {
+        
+//       });
 exports.getNeighborhood = (lat, long)=> {
   const endpointUrl = 'https://query.wikidata.org/sparql',
   sparqlQuery = `SELECT ?place ?location ?distance ?placeLabel WHERE {
