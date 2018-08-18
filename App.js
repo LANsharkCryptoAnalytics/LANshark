@@ -244,6 +244,30 @@ export default class ViroSample extends Component {
   }
 
   _onRemoveText(){
+    // navigator.geolocation.getCurrentPosition(
+    //   (position) => {
+    //     this.setState({
+    //       latitude: position.coords.latitude,
+    //       longitude: position.coords.longitude,
+    //       error: null,
+    //     });
+    //     axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/narrow`, {
+    //       params: {
+    //         latitude: position.coords.latitude,
+    //       longitude: position.coords.longitude,
+    //       }
+    //     })
+    //     .then(res => {
+    //       const generalData = res.data;
+    //       this.setState({ generalData });
+    //     })
+    //     .catch((err) => this.state.error = err)
+
+    //   },
+    //   (error) => this.setState({ error: error.message }),
+    //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    // );
+    
     this.setState({
       viroAppProps:{...this.state.viroAppProps, displayObject: false},
       posComp: false,
@@ -277,18 +301,20 @@ var localStyles = StyleSheet.create({
 });
 ViroMaterials.createMaterials({
   frontMaterial: {
-    // bloomThreshold: 0.1255,
+    // bloomThreshold: 0.5,
     // specularTexture: textIMG,
-    // lightingModel: 'Constant'
+    // lightingModel: 'Constant',
     diffuseColor: '#FFFFFF',
   },
   backMaterial: {
-    lightingModel: "Lambert",
-    diffuseColor: '#FFFFFF',
+    // lightingModel: "Lambert",
+    bloomThreshold: .5,
+
+    diffuseColor: '#fcdc25',
   },
   sideMaterial: {
     // shininess: 2.0,
-    bloomThreshold: 1,
+    // bloomThreshold: 1,
     diffuseColor: '#333333',
   },
 });
