@@ -30,7 +30,7 @@ app.get('/neighborhood', (req, res) => {
     //29.9756517,-90.0768586
     //29.9666281,-90.0914401
     //40.747214,-74.007082
-    helpers.getNeighborhood(40.747214, -74.007082).then(body => body.json()).then((json)=>{  
+    helpers.getNeighborhood(req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)).then(body => body.json()).then((json)=>{  
         let neighborhoods = helpers.formatNeighborhoodData(json).filter(n => {
             return n.type === "neighborhood";
         });
@@ -77,7 +77,7 @@ app.get('/neighborhood', (req, res) => {
 // helpers.searchByTitle('Christ Church Cathedral, New Olocationrleans');
 app.get('/broad', (req, res) => {
     // console.log( req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)) ;
-    helpers.getPOINarrow(29.976196, -90.076359).then(stuff=> {
+    helpers.getPOINarrow(req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)).then(stuff=> {
         // console.log(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
         results = stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, "");
         results = results.replace(/<[^>]+>/g, ' ')
