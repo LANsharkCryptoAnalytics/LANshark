@@ -125,7 +125,7 @@ export default class ViroSample extends Component {
         <TouchableHighlight style={localStyles.buttons}
             onPress={() => this._onShowText3(0, dataCounter, 0)}           
             underlayColor={'#00000000'} >
-            <Image source={require("./js/res/MainBTTN.png")} />
+            <Image source={require("./js/res/left-gold-arrow.png")} />
           </TouchableHighlight>
           <TouchableHighlight style={localStyles.buttons}
             onPress={this._onDisplayDialog}
@@ -133,9 +133,9 @@ export default class ViroSample extends Component {
             <Image source={require("./js/res/MainBTTN.png")} />
           </TouchableHighlight>
           <TouchableHighlight style={localStyles.buttons}
-            onPress={() => this._onShowText3(0, dataCounter, 0)}           
+            onPress={() => this._onShowText2(0, dataCounter, 0)}           
             underlayColor={'#00000000'} >
-            <Image source={require("./js/res/MainBTTN.png")} />
+            <Image source={require("./js/res/right-gold-arrow.png")} />
           </TouchableHighlight>
         </View>
       </View>
@@ -192,8 +192,6 @@ export default class ViroSample extends Component {
     [
       // {text: 'Loc', onPress: () => this._onShowLoc(0, dataCounter, .148 )},
       {text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0 )},
-      {text: 'Next Fact', onPress: () => this._onShowText2(0, dataCounter, 0)}, 
-      {text: 'Previous Fact', onPress: () => this._onShowText3(0, dataCounter, 0 )},
       {text: 'New Location', onPress: () => this._onRemoveText()}, 
     ],
     );
