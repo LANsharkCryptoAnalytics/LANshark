@@ -20,7 +20,7 @@ app.get('/', (req, res) => {
 app.get('/neighborhood', (req, res) => {
     
     console.log( req.query.latitude.slice(0,9), req.query.longitude.slice(0,9)) ;
-    helpers.getNeighborhood(29.976196, -90.076359).then(body => body.json()).then((json)=>{  
+    helpers.getNeighborhood(req.query.latitude.slice(0,9), req.query.longitude.slice(0,9)).then(body => body.json()).then((json)=>{  
         let neighborhoods = helpers.formatNeighborhoodData(json).filter(n => {
             return n.type === "neighborhood";
         });
@@ -49,7 +49,7 @@ app.get('/neighborhood', (req, res) => {
 // helpers.searchByTitle('Christ Church Cathedral, New Olocationrleans');
 app.get('/broad', (req, res) => {
     // console.log( req.query.latitude.slice(0,9), req.query.longitude.slice(0,9)) ;
-    helpers.getPOINarrow(29.976196, -90.076359).then(stuff=> {
+    helpers.getPOINarrow(req.query.latitude.slice(0,9), req.query.longitude.slice(0,9)).then(stuff=> {
         // console.log(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
         results = stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, "");
         results = results.replace(/<[^>]+>/g, ' ')
