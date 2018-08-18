@@ -121,11 +121,21 @@ export default class ViroSample extends Component {
           </View>)
         }
 
-        <View style={{position: 'absolute',  left: 0, right: 0, bottom: 77, alignItems: 'center', justifyContent: 'space-between',}}>
+        <View style={{position: 'absolute',  left: 50, right: 0, bottom: 77, alignItems: 'center',flex: 1, flexDirection: 'row', justifyContent: 'space-between',}}>
+        <TouchableHighlight style={localStyles.buttons}
+            onPress={() => this._onShowText3(0, dataCounter, 0)}           
+            underlayColor={'#00000000'} >
+            <Image source={require("./js/res/left-gold-arrow.png")} />
+          </TouchableHighlight>
           <TouchableHighlight style={localStyles.buttons}
             onPress={this._onDisplayDialog}
             underlayColor={'#00000000'} >
             <Image source={require("./js/res/MainBTTN.png")} />
+          </TouchableHighlight>
+          <TouchableHighlight style={localStyles.buttons}
+            onPress={() => this._onShowText2(0, dataCounter, 0)}           
+            underlayColor={'#00000000'} >
+            <Image source={require("./js/res/right-gold-arrow.png")} />
           </TouchableHighlight>
         </View>
       </View>
@@ -182,8 +192,6 @@ export default class ViroSample extends Component {
     [
       // {text: 'Loc', onPress: () => this._onShowLoc(0, dataCounter, .148 )},
       {text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0 )},
-      {text: 'Next Fact', onPress: () => this._onShowText2(0, dataCounter, 0)}, 
-      {text: 'Previous Fact', onPress: () => this._onShowText3(0, dataCounter, 0 )},
       {text: 'New Location', onPress: () => this._onRemoveText()}, 
     ],
     );
@@ -281,10 +289,13 @@ var localStyles = StyleSheet.create({
   buttons : {
     height: 80,
     width: 80,
-    paddingTop:20,
-    paddingBottom:20,
-    marginTop: 10,
-    marginBottom: 10,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // paddingTop:20,
+    // paddingBottom:20,
+    // marginTop: 10,
+    // marginBottom: 10,
     backgroundColor:'#00000000',
     borderRadius: 10,
     borderWidth: 1,
@@ -293,21 +304,21 @@ var localStyles = StyleSheet.create({
 });
 ViroMaterials.createMaterials({
   frontMaterial: {
-    // bloomThreshold: 0.5,
+    // bloomThreshold: 0.1,
     // specularTexture: textIMG,
     // lightingModel: 'Constant',
     diffuseColor: '#FFFFFF',
   },
   backMaterial: {
     // lightingModel: "Lambert",
-    bloomThreshold: .5,
+    bloomThreshold: .6,
 
-    diffuseColor: '#fcdc25',
+    diffuseColor: '#3041c1',
   },
   sideMaterial: {
     // shininess: 2.0,
     // bloomThreshold: 1,
-    diffuseColor: '#333333',
+    diffuseColor: '#1226bc',
   },
 });
 //"Comic Sans MS", cursive, sans-serif
