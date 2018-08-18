@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
 
 // helpers.searchByTitle('Christ Church Cathedral, New Orleans');
 app.get('/broad', (req, res) => {
-    
+    console.log( req.query.latitude, req.query.longitude) ;
     helpers.getPOINarrow(29.976196, -90.076359).then(stuff=> {
         // console.log(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
         results = stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, "");
