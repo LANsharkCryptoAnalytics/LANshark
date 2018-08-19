@@ -73,15 +73,15 @@ const ARHist = createReactClass({
         dragType="FixedToWorld" key={this.props.arSceneNavigator.viroAppProps.displayObjectName}>
 
         <ViroSpotLight
-          innerAngle={5}
+          innerAngle={20}
           outerAngle={20}
           direction={[0,-1,0]}
           position={[0, 4, 0]}
           color="#ffffff"
-          castsShadow={false}
-          // shadowNearZ={.1}
-          // shadowFarZ={6}
-          // shadowOpacity={.9}
+          castsShadow={true}
+          shadowNearZ={.1}
+          shadowFarZ={6}
+          shadowOpacity={.9}
           ref={this._setSpotLightRef}/>
 
         <ViroText text={this.props.arSceneNavigator.viroAppProps.objectSource}
@@ -90,9 +90,8 @@ const ARHist = createReactClass({
           source={this.props.arSceneNavigator.viroAppProps.objectSource}
           materials={["frontMaterial", "backMaterial", "sideMaterial"]}
           scale={[.5, .5, .5]} 
-          outerStroke={{type:"Outline", width:8, color:'#FF0000'}}
           // position={[0, 0, -1.2]} 
-          position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -.689]}
+          position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -.745]}
           style={styles.helloWorldTextStyle} />
 
         {/* <Viro3DObject
@@ -276,8 +275,8 @@ var styles = StyleSheet.create({
   helloWorldTextStyle: {
     fontFamily: 'Roboto',
     // fontStyle: 'italic',
-    fontSize: 10,
-    fontWeight: '600',
+    fontSize: 9.5,
+    fontWeight: '400',
     // color: '#ffffff',
     textAlignVertical: 'center',
     textAlign: 'center',  
