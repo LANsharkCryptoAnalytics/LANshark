@@ -215,7 +215,7 @@ export default class ViroSample extends Component {
     'Choose an object',
     'Select an object to place in the world!',
     [
-      // {text: 'Loc', onPress: () => this._onShowLoc(0, dataCounter, .148 )},
+      {text: 'Loc', onPress: () => this._onShowLoc(0, dataCounter, 0 )},
       {text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0 )},
       {text: 'New Location', onPress: () => this._onRemoveText()}, 
     ],
@@ -272,6 +272,29 @@ export default class ViroSample extends Component {
   }
 
   _onRemoveText(){
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          error: null,
+        });
+        axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/broad`, {
+          params: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          }
+        })
+        .then(res => {
+          const narrowData = res.data;
+          this.setState({ narrowData });
+        })
+        .catch((err) => this.state.error = err)
+
+      },
+      (error) => this.setState({ error: error.message }),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
   
     this.setState({
       viroAppProps:{...this.state.viroAppProps, displayObject: false},
@@ -281,7 +304,6 @@ export default class ViroSample extends Component {
       
       this.setState({posComp: true})
   }, this.setState({ generalData: this.state.narrowData }))
-    
   }
 }
 
