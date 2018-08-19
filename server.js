@@ -49,6 +49,8 @@ app.get('/prenarrow', (req, res) => {
 app.get('/narrow', (req, res) => {
     helpers.getFullPageURI('http://ec2-34-238-240-14.compute-1.amazonaws.com/prenarrow', req, res);
 });
+
+
 app.get('/test', (req, res) => {
     
     helpers.getFullPage('Garden District, New Orleans', req, res);

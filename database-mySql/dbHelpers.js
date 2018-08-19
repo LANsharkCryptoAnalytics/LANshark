@@ -13,6 +13,15 @@ findUser = (userInfo) => {
 
 createUser = (userInfo, sequelize) => {
     console.log('create user fired userInfo:', userInfo);
+    // newUser = {
+    //     firstName: userInfo.firstName,
+    //     lastName: userInfo.lastName,
+    //     email: userInfo.email,
+    //     favorites: userInfo.favorites //maybe must be an array of strings-foreign keys
+    // }
+    // if (User.newUser.isNewRecord){
+    //     console.log('is new record ?');
+    // }
      return User.create({
         firstName: userInfo.firstName,
         lastName: userInfo.lastName,
@@ -24,10 +33,9 @@ createUser = (userInfo, sequelize) => {
 addToUserFavorites = ((user, favoritesToAdd) => {
     // not tested yet
     console.log(`add to favorites, userName: ${user.firstName} ${user}`);
-    // again untested
-    user.favorites = user.favorites + favoritesToAdd;
-    // user.update({ title: 'foooo', description: 'baaaaaar'}, {fields: ['title']}).then(() => {
-    // });
+    // again untested and probably broken
+    // user.favorites = user.favorites + favoritesToAdd;
+   
 });
 
 createNeighborhood = ((neighborHoodInfo)=>{
@@ -49,6 +57,7 @@ createPoi = ((poiInfo)=>{
         name: poiInfo.name,
         lat: poiInfo.lat,
         long: poiInfo.long,
+        address: poiInfo.address,
         fullPage: poiInfo.fullPage, 
       });
 });
