@@ -38,7 +38,7 @@ var isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
 //   ];
 var textIMG = require('./js/res/cracked-wallpaper-9.jpg');
 var textArray = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.')
-
+var textArray2 = 'cha cha changes, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.')
   var dataCounter = 0;
   var dataLength = textArray.length - 1;
 
@@ -53,7 +53,7 @@ export default class ViroSample extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/broad`, {
+        axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/neighborhood`, {
           params: {
             latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -79,11 +79,11 @@ export default class ViroSample extends Component {
         axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/broad`, {
           params: {
             latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
+            longitude: position.coords.longitude,
           }
         })
         .then(res => {
-          const generalData = res.data;
+          const narrowData = res.data;
           this.setState({ narrowData });
         })
         .catch((err) => this.state.error = err)
@@ -119,7 +119,8 @@ export default class ViroSample extends Component {
       error: null,
       generalData: textArray,
       posPhone: false,
-      narrowData: textArray,
+      narrowData: textArray2,
+      dataStore: null,
     }
   }
 
@@ -275,10 +276,11 @@ export default class ViroSample extends Component {
     this.setState({
       viroAppProps:{...this.state.viroAppProps, displayObject: false},
       posComp: false,
+      dataStore: this.state.generalData
     }, () => {
       
-      this.setState({posComp: true, generalData: this.state.narrowData})
-  })
+      this.setState({posComp: true})
+  }, this.setState({ generalData: this.state.narrowData }))
     
   }
 }
