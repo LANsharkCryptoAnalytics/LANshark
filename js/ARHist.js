@@ -84,7 +84,8 @@ const ARHist = createReactClass({
           shadowOpacity={.9}
           ref={this._setSpotLightRef}/>
 
-        <ViroText text={this.props.arSceneNavigator.viroAppProps.objectSource}
+        <ViroText 
+        text={this.props.arSceneNavigator.viroAppProps.objectSource}
           // animation={{name:'animateImage',run:true}}
           extrusionDepth={5.5}
           source={this.props.arSceneNavigator.viroAppProps.objectSource}

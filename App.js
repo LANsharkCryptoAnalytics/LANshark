@@ -53,7 +53,7 @@ export default class ViroSample extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/neighborhood`, {
+        axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/broad`, {
           params: {
             latitude: position.coords.latitude,
           longitude: position.coords.longitude,
@@ -69,6 +69,30 @@ export default class ViroSample extends Component {
       (error) => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          error: null,
+        });
+        axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/broad`, {
+          params: {
+            latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          }
+        })
+        .then(res => {
+          const generalData = res.data;
+          this.setState({ narrowData });
+        })
+        .catch((err) => this.state.error = err)
+
+      },
+      (error) => this.setState({ error: error.message }),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
+    
     
 
     // this._onShowObject = this._onShowObject.bind(this);
@@ -247,34 +271,14 @@ export default class ViroSample extends Component {
   }
 
   _onRemoveText(){
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        this.setState({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          error: null,
-        });
-        axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/broad`, {
-          params: {
-            latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          }
-        })
-        .then(res => {
-          const generalData = res.data;
-          this.setState({ generalData });
-        })
-        .catch((err) => this.state.error = err)
-
-      },
-      (error) => this.setState({ error: error.message }),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-    );
-    
+  
     this.setState({
       viroAppProps:{...this.state.viroAppProps, displayObject: false},
       posComp: false,
-    }, () => this.setState({posComp: true}))
+    }, () => {
+      
+      this.setState({posComp: true, generalData: this.state.narrowData})
+  })
     
   }
 }
