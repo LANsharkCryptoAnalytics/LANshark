@@ -148,8 +148,11 @@ exports.getFullPageURI = (uri, req, res)=> {
 /////////////////////////////////////////////
 //   USER RELATED FUNCTIONS                //
 /////////////////////////////////////////////
+
 exports.loginUser = (user, response, reject )=>{
   console.log('login user helper fired');
+  //give me data Senai 
+
   //the below works but this isn't really the proper place for it
   //possible shift to findAndUPdate or something similar
   // db.findUser(user.body).then((userData)=>{
@@ -203,6 +206,17 @@ exports.poiCreate = (poi, response, reject )=>{
   }).catch((reject)=>{
     console.log('reject');
   })
+}
+
+exports.vcsCreate = ( vcsInfo, respose, reject)=>{
+  console.log( 'vieux carre address entry create fired'); 
+  db.createVcs( vcsInfo).then( (response)=>{
+    console.log("vc data created", response);
+    res.end;
+  }).catch((reject)=>{
+    console.log("you\'re a reject");
+  });
+
 }
 
 
