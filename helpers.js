@@ -44,11 +44,11 @@ const places = [];
     if(place.instance_ofLabel !== undefined){ type = place.instance_ofLabel.value; } 
     if(place.dist !== undefined){ dist = place.dist.value; } 
     if(place.placeLabel.value[0] !== 'Q'&& place.placeLabel.value.length !== 9){
+      if(place.placeLabel){
       places.push({ title: place.placeLabel.value, coord: place.coordinate_location.value.slice(6, -1), dist: dist, type: type})
+      }
     }
   
-    //, type: place.instance_ofLabel.value
-    // console.log(places);
 
   });
   // console.log('////////////////////////////////////////////////////////////////////////////////////////////////////////////////');
@@ -94,7 +94,7 @@ fetch( fullUrl, { headers } ).then( body => body.json() ).then( json => {
 } );
 }
 exports.getPOINarrow = (lat, long)=> {
-    return axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&prop=coordinates%7Cpageimages%7Cpageterms%7Cextracts&exlimit=5&generator=geosearch&colimit=1&piprop=thumbnail&pithumbsize=144&pilimit=10&wbptterms=description&ggscoord=${lat}%7C${long}&ggsradius=500&ggslimit=1`);
+    return axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&prop=coordinates%7Cpageimages%7Cpageterms%7Cextracts&exlimit=5&generator=geosearch&colimit=1&piprop=thumbnail&pithumbsize=144&pilimit=10&wbptterms=description&ggscoord=${lat}%7C${long}&ggsradius=1500&ggslimit=1`);
 };
 
 //get the address at the current lat and long

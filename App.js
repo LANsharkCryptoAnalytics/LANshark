@@ -7,6 +7,7 @@ import {
   View,
   StyleSheet,
   TouchableHighlight,
+  TouchableOpacity,
   Image,
   Alert,
 } from 'react-native';
@@ -30,7 +31,6 @@ var InitialARScene = require('./js/ARHist');
 var isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
 
 
-// Array of 3d models that we use in this sample. This app switches between this these models.
 // var textArray = [
 //   'Testing how to',
 //   'make the changes',
@@ -38,7 +38,7 @@ var isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
 //   ];
 var textIMG = require('./js/res/cracked-wallpaper-9.jpg');
 var textArray = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.')
-
+var textArray2 = 'cha cha changes, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.')
   var dataCounter = 0;
   var dataLength = textArray.length - 1;
 
@@ -69,6 +69,30 @@ export default class ViroSample extends Component {
       (error) => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.setState({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+          error: null,
+        });
+        axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/broad`, {
+          params: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          }
+        })
+        .then(res => {
+          const narrowData = res.data;
+          this.setState({ narrowData });
+        })
+        .catch((err) => this.state.error = err)
+
+      },
+      (error) => this.setState({ error: error.message }),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+    );
+    
     
 
     // this._onShowObject = this._onShowObject.bind(this);
@@ -95,19 +119,29 @@ export default class ViroSample extends Component {
       error: null,
       generalData: textArray,
       posPhone: false,
-      narrowData: textArray,
+      narrowData: textArray2,
+      dataStore: null,
     }
   }
 
   render() {
     return (
       <View style={localStyles.outer} >
-      {renderIf(this.state.posPhone,
+      {renderIf(!this.state.isLoggedIn,
+        <View>
+      
+        <TouchableOpacity style={localStyles.button2} onPress={()=> this.setState({isLoggedIn: true})}>
+          <Image source={require("./js/GoogleBTTN.png")}/>
+        </TouchableOpacity>
+        </View>
+      )}
+
+      {renderIf(this.state.posPhone && this.state.isLoggedIn,
         <View>
         <Text>Sorry your phone sucks! heres some data for you anyway{this.state.generalData[dataCounter]}</Text>
       </View>
       )}
-       {renderIf(this.state.posComp && !this.state.posPhone,
+       {renderIf(this.state.posComp && !this.state.posPhone && this.state.isLoggedIn,
         <ViroARSceneNavigator style={localStyles.arView} apiKey={viroKey}
           initialScene={{scene:InitialARScene, passProps:{displayObject:this.state.displayObject}}} ref="scene" viroAppProps={this.state.viroAppProps}
         />
@@ -115,12 +149,12 @@ export default class ViroSample extends Component {
 
         {this._renderTrackingText()}
 
-        {renderIf(this.state.isLoading,
+        {renderIf(this.state.isLoading && this.state.isLoggedIn,
           <View style={{position:'absolute', left:0, right:0, top:0, bottom:0,  justifyContent:'center'}}>
             <ActivityIndicator size='large' animating={this.state.isLoading} color='#ffffff'/>
           </View>)
         }
-
+        {renderIf(this.state.isLoggedIn,
         <View style={{position: 'absolute',  left: 50, right: 0, bottom: 77, alignItems: 'center',flex: 1, flexDirection: 'row', justifyContent: 'space-between',}}>
         <TouchableHighlight style={localStyles.buttons}
             onPress={() => this._onShowText3(0, dataCounter, 0)}           
@@ -138,6 +172,7 @@ export default class ViroSample extends Component {
             <Image source={require("./js/res/right-gold-arrow.png")} />
           </TouchableHighlight>
         </View>
+        )}
       </View>
     );
   }
@@ -190,7 +225,7 @@ export default class ViroSample extends Component {
     'Choose an object',
     'Select an object to place in the world!',
     [
-      // {text: 'Loc', onPress: () => this._onShowLoc(0, dataCounter, .148 )},
+      {text: 'Loc', onPress: () => this._onShowLoc(0, dataCounter, 0 )},
       {text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0 )},
       {text: 'New Location', onPress: () => this._onRemoveText()}, 
     ],
@@ -214,6 +249,7 @@ export default class ViroSample extends Component {
   //   });
   // }
   _onShowText(objIndex, objUniqueName, yOffset){
+    dataCounter = 0;
     this.setState({
       displayText: true,
         // text: 'hello',
@@ -223,7 +259,7 @@ export default class ViroSample extends Component {
   _onShowLoc(objIndex, objUniqueName, yOffset){
     this.setState({
       displayText: true,
-        // text: 'hello',
+
         viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:String(this.state.latitude) + String(this.state.longitude)},
     });
   }
@@ -257,12 +293,12 @@ export default class ViroSample extends Component {
         axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/broad`, {
           params: {
             latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
+            longitude: position.coords.longitude,
           }
         })
         .then(res => {
-          const generalData = res.data;
-          this.setState({ generalData });
+          const narrowData = res.data;
+          this.setState({ narrowData });
         })
         .catch((err) => this.state.error = err)
 
@@ -270,12 +306,15 @@ export default class ViroSample extends Component {
       (error) => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
-    
+  
     this.setState({
       viroAppProps:{...this.state.viroAppProps, displayObject: false},
       posComp: false,
-    }, () => this.setState({posComp: true}))
-    
+      dataStore: this.state.generalData
+    }, () => {
+      
+      this.setState({posComp: true})
+  }, this.setState({ generalData: this.state.narrowData }))
   }
 }
 
@@ -285,6 +324,11 @@ var localStyles = StyleSheet.create({
   },
   arView: {
     flex:1,
+  },
+  button2:{
+      paddingTop: 50,
+      alignItems: 'center',
+      padding: 10
   },
   buttons : {
     height: 80,
@@ -334,3 +378,4 @@ var styles = StyleSheet.create({
 });
 
 module.exports = ViroSample
+
