@@ -60,41 +60,70 @@ app.get('/neighborhood', (req, res) => {
     }else{
         res.send(helpers.formatNeighborhoodData(json)[i].title);
     }
-
-    //     helpers.getPOINarrow(lat, long).then(stuff=> {
-    //         // console.log(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
-    //         results = stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, "");
-    //         results = results.replace(/<[^>]+>/g, ' ')
-    //         results = results.replace('  ', ' ').trim();
-    //         results = results.split('.');
-    //         res.send(results);
         })
         .catch(function (error) {
           console.log(error);
         });
-    //     // let place = helpers.formatNeighborhoodData(json)[0].title;
-    // }).catch(error => { console.error(error)});
-    // console.log('neigh', helpers.getNeighborhood(29, -90, req, res));
+
 });
 
-// helpers.searchByTitle('Christ Church Cathedral, New Olocationrleans');
 app.get('/broad', (req, res) => {
+    let i = req.query.i ? req.query.i : 0;
+    helpers.getNeighborhood(29.9666281,-90.0914401).then(body => body.json()).then((json)=>{  
+        let neighborhoods = helpers.formatNeighborhoodData(json).filter(n => {
+            return n.type === "neighborhood";
+        });
+        
+        if(i >0){ neighborhoods = helpers.formatNeighborhoodData(json); }
+        if(i > neighborhoods.length){ i = i - neighborhoods.length; }
+        if(neighborhoods.length){
+            if(neighborhoods[i].coord){
+        const long = neighborhoods[i].coord.split(' ')[0];
+        const lat = neighborhoods[i].coord.split(' ')[1];
+            }
+        
+        helpers.getFullPage(`${neighborhoods[i].title},_New_Orleans`).then(({ data, response }) => {
+            let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
+            results = results.replace(/[\r\n]/g, " ");
+            results = results.split('.');
+
+            if(data.paragraph.length > 100){
+                res.send(results);
+            }else{
+                helpers.getFullPage(neighborhoods[i].title).then(({ data, response }) => {
+                    let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
+                    results = results.replace(/[\r\n]/g, " ");
+                    results = results.split('.');
+                    res.send(results);
+                });
+                if(data.paragraph.length > 100){
+                    res.send(neighborhoods[i].title);
+                }
+            }
+        }).catch(function (error) {
+          console.log(error);
+        });
+    }else{
+        res.send(helpers.formatNeighborhoodData(json)[i].title);
+    }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     // console.log( req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)) ;
-    helpers.getPOINarrow( req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)).then(stuff=> {
-        console.log(stuff.data.query);
-        results = stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, "");
-        results = results.replace(/<[^>]+>/g, ' ')
-        results = results.replace('  ', ' ').trim();
-        results = results.split('.');
-        res.send(results);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+//     helpers.getPOINarrow( req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)).then(stuff=> {
+//         console.log(stuff.data.query);
+//         results = stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, "");
+//         results = results.replace(/<[^>]+>/g, ' ')
+//         results = results.replace('  ', ' ').trim();
+//         results = results.split('.');
+//         res.send(results);
+//     })
+//     .catch(function (error) {
+//       console.log(error);
+//     });
 });
-app.get('/narrow', (req, res) => {
-    helpers.getFullPageURI('http://ec2-34-238-240-14.compute-1.amazonaws.com/prenarrow', req, res);
-});
+
 app.get('/test', (req, res) => {
     
     helpers.getFullPage('Garden District, New Orleans', req, res);
