@@ -7,6 +7,7 @@ import {
   View,
   StyleSheet,
   TouchableHighlight,
+  TouchableOpacity,
   Image,
   Alert,
 } from 'react-native';
@@ -126,12 +127,21 @@ export default class ViroSample extends Component {
   render() {
     return (
       <View style={localStyles.outer} >
-      {renderIf(this.state.posPhone,
+      {renderIf(!this.state.isLoggedIn,
+        <View>
+      
+        <TouchableOpacity style={localStyles.button2} onPress={()=> this.setState({isLoggedIn: true})}>
+          <Image source={require("./js/GoogleBTTN.png")}/>
+        </TouchableOpacity>
+        </View>
+      )}
+
+      {renderIf(this.state.posPhone && this.state.isLoggedIn,
         <View>
         <Text>Sorry your phone sucks! heres some data for you anyway{this.state.generalData[dataCounter]}</Text>
       </View>
       )}
-       {renderIf(this.state.posComp && !this.state.posPhone,
+       {renderIf(this.state.posComp && !this.state.posPhone && this.state.isLoggedIn,
         <ViroARSceneNavigator style={localStyles.arView} apiKey={viroKey}
           initialScene={{scene:InitialARScene, passProps:{displayObject:this.state.displayObject}}} ref="scene" viroAppProps={this.state.viroAppProps}
         />
@@ -139,12 +149,12 @@ export default class ViroSample extends Component {
 
         {this._renderTrackingText()}
 
-        {renderIf(this.state.isLoading,
+        {renderIf(this.state.isLoading && this.state.isLoggedIn,
           <View style={{position:'absolute', left:0, right:0, top:0, bottom:0,  justifyContent:'center'}}>
             <ActivityIndicator size='large' animating={this.state.isLoading} color='#ffffff'/>
           </View>)
         }
-
+        {renderIf(this.state.isLoggedIn,
         <View style={{position: 'absolute',  left: 50, right: 0, bottom: 77, alignItems: 'center',flex: 1, flexDirection: 'row', justifyContent: 'space-between',}}>
         <TouchableHighlight style={localStyles.buttons}
             onPress={() => this._onShowText3(0, dataCounter, 0)}           
@@ -162,6 +172,7 @@ export default class ViroSample extends Component {
             <Image source={require("./js/res/right-gold-arrow.png")} />
           </TouchableHighlight>
         </View>
+        )}
       </View>
     );
   }
@@ -238,6 +249,7 @@ export default class ViroSample extends Component {
   //   });
   // }
   _onShowText(objIndex, objUniqueName, yOffset){
+    dataCounter = 0;
     this.setState({
       displayText: true,
         // text: 'hello',
@@ -247,7 +259,7 @@ export default class ViroSample extends Component {
   _onShowLoc(objIndex, objUniqueName, yOffset){
     this.setState({
       displayText: true,
-        // text: 'hello',
+
         viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:String(this.state.latitude) + String(this.state.longitude)},
     });
   }
@@ -312,6 +324,11 @@ var localStyles = StyleSheet.create({
   },
   arView: {
     flex:1,
+  },
+  button2:{
+      paddingTop: 50,
+      alignItems: 'center',
+      padding: 10
   },
   buttons : {
     height: 80,
