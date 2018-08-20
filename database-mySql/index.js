@@ -182,9 +182,54 @@ User.sync({
     });
   });
 
+  const Vcs = sequelize.define('vcs', {
+    id: {
+      type: Sequelize.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      unique: true,
+    },
+    lotNumber: {
+      type: Sequelize.INTEGER
+    },
+    name: {
+      type: Sequelize.STRING
+    },
+    lat: {
+      type: Sequelize.STRING//may need to be int
+    },
+    long: {
+      type: Sequelize.STRING//may need to be int
+    },
+    address: {
+      type: Sequelize.STRING
+    },
+  
+    infoText: {
+      type: Sequelize.STRING,
+      // unique: true
+    },
+  });
+
+  Poi.sync({
+    force: false //true drops database
+  }).then(() => {
+    return Poi.create({
+      name: 'French Market',
+      lotNumber: 12345,
+      lat: 30,
+      long: 90,
+      address: "Magazine St.",
+      infoText: "some stuff goes here!!!", 
+    });
+  });
+
+  
 
 module.exports = {
   sequelize,
   User, 
-  Poi
+  Poi,
+  Vcs,
+  Neighborhood
 };

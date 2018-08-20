@@ -62,12 +62,21 @@ createPoi = ((poiInfo)=>{
       });
 });
 
+createVcs = ( (vcsINfo)=>{
+    console.log('createVcs fired');
+    return Vcs.create({
+    //load up vcs model here
+
+    })
+} )
+
 
 module.exports = {
     createUser,
     findUser,
     addToUserFavorites,
     createNeighborhood,
-    createPoi
+    createPoi,
+    createVcs
 
 };
