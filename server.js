@@ -21,20 +21,22 @@ app.get('/neighborhood', (req, res) => {
     //29.9666281,-90.0914401
     //40.747214,-74.007082
     //29.928714, -90.001709
-    //req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)
-    helpers.getNeighborhood(29.928714, -90.001709).then(body => body.json()).then((json)=>{  
+    //req.query.latitude.slice(0,9), req.query.longitude.slice(0,10), req.query.i
+    let i = req.query.i ? req.query.i : 0;
+    helpers.getNeighborhood(req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)).then(body => body.json()).then((json)=>{  
         let neighborhoods = helpers.formatNeighborhoodData(json).filter(n => {
             return n.type === "neighborhood";
         });
+        
+        if(i >0){ neighborhoods = helpers.formatNeighborhoodData(json); }
+        if(i > neighborhoods.length){ i = i - neighborhoods.length; }
         if(neighborhoods.length){
-            if(neighborhoods[0].coord){
-        const long = neighborhoods[0].coord.split(' ')[0];
-        const lat = neighborhoods[0].coord.split(' ')[1];
+            if(neighborhoods[i].coord){
+        const long = neighborhoods[i].coord.split(' ')[0];
+        const lat = neighborhoods[i].coord.split(' ')[1];
             }
-        }else{
-            res.send(helpers.formatNeighborhoodData(json)[0].title);
-        }
-        helpers.getFullPage(neighborhoods[0].title).then(({ data, response }) => {
+        
+        helpers.getFullPage(`${neighborhoods[i].title},_New_Orleans`).then(({ data, response }) => {
             let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
             results = results.replace(/[\r\n]/g, " ");
             results = results.split('.');
@@ -42,19 +44,22 @@ app.get('/neighborhood', (req, res) => {
             if(data.paragraph.length > 100){
                 res.send(results);
             }else{
-                helpers.getFullPage(`${neighborhoods[0].title},_New_Orleans`).then(({ data, response }) => {
+                helpers.getFullPage(neighborhoods[i].title).then(({ data, response }) => {
                     let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
                     results = results.replace(/[\r\n]/g, " ");
                     results = results.split('.');
                     res.send(results);
                 });
                 if(data.paragraph.length > 100){
-                    res.send(neighborhoods[0].title);
+                    res.send(neighborhoods[i].title);
                 }
             }
         }).catch(function (error) {
           console.log(error);
         });
+    }else{
+        res.send(helpers.formatNeighborhoodData(json)[i].title);
+    }
 
     //     helpers.getPOINarrow(lat, long).then(stuff=> {
     //         // console.log(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract);
