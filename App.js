@@ -349,9 +349,9 @@ ViroMaterials.createMaterials({
   },
   backMaterial: {
     // lightingModel: "Lambert",
-    bloomThreshold: .6,
+    bloomThreshold: 1,
 
-    diffuseColor: '#3041c1',
+    diffuseColor: '#e5d606',
   },
   sideMaterial: {
     // shininess: 2.0,
