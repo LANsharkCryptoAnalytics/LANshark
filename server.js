@@ -6,7 +6,6 @@ const helpers = require('./helpers.js');
 const db = require('./database-mySql/index.js');
 require('dotenv').config();
 const app = express(); // (2)
-console.log(process.env.MAPQUESTKEY, 'MAPS');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -23,7 +22,7 @@ app.get('/neighborhood', (req, res) => {
     //40.747214,-74.007082
     //29.928714, -90.001709
     //req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)
-    helpers.getNeighborhood(req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)).then(body => body.json()).then((json)=>{  
+    helpers.getNeighborhood(29.928714, -90.001709).then(body => body.json()).then((json)=>{  
         let neighborhoods = helpers.formatNeighborhoodData(json).filter(n => {
             return n.type === "neighborhood";
         });

@@ -1,5 +1,7 @@
+jest.useFakeTimers();
 const helpers = require('../helpers');
 const server = require('../server');
+
 const places= [
   {"title":"Garden District","coord":"Point(-90.0847 29.9278)","dist":"0.118"},
   {"title":"Washington Theatre","coord":"Point(-90.082542 29.9263218)","dist":"0.318"},

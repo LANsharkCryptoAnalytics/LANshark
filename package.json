@@ -42,7 +42,9 @@
     "collectCoverageFrom": [
       "**/*.{js,jsx}",
       "!**/node_modules/**",
-      "!**/vendor/**"
+      "!**/js/**",
+      "!**index.js**",
+      "!**App.js**"
     ],
     "preset": "react-native"
   }
