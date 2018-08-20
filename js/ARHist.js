@@ -90,9 +90,9 @@ const ARHist = createReactClass({
           extrusionDepth={5.5}
           source={this.props.arSceneNavigator.viroAppProps.objectSource}
           materials={["frontMaterial", "backMaterial", "sideMaterial"]}
-          scale={[.3, .3, .3]} 
+          scale={[.5, .5, .5]} 
           // position={[0, 0, -1.2]} 
-          position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -.345]}
+          position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -.745]}
           style={styles.helloWorldTextStyle} />
 
         {/* <Viro3DObject
@@ -276,7 +276,7 @@ var styles = StyleSheet.create({
   helloWorldTextStyle: {
     fontFamily: 'Roboto',
     // fontStyle: 'italic',
-    fontSize: 6,
+    fontSize: 9.5,
     fontWeight: '400',
     // color: '#ffffff',
     textAlignVertical: 'center',
