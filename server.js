@@ -130,10 +130,6 @@ app.get('/broad', (req, res) => {
     
 });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 9c8222699613a5f11a7703be7dc6c96652c06b67
 app.get('/test', (req, res) => {
     
     helpers.getFullPage('Garden District, New Orleans', req, res);
