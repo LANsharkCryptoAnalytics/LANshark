@@ -30,7 +30,6 @@ var InitialARScene = require('./js/ARHist');
 var isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
 
 
-// Array of 3d models that we use in this sample. This app switches between this these models.
 // var textArray = [
 //   'Testing how to',
 //   'make the changes',
@@ -362,3 +361,4 @@ var styles = StyleSheet.create({
 });
 
 module.exports = ViroSample
+
