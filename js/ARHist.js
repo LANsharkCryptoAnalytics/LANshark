@@ -87,7 +87,7 @@ const ARHist = createReactClass({
         <ViroText 
         text={this.props.arSceneNavigator.viroAppProps.objectSource}
           // animation={{name:'animateImage',run:true}}
-          // extrusionDepth={5.5}
+          extrusionDepth={5.5}
           source={this.props.arSceneNavigator.viroAppProps.objectSource}
           materials={["frontMaterial", "backMaterial", "sideMaterial"]}
           scale={[.5, .5, .5]} 

@@ -339,7 +339,7 @@ var localStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ffffff00',
   }
-}); 
+});
 ViroMaterials.createMaterials({
   frontMaterial: {
     // bloomThreshold: 0.1,
@@ -351,14 +351,14 @@ ViroMaterials.createMaterials({
   },
   backMaterial: {
     // lightingModel: "Lambert",
-    bloomThreshold: .5,
-    diffuseColor: '#f9de2a',
+    bloomThreshold: .2,
+    diffuseColor: '#333333',
   },
   sideMaterial: {
     // lightingModel: "Lambert",
     // shininess: 2.0,
     // bloomThreshold: .5,
-    diffuseColor: '#000000',
+    diffuseColor: '#333333',
   },
 });
 //"Comic Sans MS", cursive, sans-serif
