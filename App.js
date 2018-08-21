@@ -339,7 +339,7 @@ var localStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ffffff00',
   }
-});
+}); 
 ViroMaterials.createMaterials({
   frontMaterial: {
     // bloomThreshold: 0.1,
