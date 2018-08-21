@@ -3,6 +3,37 @@ const fetch = require('node-fetch');
 const scrapeIt = require("scrape-it");
 const db = require('./database-mySql/dbHelpers.js')
 
+exports.formatResults = (results)=>{
+  results = results.replace(/\[(.*?)\]/g, " ");
+  results = results.replace(/[\r\n]/g, " ");
+   results = results.trim();
+  results = results.split('—');
+  results = results.join(' ');
+  results = results.split(' ');
+  results.forEach((result, i) =>{
+    result = result.trim();
+    result = result.split(' ');
+        
+    result = result.join('');
+    result = result.split('');
+    if(result.length < 7 &&  result[0]){
+      result.forEach(char =>{
+        if(char === char.toUpperCase()){
+          results.splice(i, 1, result.join('').replace(/\./g,''));
+          }
+      });
+    }
+  })
+  results = results.join(' ');
+  results = results.split(/[,.;]+/)
+  results.forEach((result, i) =>{
+    results[i] = result.trim();
+    results[i] = results[i].replace(/  /g," ");
+    results[i] = results[i].replace(/  /g," ");
+  });
+  return results;
+  // return results.split(/[,.;]+/);
+};
 exports.getNeighborhood = (lat, long)=> {
   const endpointUrl = 'https://query.wikidata.org/sparql',
   sparqlQuery = 
@@ -102,7 +133,7 @@ exports.getPOINarrow = (lat, long)=> {
 // https://www.mapquestapi.com/geocoding/v1/reverse?key=KEY&location=29.92878%2C-90.08422&outFormat=json&thumbMaps=false
 exports.getAddress = (lat, long, req, res)=> {
   axios.get(`https://www.mapquestapi.com/geocoding/v1/reverse?key=${process.env.MAPQUESTKEY}&location=${lat}%2C${long}&outFormat=json&thumbMaps=false`).then(function (res) {
-      console.log(res.data.results[0].locations[0].street);
+      // console.log(res.data.results[0].locations[0].street);
       return res.data.results[0].locations[0].street;
     })
     .catch(function (error) {
@@ -122,7 +153,7 @@ exports.getAddress = (lat, long, req, res)=> {
       exports.searchByTitle = (title, req, res)=> {
         title = title.split(' ').join('+');
         axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${title}`).then(function (res) {
-          console.log(res.data.query);
+          // console.log(res.data.query);
           return res.data.query;
         })
         .catch(function (error) {
