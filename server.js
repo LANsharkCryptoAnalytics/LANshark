@@ -67,7 +67,7 @@ app.get('/neighborhood', (req, res) => {
 
 app.get('/broad', (req, res) => {
     let i = req.query.i ? req.query.i : 0;
-    helpers.getNeighborhood(29.975651,-90.076858).then(body => body.json()).then((json)=>{  
+    helpers.getNeighborhood(req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)).then(body => body.json()).then((json)=>{  
         let neighborhoods = helpers.formatNeighborhoodData(json).filter(n => {
             return n.type === "neighborhood";
         });
