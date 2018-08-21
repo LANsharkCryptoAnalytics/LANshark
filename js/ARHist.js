@@ -94,6 +94,7 @@ const ARHist = createReactClass({
           // position={[0, 0, -1.2]} 
           position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -.745]}
           style={styles.helloWorldTextStyle} />
+          
 
         {/* <Viro3DObject
           position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, 0]}
@@ -277,7 +278,7 @@ var styles = StyleSheet.create({
     fontFamily: 'Roboto',
     // fontStyle: 'italic',
     fontSize: 9.5,
-    fontWeight: '400',
+    fontWeight: '700',
     // color: '#ffffff',
     textAlignVertical: 'center',
     textAlign: 'center',  

@@ -342,21 +342,22 @@ var localStyles = StyleSheet.create({
 });
 ViroMaterials.createMaterials({
   frontMaterial: {
-    bloomThreshold: 0.1,
+    // bloomThreshold: 0.1,
+    shininess: 2.0,
     // specularTexture: textIMG,
-    // lightingModel: 'Constant',
-    diffuseColor: '#FFFFFF',
+    blendMode: 'None',
+    // lightingModel: 'Lambert',
+    diffuseColor: '#FFFFFF'
   },
   backMaterial: {
     // lightingModel: "Lambert",
     bloomThreshold: 1,
-
-    diffuseColor: '#e5d606',
+    diffuseColor: '#000000',
   },
   sideMaterial: {
     // lightingModel: "Lambert",
     // shininess: 2.0,
-    bloomThreshold: .5,
+    // bloomThreshold: .5,
     diffuseColor: '#000000',
   },
 });
