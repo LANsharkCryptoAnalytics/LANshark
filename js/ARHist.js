@@ -42,7 +42,7 @@ const ARHist = createReactClass({
 
   render: function() {
     return (
-      <ViroARScene ref="arscene" onTrackingInitialized={this._onTrackInit}>
+      <ViroARScene ref="arscene" onTrackingUpdated={this._onTrackInit}>
           <ViroAmbientLight color="#ffffff" intensity={200}/>
           {this._getModel()}
       </ViroARScene>
