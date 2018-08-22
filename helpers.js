@@ -151,7 +151,7 @@ exports.getFullPageURI = (uri, req, res)=> {
 
 exports.loginUser = (user, response, reject )=>{
   console.log('login user helper fired');
-  //give me data Senai 
+  //TODO:give me data Senai !
 
   //the below works but this isn't really the proper place for it
   //possible shift to findAndUPdate or something similar
@@ -188,6 +188,8 @@ exports.addToFavorites = (favorite, response, reject )=>{
 /////////////////////////////////////////////////////////
 // END OF USER RELATED FUNCTIONS                       //
 /////////////////////////////////////////////////////////
+
+
 exports.neighborhoodCreate = (neighborhood, response, reject )=>{
   console.log('neighborhoodCreate');
   db.createNeighborhood(neighborhood).then( (response)=>{

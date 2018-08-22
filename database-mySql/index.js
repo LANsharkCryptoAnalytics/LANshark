@@ -29,7 +29,6 @@ const User = sequelize.define('user', {
   email: {
     type: Sequelize.STRING,
     unique: true
-
   },
   favorites: Sequelize.STRING //needs to be an array of strings really
   //foreign keys etc.
@@ -43,14 +42,14 @@ const Neighborhood = sequelize.define('neighborHood', {
     unique: true
   },
   name: {
-    type: Sequelize.STRING
-  //  unique: true
+    type: Sequelize.STRING,
+    unique: true
   },
   lat: {
-    type: Sequelize.STRING//may need to be int
+    type: Sequelize.STRING //may need to be int
   },
   long: {
-    type: Sequelize.STRING//may need to be int
+    type: Sequelize.STRING //may need to be int
   },
   fullPage: {
     type: Sequelize.STRING,
@@ -58,7 +57,7 @@ const Neighborhood = sequelize.define('neighborHood', {
   pois: {
     type: Sequelize.STRING
   }
-  
+
 });
 const Poi = sequelize.define('poi', {
   id: {
@@ -71,10 +70,10 @@ const Poi = sequelize.define('poi', {
     type: Sequelize.STRING
   },
   lat: {
-    type: Sequelize.STRING//may need to be int
+    type: Sequelize.STRING //may need to be int
   },
   long: {
-    type: Sequelize.STRING//may need to be int
+    type: Sequelize.STRING //may need to be int
   },
   address: {
     type: Sequelize.STRING
@@ -120,8 +119,8 @@ User.sync({
     });
   });
 
-  
-  Neighborhood.sync({
+
+Neighborhood.sync({
     force: false //true drops database
   }).then(() => {
     // return Neighborhood.create({
@@ -141,7 +140,7 @@ User.sync({
     //   pois:  'wewewewe'
     // });
     return;
-    
+
   })
   .then(() => {
     Neighborhood.findAll().then((neighborhoods) => {
@@ -153,7 +152,7 @@ User.sync({
     });
   });
 
-  Poi.sync({
+Poi.sync({
     force: false //true drops database
   }).then(() => {
     return Poi.create({
@@ -161,16 +160,15 @@ User.sync({
       lat: 30,
       long: 90,
       address: "Magazine St.",
-      fullPage: "some stuff goes here!!!", 
+      fullPage: "some stuff goes here!!!",
     });
   }).then(() => {
     return Poi.create({
       name: 'Cafe Abysinnia',
       lat: 30,
       long: 90,
-      fullPage: "This food is incredible", 
+      fullPage: "This food is incredible",
     });
-    
   })
   .then(() => {
     Poi.findAll().then((pois) => {
@@ -182,53 +180,60 @@ User.sync({
     });
   });
 
-  const Vcs = sequelize.define('vcs', {
-    id: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-      unique: true,
-    },
-    lotNumber: {
-      type: Sequelize.INTEGER
-    },
-    name: {
-      type: Sequelize.STRING
-    },
-    lat: {
-      type: Sequelize.STRING//may need to be int
-    },
-    long: {
-      type: Sequelize.STRING//may need to be int
-    },
-    address: {
-      type: Sequelize.STRING
-    },
-  
-    infoText: {
-      type: Sequelize.STRING,
-      // unique: true
-    },
-  });
+const Vcs = sequelize.define('vcs', {
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    unique: true,
+  },
+  lotNumber: {
+    type: Sequelize.INTEGER,
+    unique: true
 
-  Poi.sync({
-    force: false //true drops database
-  }).then(() => {
-    return Poi.create({
-      name: 'French Market',
-      lotNumber: 12345,
-      lat: 30,
-      long: 90,
-      address: "Magazine St.",
-      infoText: "some stuff goes here!!!", 
-    });
-  });
+  },
+  name: {
+    type: Sequelize.STRING
+  },
+  lat: {
+    type: Sequelize.STRING //may need to be int
+  },
+  long: {
+    type: Sequelize.STRING //may need to be int
+  },
+  address: {
+    type: Sequelize.STRING
+  },
+  infoText: {
+    type: Sequelize.STRING,
+  },
+  ownerShip: {
+    type: Sequelize.STRING
+  }
+});
 
-  
+Poi.sync({
+  force: false //true drops database
+}).then(() => {
+  return Poi.create({
+    name: 'French Market',
+    lotNumber: 12345,
+    lat: 30,
+    long: 90,
+    address: "Magazine St.",
+    infoText: "some stuff goes here!!!",
+  });
+});
+
+
+User.belongsToMany(Poi, {
+  through: 'UserPoi'
+});
+
 
 module.exports = {
   sequelize,
-  User, 
+  User,
   Poi,
   Vcs,
   Neighborhood
