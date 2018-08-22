@@ -6,6 +6,7 @@ const db = require('./database-mySql/dbHelpers.js')
 exports.formatResults = (results)=>{
   results = results.replace(/\[(.*?)\]/g, " ");
   results = results.replace(/[\r\n]/g, " ");
+  results = results.replace(/<[^>]+>/g, ' ');
   results = results.trim();
   results = results.split('—');
   results = results.join(' ');
