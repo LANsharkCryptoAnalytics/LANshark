@@ -1,18 +1,47 @@
 const express = require('express');
 const axios = require('axios');
-
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20');
 const bodyParser = require('body-parser');
 const helpers = require('./helpers.js');
 const db = require('./database-mySql/index.js');
 require('dotenv').config();
+const config = require('./config');
 const app = express(); // (2)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 
+const transformGoogleProfile = (profile) => ({
+    name: profile.displayName,
+    avatar: profile.image.url,
+});
+  
+passport.use(new GoogleStrategy(config.google, async function f (accessToken, refreshToken, profile, done) { return done(null, transformGoogleProfile(profile._json)) }
+));
+passport.serializeUser((user, done) => done(null, user));
+
+// Deserialize user from the sessions
+passport.deserializeUser((user, done) => done(null, user));
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile'] }));
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/auth/google' }),
+  (req, res) => {
+    console.log('in server => passport-google');
+    res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user))
+  });
+
+app.get('/isLoggedIn', (req, res) => {
+    console.log('sever hit');
+    res.send('server hit');
+})
+
 app.get('/', (req, res) => {
     res.send('LANSHARK');
-}); 
+});
 
 app.get('/neighborhood', (req, res) => {
     //29.975651,-90.076858
