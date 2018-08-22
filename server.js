@@ -67,7 +67,7 @@ app.get('/neighborhood', (req, res) => {
 
 app.get('/broad', (req, res) => {
     let i = req.query.i ? req.query.i : 0;
-    helpers.getNeighborhood(29.9754668,-90.0774691).then(body => body.json()).then((json)=>{  
+    helpers.getNeighborhood(req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)).then(body => body.json()).then((json)=>{  
         let neighborhoods = helpers.formatNeighborhoodData(json);
         //filter out the neighborhood results
         if(i >0){ neighborhoods = helpers.formatNeighborhoodData(json).filter(n => {
@@ -92,7 +92,7 @@ app.get('/broad', (req, res) => {
                     
                 
                 if(data.paragraph.length < 100){
-                    helpers.getPOINarrow(29.9754668,-90.0774691).then(stuff=> {
+                    helpers.getPOINarrow(req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)).then(stuff=> {
                         // console.log(stuff.data.query);
                        let results = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ""));
                         // results = results.replace(/<[^>]+>/g, ' ')
