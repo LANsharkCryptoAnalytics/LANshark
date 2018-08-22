@@ -3,10 +3,42 @@ const fetch = require('node-fetch');
 const scrapeIt = require("scrape-it");
 const db = require('./database-mySql/dbHelpers.js')
 
-exports.getNeighborhood = (lat, long)=> {
+exports.formatResults = (results) => {
+  results = results.replace(/\[(.*?)\]/g, " ");
+  results = results.replace(/[\r\n]/g, " ");
+  results = results.replace(/<[^>]+>/g, ' ');
+  results = results.trim();
+  results = results.split('—');
+  results = results.join(' ');
+  results = results.split(' ');
+  results.forEach((result, i) => {
+    result = result.trim();
+    result = result.split(' ');
+
+    result = result.join('');
+    result = result.split('');
+    if (result.length < 7 && result[0]) {
+      result.forEach(char => {
+        if (char === char.toUpperCase()) {
+          results.splice(i, 1, result.join('').replace(/\./g, ''));
+        }
+      });
+    }
+  })
+  results = results.join(' ');
+  results = results.split(/[,.;]+/)
+  results.forEach((result, i) => {
+    results[i] = result.trim();
+    results[i] = results[i].replace(/  /g, " ");
+    results[i] = results[i].replace(/  /g, " ");
+  });
+  return results;
+  // return results.split(/[,.;]+/);
+};
+exports.getNeighborhood = (lat, long) => {
   const endpointUrl = 'https://query.wikidata.org/sparql',
-  sparqlQuery = 
-  `PREFIX geo: <http://www.opengis.net/ont/geosparql#>
+    sparqlQuery =
+    `PREFIX geo: <http://www.opengis.net/ont/geosparql#>
 
 SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instance_ofLabel WHERE {
   SERVICE wikibase:around {
@@ -21,34 +53,52 @@ SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instan
 }
 ORDER BY ASC(?dist)
 LIMIT 100`,
-  fullUrl = endpointUrl + '?query=' + encodeURIComponent(sparqlQuery),
-  headers = { 'Accept': 'application/sparql-results+json' };
+    fullUrl = endpointUrl + '?query=' + encodeURIComponent(sparqlQuery),
+    headers = {
+      'Accept': 'application/sparql-results+json'
+    };
 
-return fetch( fullUrl, { headers });
+  return fetch(fullUrl, {
+    headers
+  });
 }
-exports.formatNeighborhoodData = ( json => {
+exports.formatNeighborhoodData = (json => {
   const hood = [];
-const place = {};
-const places = [];
-  const { head: { vars }, results } = json;
-  for ( const result of results.bindings ) {
+  const place = {};
+  const places = [];
+  const {
+    head: {
+      vars
+    },
+    results
+  } = json;
+  for (const result of results.bindings) {
     hood.push(result)
-      for ( const variable of vars ) {
-          place[variable] = result[variable];
-      }
+    for (const variable of vars) {
+      place[variable] = result[variable];
+    }
   }
-  hood.forEach(place =>{
+  hood.forEach(place => {
     //filter out results that don't have a title
     let type = null;
     let dist = null;
-    if(place.instance_ofLabel !== undefined){ type = place.instance_ofLabel.value; } 
-    if(place.dist !== undefined){ dist = place.dist.value; } 
-    if(place.placeLabel.value[0] !== 'Q'&& place.placeLabel.value.length !== 9){
-      if(place.placeLabel){
-      places.push({ title: place.placeLabel.value, coord: place.coordinate_location.value.slice(6, -1), dist: dist, type: type})
+    if (place.instance_ofLabel !== undefined) {
+      type = place.instance_ofLabel.value;
+    }
+    if (place.dist !== undefined) {
+      dist = place.dist.value;
+    }
+    if (place.placeLabel.value[0] !== 'Q' && place.placeLabel.value.length !== 9) {
+      if (place.placeLabel) {
+        places.push({
+          title: place.placeLabel.value,
+          coord: place.coordinate_location.value.slice(6, -1),
+          dist: dist,
+          type: type
+        })
       }
     }
-  
+
 
   });
   // console.log('////////////////////////////////////////////////////////////////////////////////////////////////////////////////');
@@ -56,19 +106,19 @@ const places = [];
   return places;
 });
 
-exports.getFullPage = (title, req, res)=> {
+exports.getFullPage = (title, req, res) => {
   title = title.split(' ').join('_');
   const url = `https://en.wikipedia.org/wiki/${title}`;
   // console.log(url);
   return scrapeIt(url, {
     title: 'h1',
     paragraph: 'p',
-});
+  });
 };
 
-exports.getNeighborhoodMap = (lat, long, req, res)=> {
+exports.getNeighborhoodMap = (lat, long, req, res) => {
   const endpointUrl = 'https://query.wikidata.org/sparql',
-      sparqlQuery = `#defaultView:Map{"layer":"?instance_ofLabel"}
+    sparqlQuery = `#defaultView:Map{"layer":"?instance_ofLabel"}
 SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instance_ofLabel WHERE {
   SERVICE wikibase:around {
     ?place wdt:P625 ?coordinate_location.
@@ -80,76 +130,88 @@ SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instan
   OPTIONAL { ?place wdt:P18 ?image. }
   OPTIONAL { ?place wdt:P31 ?instance_of. }
 }`,
-      fullUrl = endpointUrl + '?query=' + encodeURIComponent( sparqlQuery ),
-      headers = { 'Accept': 'application/sparql-results+json' };
+    fullUrl = endpointUrl + '?query=' + encodeURIComponent(sparqlQuery),
+    headers = {
+      'Accept': 'application/sparql-results+json'
+    };
 
-fetch( fullUrl, { headers } ).then( body => body.json() ).then( json => {
-    const { head: { vars }, results } = json;
-    for ( const result of results.bindings ) {
-        for ( const variable of vars ) {
-            console.log( '%s: %o', variable, result[variable] );
-        }
-        console.log( '---' );
+  fetch(fullUrl, {
+    headers
+  }).then(body => body.json()).then(json => {
+    const {
+      head: {
+        vars
+      },
+      results
+    } = json;
+    for (const result of results.bindings) {
+      for (const variable of vars) {
+        console.log('%s: %o', variable, result[variable]);
+      }
+      console.log('---');
     }
-} );
+  });
 }
-exports.getPOINarrow = (lat, long)=> {
-    return axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&prop=coordinates%7Cpageimages%7Cpageterms%7Cextracts&exlimit=5&generator=geosearch&colimit=1&piprop=thumbnail&pithumbsize=144&pilimit=10&wbptterms=description&ggscoord=${lat}%7C${long}&ggsradius=1500&ggslimit=1`);
+exports.getPOINarrow = (lat, long) => {
+  return axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&prop=coordinates%7Cpageimages%7Cpageterms%7Cextracts&exlimit=5&generator=geosearch&colimit=1&piprop=thumbnail&pithumbsize=144&pilimit=10&wbptterms=description&ggscoord=${lat}%7C${long}&ggsradius=1500&ggslimit=1`);
 };
 
 //get the address at the current lat and long
 // MapQuet API key is required
 // https://www.mapquestapi.com/geocoding/v1/reverse?key=KEY&location=29.92878%2C-90.08422&outFormat=json&thumbMaps=false
-exports.getAddress = (lat, long, req, res)=> {
+exports.getAddress = (lat, long, req, res) => {
   axios.get(`https://www.mapquestapi.com/geocoding/v1/reverse?key=${process.env.MAPQUESTKEY}&location=${lat}%2C${long}&outFormat=json&thumbMaps=false`).then(function (res) {
-      console.log(res.data.results[0].locations[0].street);
+      // console.log(res.data.results[0].locations[0].street);
       return res.data.results[0].locations[0].street;
     })
     .catch(function (error) {
       console.log(error);
     });
-    // https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=1403+Washington+Ave
-  }
-    exports.searchByAddress = (add, req, res)=> {
-      add = add.split(' ').join('+');
-      axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${add}+New+Orleans`).then(function (res) {
-        res.data.query;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    }
-      exports.searchByTitle = (title, req, res)=> {
-        title = title.split(' ').join('+');
-        axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${title}`).then(function (res) {
-          console.log(res.data.query);
-          return res.data.query;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });   
+  // https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=1403+Washington+Ave
+}
+exports.searchByAddress = (add, req, res) => {
+  add = add.split(' ').join('+');
+  axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${add}+New+Orleans`).then(function (res) {
+      res.data.query;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
+exports.searchByTitle = (title, req, res) => {
+  title = title.split(' ').join('+');
+  axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${title}`).then(function (res) {
+      // console.log(res.data.query);
+      return res.data.query;
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
 }
-exports.getFullPageURI = (uri, req, res)=> {
+exports.getFullPageURI = (uri, req, res) => {
   scrapeIt(uri, {
     title: 'h1',
     paragraph: 'p',
-    
-}).then(({ data, response }) => {
+
+  }).then(({
+    data,
+    response
+  }) => {
     let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
     results = results.replace(/[\r\n]/g, "");
     results = results.split('.');
     // console.log(results);
     res.send(results)
-}).catch(function (error) {
-  console.log(error);
-});
+  }).catch(function (error) {
+    console.log(error);
+  });
 };
 /////////////////////////////////////////////
 //   USER RELATED FUNCTIONS                //
 /////////////////////////////////////////////
 
-exports.loginUser = (user, response, reject )=>{
+exports.loginUser = (user, response, reject) => {
   console.log('login user helper fired');
   //TODO:give me data Senai !
 
@@ -158,29 +220,31 @@ exports.loginUser = (user, response, reject )=>{
   // db.findUser(user.body).then((userData)=>{
   //   console.log(`response ${userData}`);
   //   console.log('do whatever we need to do here to log them in');
-    
+
   // }).catch( (err)=> { console.log(err)});
 }
 
-exports.createUser = (user, response, reject )=>{
+exports.createUser = (user, response, reject) => {
   console.log('create user helper fired');
-  
+
   db.createUser = (userInfo, sequelize) => {
-    (user.body).then((userData)=>{
-    console.log(`response ${userData}`);
-    console.log('do whatever we need to do here to log them in');
-    res.end
-  }).catch( (err)=> { console.log(err)});
-}
+    (user.body).then((userData) => {
+      console.log(`response ${userData}`);
+      console.log('do whatever we need to do here to log them in');
+      res.end
+    }).catch((err) => {
+      console.log(err)
+    });
+  }
 }
 
 //addToUserFavorites
-exports.addToFavorites = (favorite, response, reject )=>{
+exports.addToFavorites = (favorite, response, reject) => {
   console.log('addToUserFavorites');
-  db.addToUserFavorites(favorite).then( (response)=>{
+  db.addToUserFavorites(favorite).then((response) => {
     console.log('favorite added', response);
     res.end;
-  }).catch((reject)=>{
+  }).catch((reject) => {
     console.log('reject');
   })
 }
@@ -190,35 +254,33 @@ exports.addToFavorites = (favorite, response, reject )=>{
 /////////////////////////////////////////////////////////
 
 
-exports.neighborhoodCreate = (neighborhood, response, reject )=>{
+exports.neighborhoodCreate = (neighborhood, response, reject) => {
   console.log('neighborhoodCreate');
-  db.createNeighborhood(neighborhood).then( (response)=>{
+  db.createNeighborhood(neighborhood).then((response) => {
     console.log('hood created', response);
     res.end;
-  }).catch((reject)=>{
+  }).catch((reject) => {
     console.log('reject');
   })
 }
 
-exports.poiCreate = (poi, response, reject )=>{
+exports.poiCreate = (poi, response, reject) => {
   console.log('poiCreate');
-  db.createPoi(poi).then( (response)=>{
+  db.createPoi(poi).then((response) => {
     console.log('poi created', response);
     res.end;
-  }).catch((reject)=>{
+  }).catch((reject) => {
     console.log('reject');
   })
 }
 
-exports.vcsCreate = ( vcsInfo, respose, reject)=>{
-  console.log( 'vieux carre address entry create fired'); 
-  db.createVcs( vcsInfo).then( (response)=>{
+exports.vcsCreate = (vcsInfo, respose, reject) => {
+  console.log('vieux carre address entry create fired');
+  db.createVcs(vcsInfo).then((response) => {
     console.log("vc data created", response);
     res.end;
-  }).catch((reject)=>{
+  }).catch((reject) => {
     console.log("you\'re a reject");
   });
 
 }
-
-
