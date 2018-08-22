@@ -125,26 +125,20 @@ app.get('/broad', (req, res) => {
     
 });
 
-app.get('/test', (req, res) => {
-    
-    // helpers.getFullPage('Garden District, New Orleans', req, res);
-    helpers.getNeighborhoodMap(29.975651,-90.076858,req,res);
-});
-
-
 app.post('/login', (req, res) =>{
     console.log("server post login endpoint");
-    helpers.loginUser(req, res);
-    // helpers.createUser(req, res).then(()=>{}).catch( ()=>{ console.log('failed to create');});
-});
+    // helpers.loginUser(req, res);
+    helpers.createUser(req, res);
+})
 
-app.patch('/addToFavorites', (req, res)=>{
+app.post('/addToFavorites', (req, res)=>{
     console.log('add to user favorites');
-    helper.addToFavorites(req, res);
+    // helper.addToFavorites(req, res);
 })
 
 // helpers.searchByTitle('Garden District, New Orleans');
 // helpers.getFullPage('Garden District, New Orleans');
+
 app.listen( 8200, function() { 
     console.log('App listening on port 8200');
 });
