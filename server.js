@@ -1,4 +1,5 @@
 const express = require('express');
+//TODO: axios isn't used on this page
 const axios = require('axios');
 
 const bodyParser = require('body-parser');
@@ -10,7 +11,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: false
 }));
-
 
 app.get('/', (req, res) => {
     res.send('LANSHARK');
@@ -33,7 +33,8 @@ app.get('/neighborhood', (req, res) => {
     let long = req.query.longitude.slice(0, 10);
 
     helpers.getNeighborhood(lat, long)
-        .then(body => body.json()).then((json) => {
+        .then(body => body.json())
+        .then((json) => {
             let neighborhoods = helpers.formatNeighborhoodData(json).filter(n => {
                 return n.type === "neighborhood";
             });
@@ -79,75 +80,62 @@ app.get('/neighborhood', (req, res) => {
 
 //Endpoint for retrieving broad based information about the users current location
 app.get('/broad', (req, res) => {
-    //TODO: please add comments for readability and to facilitate testing
+    //TODO: please add addittional comments for readability and to facilitate testing
+    // and so that we can all understand the algorithm 
     //req.query.i represents what?
     let i = req.query.i ? req.query.i : 0;
     const lat = req.query.latitude.slice(0, 9);
     const long = req.query.longitude.slice(0, 10);
 
     helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
-            let neighborhoods = helpers.formatNeighborhoodData(json);
-            //filter out the neighborhood results
-            if (i > 0) {
-                //what does this function do, produce a list of neighborhoods as json?
-                //or return a list of non neighborhoods?
-                neighborhoods = helpers.formatNeighborhoodData(json).filter(n => {
-                    return n.type !== "neighborhood";
-                });
+        let neighborhoods = helpers.formatNeighborhoodData(json);
+        //filter out the neighborhood results?
+        if (i > 0) {
+            //what does this function do, produce a list of neighborhoods as json?
+            //or return a list of non neighborhoods?
+            neighborhoods = helpers.formatNeighborhoodData(json).filter(n => {
+                return n.type !== "neighborhood";
+            });
+        }
+        //TODO: What is i?
+        if (i > neighborhoods.length) {
+            i = i - neighborhoods.length;
+        }
+        //if neighborhoods have length ?
+        if (neighborhoods.length) {
+            if (neighborhoods[i].coord) {
+                //TODO: I don't believe these variable are being used anywhere
+                const long = neighborhoods[i].coord.split(' ')[0];
+                const lat = neighborhoods[i].coord.split(' ')[1];
             }
-
-            if (i > neighborhoods.length) {
-                i = i - neighborhoods.length;
-            }
-            //if neighborhoods have length ?
-            if (neighborhoods.length) {
-                if (neighborhoods[i].coord) {
-                    //TODO: I don't believe these variable are being used anywhere
-                    const long = neighborhoods[i].coord.split(' ')[0];
-                    const lat = neighborhoods[i].coord.split(' ')[1];
-                }
-                //get the full page for the current neighborhood
-                helpers.getFullPage(`${neighborhoods[i].title},_New_Orleans`)
-                    .then(({ data, response}) => {
-                        //Format the results using formatREsults function
-                        let results = helpers.formatResults(data.paragraph);
-                        //if paragraph is greater than 100 chars send results?
-                        if (data.paragraph.length > 100) {
-                            res.send(results);
-                        } else {
-                            //else get full page data for ?neighborhoods i?
-                            helpers.getFullPage(neighborhoods[i].title)
-                                .then(({data,response }) => {
-                                    let results = helpers.formatResults(data.paragraph);
-                                    //if paragraph is less than 100 chars get narrow info???
-                                    if (data.paragraph.length < 100) {
-                                        helpers.getPOINarrow(lat, long)
-                                            .then(stuff => {
-                                                let results = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ""));
-                                                res.send(results);
-                                            })
-                                            .catch(function (error) {
-                                                console.log(error);
-                                            });
-                                    } else {
+            //get the full page for the current neighborhood
+            helpers.getFullPage(`${neighborhoods[i].title},_New_Orleans`)
+                .then(({ data, response}) => {
+                    //Format the results using formatREsults function
+                    let results = helpers.formatResults(data.paragraph);
+                    //if paragraph is greater than 100 chars send results?
+                    if (data.paragraph.length > 100) {
+                        res.send(results);
+                    } else {
+                        //else get full page data for ?neighborhoods i?
+                        helpers.getFullPage(neighborhoods[i].title)
+                            .then(({data,response }) => {
+                                let results = helpers.formatResults(data.paragraph);
+                                //if paragraph is less than 100 chars get narrow info???
+                                if (data.paragraph.length < 100) {
+                                    helpers.getPOINarrow(lat, long)
+                                    .then(stuff => {
+                                        let results = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ""));
                                         res.send(results);
-                                    }
-                                })
-                                .catch(function (error) {
-                                    console.log(error);
-                                });
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            } else {
-                res.send(helpers.formatNeighborhoodData(json)[i].title);
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+                                    }).catch(function (error) { console.log(error); });
+                                } else { res.send(results);}
+                            }).catch(function (error) { console.log(error);});
+                    }
+                }).catch(function (error) { console.log(error);});
+        } else {
+            res.send(helpers.formatNeighborhoodData(json)[i].title);
+        }
+    }).catch(function (error) { console.log(error) });
 });
 
 // endpoint to facilitate user login and auth

@@ -40,19 +40,19 @@ exports.getNeighborhood = (lat, long) => {
     sparqlQuery =
     `PREFIX geo: <http://www.opengis.net/ont/geosparql#>
 
-SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instance_ofLabel WHERE {
-  SERVICE wikibase:around {
-    ?place wdt:P625 ?coordinate_location.
-    bd:serviceParam wikibase:center "Point(${long} ${lat})"^^geo:wktLiteral.
-    bd:serviceParam wikibase:radius "1".
-    bd:serviceParam wikibase:distance ?dist.
-  }
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-  OPTIONAL { ?place wdt:P18 ?image. }
-  OPTIONAL { ?place wdt:P31 ?instance_of. }
-}
-ORDER BY ASC(?dist)
-LIMIT 100`,
+    SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instance_ofLabel WHERE {
+      SERVICE wikibase:around {
+        ?place wdt:P625 ?coordinate_location.
+        bd:serviceParam wikibase:center "Point(${long} ${lat})"^^geo:wktLiteral.
+        bd:serviceParam wikibase:radius "1".
+        bd:serviceParam wikibase:distance ?dist.
+      }
+      SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+      OPTIONAL { ?place wdt:P18 ?image. }
+      OPTIONAL { ?place wdt:P31 ?instance_of. }
+    }
+    ORDER BY ASC(?dist)
+    LIMIT 100`,
     fullUrl = endpointUrl + '?query=' + encodeURIComponent(sparqlQuery),
     headers = {
       'Accept': 'application/sparql-results+json'
@@ -98,14 +98,12 @@ exports.formatNeighborhoodData = (json => {
         })
       }
     }
-
-
   });
-  // console.log('////////////////////////////////////////////////////////////////////////////////////////////////////////////////');
   console.log(places);
   return places;
 });
 
+//Retrieves the full wikipedia page for a given title
 exports.getFullPage = (title, req, res) => {
   title = title.split(' ').join('_');
   const url = `https://en.wikipedia.org/wiki/${title}`;
@@ -116,20 +114,21 @@ exports.getFullPage = (title, req, res) => {
   });
 };
 
+//Retrieves the neighboorhood map using a wikipedeai Sparql query
 exports.getNeighborhoodMap = (lat, long, req, res) => {
   const endpointUrl = 'https://query.wikidata.org/sparql',
     sparqlQuery = `#defaultView:Map{"layer":"?instance_ofLabel"}
-SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instance_ofLabel WHERE {
-  SERVICE wikibase:around {
-    ?place wdt:P625 ?coordinate_location.
-    bd:serviceParam wikibase:center "Point(${long} ${lat})"^^geo:wktLiteral .
-    bd:serviceParam wikibase:radius "1".
-    bd:serviceParam wikibase:distance ?dist.
-  }
-  SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
-  OPTIONAL { ?place wdt:P18 ?image. }
-  OPTIONAL { ?place wdt:P31 ?instance_of. }
-}`,
+      SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instance_ofLabel WHERE {
+        SERVICE wikibase:around {
+          ?place wdt:P625 ?coordinate_location.
+          bd:serviceParam wikibase:center "Point(${long} ${lat})"^^geo:wktLiteral .
+          bd:serviceParam wikibase:radius "1".
+          bd:serviceParam wikibase:distance ?dist.
+        }
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
+        OPTIONAL { ?place wdt:P18 ?image. }
+        OPTIONAL { ?place wdt:P31 ?instance_of. }
+      }`,
     fullUrl = endpointUrl + '?query=' + encodeURIComponent(sparqlQuery),
     headers = {
       'Accept': 'application/sparql-results+json'
@@ -152,6 +151,7 @@ SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instan
     }
   });
 }
+
 exports.getPOINarrow = (lat, long) => {
   return axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&prop=coordinates%7Cpageimages%7Cpageterms%7Cextracts&exlimit=5&generator=geosearch&colimit=1&piprop=thumbnail&pithumbsize=144&pilimit=10&wbptterms=description&ggscoord=${lat}%7C${long}&ggsradius=1500&ggslimit=1`);
 };
@@ -169,6 +169,7 @@ exports.getAddress = (lat, long, req, res) => {
     });
   // https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=1403+Washington+Ave
 }
+
 exports.searchByAddress = (add, req, res) => {
   add = add.split(' ').join('+');
   axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${add}+New+Orleans`).then(function (res) {
@@ -178,6 +179,7 @@ exports.searchByAddress = (add, req, res) => {
       console.log(error);
     });
 }
+
 exports.searchByTitle = (title, req, res) => {
   title = title.split(' ').join('+');
   axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${title}`).then(function (res) {
@@ -189,6 +191,7 @@ exports.searchByTitle = (title, req, res) => {
     });
 
 }
+
 exports.getFullPageURI = (uri, req, res) => {
   scrapeIt(uri, {
     title: 'h1',

@@ -1,7 +1,7 @@
 const { User, Poi, Neighborhood,  sequelize } = require('./index.js');
 
 
-
+//finds a user
 findUser = (userInfo) => {
     console.log('-----------------------------');
     console.log("findUser, user sought: ", userInfo)
@@ -11,7 +11,7 @@ findUser = (userInfo) => {
     })
 }
 
-//TODO:function to create a new user
+//TODO:function to create a new user- 
 //needs to be built out and tested
 createUser = (userInfo, sequelize) => {
     console.log('create user fired userInfo:', userInfo);
