@@ -125,8 +125,8 @@ export default class ViroSample extends Component {
       trackingInitialized: false,
       isLoading: false,
       posComp: true,
-      latitude: 29.9761692,
-      longitude: -90.076438,
+      latitude: '29.97616921',
+      longitude: '-90.0764381',
       error: null,
       generalData: textArray,
       posPhone: false,
@@ -147,7 +147,9 @@ export default class ViroSample extends Component {
       isLoggedIn: true,
     });
   }
-
+  changeView = () => {
+    this.setState({mapView: false});
+  }
   _handleARSupported() {
 
   }
@@ -357,8 +359,7 @@ export default class ViroSample extends Component {
             <Signup logIn={this.logIn} />
           </View>)}
         {renderIf(this.state.mapView,
-          <Map />
-        )}
+          <Map changeView={this.changeView} lat={this.state.latitude} long={this.state.longitude}/>)}
         {renderIf(this.state.posPhone && this.state.isLoggedIn && !this.state.mapView,
           <View>
             <Text>
@@ -481,7 +482,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     textAlign: 'center',
   },
-  
+
 });
 
 module.exports = ViroSample;

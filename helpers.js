@@ -26,9 +26,10 @@ exports.formatResults = (results) => {
     }
   })
   results = results.join(' ');
-  results = results.split(/[,.;]+/)
+  results = results.split(/[,.;]+/);
   results.forEach((result, i) => {
     results[i] = result.trim();
+    //removing double and triple spacing
     results[i] = results[i].replace(/  /g, " ");
     results[i] = results[i].replace(/  /g, " ");
   });
