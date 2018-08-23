@@ -357,7 +357,7 @@ export default class ViroSample extends Component {
             <Signup logIn={this.logIn} />
           </View>)}
         {renderIf(this.state.mapView,
-          <Map/>
+          <Map />
         )}
         {renderIf(this.state.posPhone && this.state.isLoggedIn && !this.state.mapView,
           <View>
