@@ -1,3 +1,7 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/jsx-filename-extension */
+
+
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -281,7 +285,7 @@ export default class ViroSample extends Component {
   }
 
   _onShowText2(objIndex, objUniqueName, yOffset) {
-    dataCounter++;
+    dataCounter += 1;
     if (dataCounter > dataLength) {
       dataCounter = 0;
     }
@@ -320,7 +324,7 @@ export default class ViroSample extends Component {
           },
         })
           .then((res) => {
-            locationProgression++;
+            locationProgression += 1;
             const narrowData = res.data;
             this.setState({ narrowData });
           })
@@ -450,7 +454,7 @@ ViroMaterials.createMaterials({
   },
 });
 // "Comic Sans MS", cursive, sans-serif
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   login: {
     flex: 1,
     justifyContent: 'center',
