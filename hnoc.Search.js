@@ -28,15 +28,15 @@ const hnocSearch = (searchString) => {
     console.log(innerText);
 
     // save all the pages content
-    const html = await page.content();
+    // const html = await page.content();
 
     // save the file to the file system
-    fs.writeFile('./hnoc2.html', html, (err) => {
-      if (err) {
-        return console.log(err);
-      }
-      console.log('The file was saved!');
-    });
+    // fs.writeFile('./hnoc2.html', html, (err) => {
+    //   if (err) {
+    //     return console.log(err);
+    //   }
+    //   console.log('The file was saved!');
+    // });
 
     // let scape = html.split("Vieux Carré Commission Evaluation:")
     // const $ = cheerio.load(html);
