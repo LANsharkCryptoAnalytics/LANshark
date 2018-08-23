@@ -109,6 +109,7 @@ export default class ViroSample extends Component {
     this._onShowText3 = this._onShowText3.bind(this);
     this._onRemoveText = this._onRemoveText.bind(this);
     this._onDisplayDialog2 = this._onDisplayDialog2.bind(this);
+    this._onAttemptHNOC = this._onAttemptHNOC.bind(this);
     // this._renderTrackingText = this._renderTrackingText.bind(this);
     this._onTrackingInit = this._onTrackingInit.bind(this);
     this._onDisplayDialog = this._onDisplayDialog.bind(this);
@@ -282,6 +283,19 @@ export default class ViroSample extends Component {
 
       // viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:String(this.state.latitude) + String(this.state.longitude)},
     });
+  }
+
+  _onAttemptHNOC() {
+    axios.post('http://ec2-34-238-240-14.compute-1.amazonaws.com/', {
+      latitude: this.state.latitude,
+      longitude: this.state.longitude,
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   _onShowText2(objIndex, objUniqueName, yOffset) {
