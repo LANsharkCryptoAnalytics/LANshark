@@ -1,5 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-filename-extension */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable prefer-destructuring */
 
 
 import React, { Component } from 'react';
@@ -251,11 +253,10 @@ export default class ViroSample extends Component {
   // }
   _onShowText(objIndex, objUniqueName, yOffset) {
     dataCounter = 0;
+    const currentProps = { ...this.state.viroAppProps };
     this.setState({
-      displayText: true,
-      // text: 'hello',
       viroAppProps: {
-        ...this.state.viroAppProps, displayObject: true, yOffset, displayObjectName: objUniqueName, objectSource: this.state.generalData[dataCounter],
+        ...currentProps, displayObject: true, yOffset, displayObjectName: objUniqueName, objectSource: this.state.generalData[dataCounter],
       },
     });
   }
@@ -274,7 +275,6 @@ export default class ViroSample extends Component {
         console.log(error);
       });
     this.setState({
-      displayText: true,
 
       viroAppProps: {
         ...this.state.viroAppProps, displayObject: true, yOffset, displayObjectName: objUniqueName, objectSource: 'Location Information Saved!',
@@ -289,9 +289,10 @@ export default class ViroSample extends Component {
     if (dataCounter > dataLength) {
       dataCounter = 0;
     }
+    const currentProps = { ...this.state.viroAppProps };
     this.setState({
       viroAppProps: {
-        ...this.state.viroAppProps, displayObject: true, yOffset, displayObjectName: objUniqueName, objectSource: this.state.generalData[dataCounter],
+        ...currentProps, displayObject: true, yOffset, displayObjectName: objUniqueName, objectSource: this.state.generalData[dataCounter],
       },
     });
   }

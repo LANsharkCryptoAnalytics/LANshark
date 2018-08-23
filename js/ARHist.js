@@ -9,6 +9,8 @@
 /* eslint-disable react/prefer-es6-class */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-filename-extension */
+/* eslint-disable react/destructuring-assignment */
+
 
 import React, { Component } from 'react';
 import { StyleSheet } from 'react-native';
@@ -37,14 +39,13 @@ const ARHist = createReactClass({
 
   getInitialState() {
     return {
-      objPosition: [0,0,0],
-      scale:[.5, .5, .5],
-      rotation:[0,0,0],
+      objPosition: [0, 0, 0],
+      scale: [0.5, 0.5, 0.5],
+      rotation: [0, 0, 0],
       shouldBillboard: false,
-    }
+    };
   },
 
- 
 
   _getModel() {
     const modelArray = [];
@@ -59,59 +60,59 @@ const ARHist = createReactClass({
 
     const bitMask = 4;
     modelArray.push(<ViroNode
-        {...transformBehaviors}
-        visible={this.props.arSceneNavigator.viroAppProps.displayObject}
-        position={this.state.objPosition}
-        onDrag={() => {}}
-        ref={this._setARNodeRef}
-        scale={[5, 5, 5]}
+      {...transformBehaviors}
+      visible={this.props.arSceneNavigator.viroAppProps.displayObject}
+      position={this.state.objPosition}
+      onDrag={() => {}}
+      ref={this._setARNodeRef}
+      scale={[5, 5, 5]}
         // scale={this.state.scale}
-        rotation={this.state.rotation}
-        dragType="FixedToWorld"
-key={this.props.arSceneNavigator.viroAppProps.displayObjectName}
-      >
+      rotation={this.state.rotation}
+      dragType="FixedToWorld"
+      key={this.props.arSceneNavigator.viroAppProps.displayObjectName}
+    >
 
-        <ViroSpotLight
-          innerAngle={20}
-          outerAngle={20}
-          direction={[0, -1, 0]}
-          position={[0, 4, 0]}
-          color="#ffffff"
-          castsShadow
-          shadowNearZ={0.1}
-          shadowFarZ={6}
-          shadowOpacity={0.9}
-          ref={this._setSpotLightRef} 
-        />
+      <ViroSpotLight
+        innerAngle={20}
+        outerAngle={20}
+        direction={[0, -1, 0]}
+        position={[0, 4, 0]}
+        color="#ffffff"
+        castsShadow
+        shadowNearZ={0.1}
+        shadowFarZ={6}
+        shadowOpacity={0.9}
+        ref={this._setSpotLightRef}
+      />
 
-        <ViroText
-          text={this.props.arSceneNavigator.viroAppProps.objectSource}
+      <ViroText
+        text={this.props.arSceneNavigator.viroAppProps.objectSource}
           // animation={{name:'animateImage',run:true}}
-          extrusionDepth={5.5}
-          source={this.props.arSceneNavigator.viroAppProps.objectSource}
-          materials={['frontMaterial', 'backMaterial', 'sideMaterial']}
-          scale={[0.5, 0.5, 0.5]}
+        extrusionDepth={5.5}
+        source={this.props.arSceneNavigator.viroAppProps.objectSource}
+        materials={['frontMaterial', 'backMaterial', 'sideMaterial']}
+        scale={[0.5, 0.5, 0.5]}
           // position={[0, 0, -1.2]}
-          position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -0.745]}
-          style={styles.helloWorldTextStyle}
-        />
+        position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, -0.745]}
+        style={styles.helloWorldTextStyle}
+      />
 
 
-        {/* <Viro3DObject
+      {/* <Viro3DObject
           position={[0, this.props.arSceneNavigator.viroAppProps.yOffset, 0]}
           source={this.props.arSceneNavigator.viroAppProps.objectSource}
           type = "VRX" onLoadEnd={this._onLoadEnd} onLoadStart={this._onLoadStart}
           onRotate={this._onRotate}
           onPinch={this._onPinch} /> */}
 
-        {/* <ViroQuad
+      {/* <ViroQuad
             rotation={[-90, 0, 0]}
             position={[0, -.001, 0]}
             width={2.5} height={2.5}
             arShadowReceiver={true}
             ignoreEventHandling={true} /> */}
 
-                      </ViroNode>,);
+                    </ViroNode>);
     return modelArray;
   },
 
@@ -251,8 +252,8 @@ key={this.props.arSceneNavigator.viroAppProps.displayObjectName}
   render() {
     return (
       <ViroARScene ref="arscene" onTrackingUpdated={this._onTrackInit}>
-          <ViroAmbientLight color="#ffffff" intensity={200}/>
-          {this._getModel()}
+        <ViroAmbientLight color="#ffffff" intensity={200} />
+        {this._getModel()}
       </ViroARScene>
     );
   },
@@ -261,12 +262,12 @@ key={this.props.arSceneNavigator.viroAppProps.displayObjectName}
 
 ViroAnimations.registerAnimations({
   animateImage: {
- properties: { 
-scaleX: 2, scaleY: 2, scaleZ: 2, opacity: 1 
-},
+    properties: {
+      scaleX: 2, scaleY: 2, scaleZ: 2, opacity: 1,
+    },
     easing: 'Linear',
-duration: 2400 
-},
+    duration: 2400,
+  },
 });
 
 ViroMaterials.createMaterials({
@@ -288,7 +289,7 @@ ViroMaterials.createMaterials({
   },
 });
 
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   helloWorldTextStyle: {
     fontFamily: 'Roboto',
     // fontStyle: 'italic',
