@@ -140,9 +140,10 @@ app.get('/broad', (req, res) => {
 
 app.get('/login', (req, res) =>{
     console.log("server post login endpoint");
-    console.log(req.body, 'rrreeeqqqq......bbbbooooddddyyyy')
+    console.log(req, 'rrreeeqqqq......bbbbooooddddyyyy');
     // helpers.loginUser(req, res);
-    helpers.createUser(req, res);
+    // helpers.createUser(req, res);
+    res.end();
 })
 
 //Endpoint to allow a logged in user to save favorite locations or points of interest

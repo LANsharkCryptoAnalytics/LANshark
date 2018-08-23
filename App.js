@@ -1,21 +1,14 @@
 import React, { Component } from 'react';
-import { viroKey } from './config'
 import {
-  AppRegistry,
   ActivityIndicator,
   Text,
   View,
   StyleSheet,
   TouchableHighlight,
-  TouchableOpacity,
   Image,
   Alert,
 } from 'react-native';
-import Signup from './js/Signup'
-
-import axios from 'axios'
-
-
+import axios from 'axios';
 import {
   ViroARScene,
   ViroARSceneNavigator,
@@ -25,7 +18,8 @@ import {
   ViroMaterials,
   ViroUtils,
 } from 'react-viro';
-
+import { viroKey } from './config';
+import Signup from './js/Signup';
 import renderIf from './js/helpers/renderIf';
 
 var InitialARScene = require('./js/ARHist');
@@ -123,7 +117,7 @@ export default class ViroSample extends Component {
       posPhone: false,
       narrowData: textArray2,
       dataStore: null,
-      isLoggedIn: true,
+      isLoggedIn: false,
     }
   }
 
