@@ -1,45 +1,45 @@
 const axios = require('axios');
 const fetch = require('node-fetch');
-const scrapeIt = require("scrape-it");
+const scrapeIt = require('scrape-it');
 const db = require('./database-mySql/dbHelpers.js')
 
-exports.formatResults = (results) => {
-  results = results.replace(/\[(.*?)\]/g, " ");
-  results = results.replace(/[\r\n]/g, " ");
+exports.formatResults = (text) => {
+  let results = text;
+  results = results.replace(/\[(.*?)\]/g, ' ');
+  results = results.replace(/[\r\n]/g, ' ');
   results = results.replace(/<[^>]+>/g, ' ');
   results = results.trim();
   results = results.split('—');
   results = results.join(' ');
   results = results.split(' ');
-  results.forEach((result, i) => {
+  results.forEach((sentence, i) => {
+    let result = sentence;
     result = result.trim();
     result = result.split(' ');
 
     result = result.join('');
     result = result.split('');
     if (result.length < 7 && result[0]) {
-      result.forEach(char => {
+      result.forEach((char) => {
         if (char === char.toUpperCase()) {
           results.splice(i, 1, result.join('').replace(/\./g, ''));
         }
       });
     }
-  })
+  });
   results = results.join(' ');
-  results = results.split(/[,.;]+/)
+  results = results.split(/[,.;]+/);
   results.forEach((result, i) => {
     results[i] = result.trim();
-    results[i] = results[i].replace(/  /g, " ");
-    results[i] = results[i].replace(/  /g, " ");
+    results[i] = results[i].replace(/  /g, ' ');
+    results[i] = results[i].replace(/  /g, ' ');
   });
   return results;
   // return results.split(/[,.;]+/);
 };
 exports.getNeighborhood = (lat, long) => {
-  const endpointUrl = 'https://query.wikidata.org/sparql',
-    sparqlQuery =
-    `PREFIX geo: <http://www.opengis.net/ont/geosparql#>
-
+  const endpointUrl = 'https://query.wikidata.org/sparql';
+  const sparqlQuery = `PREFIX geo: <http://www.opengis.net/ont/geosparql#>
     SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instance_ofLabel WHERE {
       SERVICE wikibase:around {
         ?place wdt:P625 ?coordinate_location.
@@ -52,25 +52,27 @@ exports.getNeighborhood = (lat, long) => {
       OPTIONAL { ?place wdt:P31 ?instance_of. }
     }
     ORDER BY ASC(?dist)
-    LIMIT 100`,
-    fullUrl = endpointUrl + '?query=' + encodeURIComponent(sparqlQuery),
-    headers = {
-      'Accept': 'application/sparql-results+json'
-    };
+    LIMIT 100`;
+
+  const fullUrl = `${endpointUrl}?query=${encodeURIComponent(sparqlQuery)}`;
+
+    
+  const headers = { Accept: 'application/sparql-results+json'};
 
   return fetch(fullUrl, {
-    headers
+    headers,
   });
-}
-exports.formatNeighborhoodData = (json => {
+};
+
+exports.formatNeighborhoodData = ((json) => {
   const hood = [];
   const place = {};
   const places = [];
   const {
     head: {
-      vars
+      vars,
     },
-    results
+    results,
   } = json;
   for (const result of results.bindings) {
     hood.push(result)
@@ -78,8 +80,8 @@ exports.formatNeighborhoodData = (json => {
       place[variable] = result[variable];
     }
   }
-  hood.forEach(place => {
-    //filter out results that don't have a title
+  hood.forEach((place) => {
+    // filter out results that don't have a title
     let type = null;
     let dist = null;
     if (place.instance_ofLabel !== undefined) {
@@ -103,8 +105,9 @@ exports.formatNeighborhoodData = (json => {
   return places;
 });
 
-//Retrieves the full wikipedia page for a given title
+// Retrieves the full wikipedia page for a given title
 exports.getFullPage = (title, req, res) => {
+
   title = title.split(' ').join('_');
   const url = `https://en.wikipedia.org/wiki/${title}`;
   // console.log(url);
@@ -114,10 +117,10 @@ exports.getFullPage = (title, req, res) => {
   });
 };
 
-//Retrieves the neighboorhood map using a wikipedeai Sparql query
+// Retrieves the neighboorhood map using a wikipedeai Sparql query
 exports.getNeighborhoodMap = (lat, long, req, res) => {
-  const endpointUrl = 'https://query.wikidata.org/sparql',
-    sparqlQuery = `#defaultView:Map{"layer":"?instance_ofLabel"}
+  const endpointUrl = 'https://query.wikidata.org/sparql';
+   const sparqlQuery = `#defaultView:Map{"layer":"?instance_ofLabel"}
       SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instance_ofLabel WHERE {
         SERVICE wikibase:around {
           ?place wdt:P625 ?coordinate_location.
@@ -128,20 +131,23 @@ exports.getNeighborhoodMap = (lat, long, req, res) => {
         SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
         OPTIONAL { ?place wdt:P18 ?image. }
         OPTIONAL { ?place wdt:P31 ?instance_of. }
-      }`,
-    fullUrl = endpointUrl + '?query=' + encodeURIComponent(sparqlQuery),
-    headers = {
-      'Accept': 'application/sparql-results+json'
-    };
+      }`;
+
+  const fullUrl = `${endpointUrl}?query=${encodeURIComponent(sparqlQuery)}`;
+
+
+  const headers = {
+    Accept: 'application/sparql-results+json'
+  };
 
   fetch(fullUrl, {
-    headers
-  }).then(body => body.json()).then(json => {
+    headers,
+  }).then(body => body.json()).then((json) => {
     const {
       head: {
-        vars
+        vars,
       },
-      results
+      results,
     } = json;
     for (const result of results.bindings) {
       for (const variable of vars) {
@@ -152,11 +158,9 @@ exports.getNeighborhoodMap = (lat, long, req, res) => {
   });
 }
 
-exports.getPOINarrow = (lat, long) => {
-  return axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&prop=coordinates%7Cpageimages%7Cpageterms%7Cextracts&exlimit=5&generator=geosearch&colimit=1&piprop=thumbnail&pithumbsize=144&pilimit=10&wbptterms=description&ggscoord=${lat}%7C${long}&ggsradius=1500&ggslimit=1`);
-};
+exports.getPOINarrow = (lat, long) => axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&prop=coordinates%7Cpageimages%7Cpageterms%7Cextracts&exlimit=5&generator=geosearch&colimit=1&piprop=thumbnail&pithumbsize=144&pilimit=10&wbptterms=description&ggscoord=${lat}%7C${long}&ggsradius=1500&ggslimit=1`);
 
-//get the address at the current lat and long
+// get the address at the current lat and long
 // MapQuet API key is required
 // https://www.mapquestapi.com/geocoding/v1/reverse?key=KEY&location=29.92878%2C-90.08422&outFormat=json&thumbMaps=false
 exports.getAddress = (lat, long, req, res) => {
@@ -211,10 +215,10 @@ exports.getFullPageURI = (uri, req, res) => {
 
 exports.loginUser = (user, response, reject) => {
   console.log('login user helper fired');
-  //TODO:give me data Senai !
+  // TODO:give me data Senai !
 
-  //the below works but this isn't really the proper place for it
-  //possible shift to findAndUPdate or something similar
+  // the below works but this isn't really the proper place for it
+  // possible shift to findAndUPdate or something similar
   // db.findUser(user.body).then((userData)=>{
   //   console.log(`response ${userData}`);
   //   console.log('do whatever we need to do here to log them in');
