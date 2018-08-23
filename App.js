@@ -11,6 +11,7 @@ import {
   Image,
   Alert,
 } from 'react-native';
+import Login from './js/Login'
 
 import axios from 'axios'
 
@@ -127,21 +128,17 @@ export default class ViroSample extends Component {
   render() {
     return (
       <View style={localStyles.outer} >
-      {/* {renderIf(!this.state.isLoggedIn,
+      {renderIf(!this.state.isLoggedIn,
         <View>
-      
-        <TouchableOpacity onPress={()=> this.setState({isLoggedIn: true})}>
-          <Image source={require("./js/GoogleButton.png")}/>
-        </TouchableOpacity>
+          <Login logIn={this.logIn} />
         </View>
-      )} */}
-
-      {renderIf(this.state.posPhone,
+      )}
+      {renderIf(this.state.posPhone && this.state.isLoggedIn,
         <View>
         <Text>Sorry your phone sucks! heres some data for you anyway{this.state.generalData[dataCounter]}</Text>
       </View>
       )}
-       {renderIf(this.state.posComp && !this.state.posPhone,
+       {renderIf(this.state.posComp && !this.state.posPhone && this.state.isLoggedIn,
         <ViroARSceneNavigator style={localStyles.arView} apiKey={viroKey}
           initialScene={{scene:InitialARScene, passProps:{displayObject:this.state.displayObject}}} ref="scene" viroAppProps={this.state.viroAppProps}
         />
@@ -149,12 +146,12 @@ export default class ViroSample extends Component {
 
         {this._renderTrackingText()}
 
-        {renderIf(this.state.isLoading,
+        {renderIf(this.state.isLoading && this.state.isLoggedIn,
           <View style={{position:'absolute', left:0, right:0, top:0, bottom:0,  justifyContent:'center'}}>
             <ActivityIndicator size='large' animating={this.state.isLoading} color='#ffffff'/>
           </View>)
         }
-
+        {renderIf (this.state.isLoggedIn && this.state.isLoggedIn,
         <View style={{position: 'absolute',  left: 50, right: 0, bottom: 77, alignItems: 'center',flex: 1, flexDirection: 'row', justifyContent: 'space-between',}}>
         <TouchableHighlight style={localStyles.buttons}
             onPress={() => this._onShowText3(0, dataCounter, 0)}           
@@ -172,6 +169,7 @@ export default class ViroSample extends Component {
             <Image source={require("./js/res/right-gold-arrow.png")} />
           </TouchableHighlight>
         </View>
+        )}
       </View>
     );
   }

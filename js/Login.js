@@ -19,15 +19,16 @@ export default class Login extends Component {
   // Open URL in a browser
 
   loggingIn = () => {
-    console.log('button sending a get request')
-    axios.get('http://localhost:8200/isLoggedIn');
+    axios.get('http://172.24.6.45:8200/isLoggedIn')
+    .then((data) => alert(data))
+    .catch((e) => alert(e))
   }
 
 
   render(){
     return (
       <View>
-        <Button title="Sign In with Google" onPress={() => axios.get('http://172.24.6.45:8200/isLoggedIn').then((data) => {alert(data.data)}).catch((e) => alert(e))}></Button>
+        <Button title="Sign In with Google" onPress={this.loggingIn}></Button>
       </View>
     )
   }

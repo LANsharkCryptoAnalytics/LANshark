@@ -13,6 +13,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.get('/', (req, res) => {
     res.send('LANSHARK');
 }); 
+app.get('/isLoggedIn', (req, res) => {
+    res.send('hitting server!!!!');
+}); 
 
 app.get('/neighborhood', (req, res) => {
     //29.975651,-90.076858
