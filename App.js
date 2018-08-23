@@ -114,7 +114,6 @@ export default class ViroSample extends Component {
       viroAppProps: {displayObject:false, objectSource:null, yOffset:0, _onLoadEnd: this._onLoadEnd, _onLoadStart: this._onLoadStart, _onTrackingInit:this._onTrackingInit},
       trackingInitialized: false,
       isLoading: false,
-      displayText: false,
       posComp: true,
       latitude: null,
       longitude: null,
@@ -127,55 +126,7 @@ export default class ViroSample extends Component {
     }
   }
 
-  render() {
-    return (
-      <View style={localStyles.outer} >
-      {renderIf(!this.state.isLoggedIn,
-        <View style={styles.login}>
-          <Signup logIn={this.logIn} />
-        </View>
-      )}
-      {renderIf(this.state.posPhone && this.state.isLoggedIn,
-        <View>
-        <Text>Sorry your phone sucks! heres some data for you anyway{this.state.generalData[dataCounter]}</Text>
-      </View>
-      )}
-       {renderIf(this.state.posComp && !this.state.posPhone && this.state.isLoggedIn,
-        <ViroARSceneNavigator style={localStyles.arView} apiKey={viroKey}
-          initialScene={{scene:InitialARScene, passProps:{displayObject:this.state.displayObject}}} ref="scene" viroAppProps={this.state.viroAppProps}
-        />
-       )}
-        {renderIf(this.state.isLoggedIn,
-        this._renderTrackingText()
-        )}
 
-        {renderIf(this.state.isLoading && this.state.isLoggedIn,
-          <View style={{position:'absolute', left:0, right:0, top:0, bottom:0,  justifyContent:'center'}}>
-            <ActivityIndicator size='large' animating={this.state.isLoading} color='#ffffff'/>
-          </View>)
-        }
-        {renderIf (this.state.isLoggedIn,
-        <View style={{position: 'absolute',  left: 50, right: 0, bottom: 77, alignItems: 'center',flex: 1, flexDirection: 'row', justifyContent: 'space-between',}}>
-        <TouchableHighlight style={localStyles.buttons}
-            onPress={() => this._onShowText3(0, dataCounter, 0)}           
-            underlayColor={'#00000000'} >
-            <Image source={require("./js/res/left-gold-arrow.png")} />
-          </TouchableHighlight>
-          <TouchableHighlight style={localStyles.buttons}
-            onPress={this._onDisplayDialog}
-            underlayColor={'#00000000'} >
-            <Image source={require("./js/res/MainBTTN.png")} />
-          </TouchableHighlight>
-          <TouchableHighlight style={localStyles.buttons}
-            onPress={() => this._onShowText2(0, dataCounter, 0)}           
-            underlayColor={'#00000000'} >
-            <Image source={require("./js/res/right-gold-arrow.png")} />
-          </TouchableHighlight>
-        </View>
-        )}
-      </View>
-    );
-  }
   componentDidMount() {
     isARSupportedOnDevice(this._handleARNotSupported, this._handleARSupported);
    
@@ -362,6 +313,57 @@ export default class ViroSample extends Component {
       this.setState({posComp: true})
   }, this.setState({ generalData: this.state.narrowData }))
   }
+}
+
+
+render() {
+  return (
+    <View style={localStyles.outer} >
+    {renderIf(!this.state.isLoggedIn,
+      <View style={styles.login}>
+        <Signup logIn={this.logIn} />
+      </View>
+    )}
+    {renderIf(this.state.posPhone && this.state.isLoggedIn,
+      <View>
+      <Text>Sorry your phone sucks! heres some data for you anyway{this.state.generalData[dataCounter]}</Text>
+    </View>
+    )}
+     {renderIf(this.state.posComp && !this.state.posPhone && this.state.isLoggedIn,
+      <ViroARSceneNavigator style={localStyles.arView} apiKey={viroKey}
+        initialScene={{scene:InitialARScene, passProps:{displayObject:this.state.displayObject}}} ref="scene" viroAppProps={this.state.viroAppProps}
+      />
+     )}
+      {renderIf(this.state.isLoggedIn,
+      this._renderTrackingText()
+      )}
+
+      {renderIf(this.state.isLoading && this.state.isLoggedIn,
+        <View style={{position:'absolute', left:0, right:0, top:0, bottom:0,  justifyContent:'center'}}>
+          <ActivityIndicator size='large' animating={this.state.isLoading} color='#ffffff'/>
+        </View>)
+      }
+      {renderIf (this.state.isLoggedIn,
+      <View style={{position: 'absolute',  left: 50, right: 0, bottom: 77, alignItems: 'center',flex: 1, flexDirection: 'row', justifyContent: 'space-between',}}>
+      <TouchableHighlight style={localStyles.buttons}
+          onPress={() => this._onShowText3(0, dataCounter, 0)}           
+          underlayColor={'#00000000'} >
+          <Image source={require("./js/res/left-gold-arrow.png")} />
+        </TouchableHighlight>
+        <TouchableHighlight style={localStyles.buttons}
+          onPress={this._onDisplayDialog}
+          underlayColor={'#00000000'} >
+          <Image source={require("./js/res/MainBTTN.png")} />
+        </TouchableHighlight>
+        <TouchableHighlight style={localStyles.buttons}
+          onPress={() => this._onShowText2(0, dataCounter, 0)}           
+          underlayColor={'#00000000'} >
+          <Image source={require("./js/res/right-gold-arrow.png")} />
+        </TouchableHighlight>
+      </View>
+      )}
+    </View>
+  );
 }
 
 var localStyles = StyleSheet.create({
