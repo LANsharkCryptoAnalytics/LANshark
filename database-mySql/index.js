@@ -207,7 +207,7 @@ const Vcs = sequelize.define('vcs', {
 });
 
 Poi.sync({
-  force: false //true drops database
+  force: true //true drops database
 }).then(() => {
   return Poi.create({
     name: 'French Market',
