@@ -13,13 +13,14 @@ sequelize
     console.error('Unable to connect to the database:', err);
   });
 
+/////////////////////////////////////////////////////////////////////////////////
+//  Models -- to be exported to their own pages soon for modularness           //
+/////////////////////////////////////////////////////////////////////////////////
+
+
+
 const User = sequelize.define('user', {
-  // id: {
-  //   type: Sequelize.INTEGER,
-  //   autoIncrement: true,
-  //   primaryKey: true,
-  //   unique: true
-  // },
+  
   firstName: {
     type: Sequelize.STRING
   },
@@ -81,32 +82,25 @@ const Poi = sequelize.define('poi', {
 
   fullPage: {
     type: Sequelize.STRING,
-    // unique: true
   },
 });
 
 
 // force: true will drop the table if it already exists
 User.sync({
-    force: false
+    force: true
   }).then(() => {
     // Table created
     //sample user made here
-    // return User.create({
-    //   firstName: 'John',
-    //   lastName: 'Hancock',
-    //   email: 'me@me.com',
-    //   favorites: '123123'
-    // });
+    return User.create({
+      firstName: 'John',
+      lastName: 'Hancock',
+      email: 'me@me.com',
+      favorites: '123123'
+    });
     return;
   }).then(() => {
-    // return Neighborhood.create({
-    //   name: 'Garden District',
-    //   lat: 30 ,
-    //   long: 90,
-    //   fullPage: 'wertwetrwertiweytiuweyrtiwyertiuyiweurytwertweyrtiyweritwierutyiuwert', 
-    //   pois:  '23445'
-    // });
+    
     return;
   })
   .then(() => {
@@ -121,24 +115,24 @@ User.sync({
 
 
 Neighborhood.sync({
-    force: false //true drops database
+    force: true //true drops database
   }).then(() => {
-    // return Neighborhood.create({
-    //   name: 'French Quarter',
-    //   lat: 31 ,
-    //   long: 91,
-    //   fullPage: 'wertwuyiweurytwertweyrtiyweritwierutyiuwert', 
-    //   pois:  '00000000'
-    // })
+    return Neighborhood.create({
+      name: 'French Quarter',
+      lat: 31 ,
+      long: 91,
+      fullPage: 'wertwuyiweurytwertweyrtiyweritwierutyiuwert', 
+      pois:  '00000000'
+    })
     return;
   }).then(() => {
-    // return Neighborhood.create({
-    //   name: 'Lake View',
-    //   lat: 22 ,
-    //   long: 90,
-    //   fullPage: 'oioioiowieoiwoet', 
-    //   pois:  'wewewewe'
-    // });
+    return Neighborhood.create({
+      name: 'Lake View',
+      lat: 22 ,
+      long: 90,
+      fullPage: 'oioioiowieoiwoet', 
+      pois:  'wewewewe'
+    });
     return;
 
   })
@@ -153,7 +147,7 @@ Neighborhood.sync({
   });
 
 Poi.sync({
-    force: false //true drops database
+    force: true //true drops database
   }).then(() => {
     return Poi.create({
       name: 'French Market',
