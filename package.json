@@ -29,6 +29,7 @@
     "node-fetch": "^2.2.0",
     "object.assign": "^4.1.0",
     "object.entries": "^1.0.4",
+    "puppeteer": "^1.7.0",
     "react": "16.3.1",
     "react-native": "0.55.1",
     "react-native-elements": "^0.19.1",
