@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
 });
 
 
-export default class Signup extends Component {
+export default class Login extends Component {
   constructor(props) {
     super(props);
 
@@ -76,7 +76,6 @@ export default class Signup extends Component {
   }
 
   submit() {
-    // console.warn(this.props, 'props');
     const url1 = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login';
     // const url2 = 'http://172.24.6.45:8200/login';
     axios({
@@ -85,8 +84,7 @@ export default class Signup extends Component {
       data: this.state,
     })
       .then((response) => {
-        // console.warn('response', response);
-        this.props.renderAr();
+        console.warn(response);
       })
       .catch((error) => {
         throw error;
@@ -98,8 +96,6 @@ export default class Signup extends Component {
       <View style={styles.login}>
 
         <Text style={styles.header}>Welcome to HistARy Tour</Text>
-
-        <TextInput style={styles.textinput} placeholder="Your Name" onChangeText={(text) => this.setState({name: text})} />
 
         <TextInput style={styles.textinput} placeholder="Email" onChangeText={(text) => this.setState({email: text})}/>
 
