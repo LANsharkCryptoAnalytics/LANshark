@@ -76,24 +76,33 @@ const createNeighborhood = ((neighborHoodInfo) => {
 });
 
 // creates a database entry for a point of interest
-const createPoi = ((poiInfo) => {
+const createPoi = ( (poiInfo) => {
   console.log('createPoi fired');
-  return Poi.findOrCreate({
+  return Poi.findOrCreate({ where: {
     name: poiInfo.name,
     lat: poiInfo.lat,
     long: poiInfo.long,
     address: poiInfo.address,
     fullPage: poiInfo.fullPage,
+  },
   });
-});
+})
 
 // creates a database entry for the  vieux carre
 // TODO: build out the function
 const createVcs = ((vcsInfo) => {
   console.log('createVcs fired');
-  return Vcs.create({
+  return Vcs.findOrCreate({ 
+    where: {
+      lotNumber: vcsInfo.lotNumber,
+      name: vcsInfo.name,
+      lat: vcsInfo.name,
+      long: vcsInfo.long,
+      address: vcsInfo.address,
+      infoText: vcsInfo.text,
+      ownership: vcsInfo.ownership,
+    },
     // load up vcs model here
-
   });
 });
 
