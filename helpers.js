@@ -31,14 +31,9 @@ exports.formatResults = (text) => {
   results = results.split(/[,.;]+/);
   results.forEach((result, i) => {
     results[i] = result.trim();
-<<<<<<< HEAD
     //removing double and triple spacing
     results[i] = results[i].replace(/  /g, " ");
     results[i] = results[i].replace(/  /g, " ");
-=======
-    results[i] = results[i].replace(/  /g, ' ');
-    results[i] = results[i].replace(/  /g, ' ');
->>>>>>> 2c59cd5b070e74ab3877d1ab7c578d94dc656ea0
   });
   return results;
   // return results.split(/[,.;]+/);
