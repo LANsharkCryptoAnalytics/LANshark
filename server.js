@@ -16,8 +16,10 @@ app.get('/', (req, res) => {
   res.send('LANSHARK');
 });
 
-app.get('/isLoggedIn', (req, res) => {
-  res.send('hitting server!!!!');
+
+app.get('/vcs', (req, res) => {
+  console.log('vcs endoint hit');
+  res.send('vcs endpoint');
 });
 
 app.get('/neighborhood', (req, res) => {
@@ -35,7 +37,7 @@ app.get('/neighborhood', (req, res) => {
   helpers.getNeighborhood(lat, long)
     .then(body => body.json())
     .then((json) => {
-      let neighborhoods = helpers.formatNeighborhoodData(json).filter((n) => {
+      const neighborhoods = helpers.formatNeighborhoodData(json).filter((n) => {
         return n.type === 'neighborhood';
       });
             
@@ -51,7 +53,7 @@ app.get('/neighborhood', (req, res) => {
         // get the full page for the current neighborhood
         helpers.getFullPage(`${neighborhoods[i].title},_New_Orleans`)
           .then(({ data, response }) => {
-            let results = helpers.formatResults(data.paragraph);
+            const results = helpers.formatResults(data.paragraph);
 
             if (data.paragraph.length > 100) {
               res.send(results);
@@ -68,14 +70,14 @@ app.get('/neighborhood', (req, res) => {
                   } else {
                     res.send(results);
                   }
-                }).catch(function (error) { console.log(error); });
+                }).catch((error) => { console.log(error); });
             }
-          }).catch(function (error) { console.log(error); });
+          }).catch((error) => { console.log(error); });
       } else {
         res.send(helpers.formatNeighborhoodData(json)[i].title);
       }
     })
-    .catch(function (error) { console.log(error); });
+    .catch((error) => { console.log(error); });
 });
 
 // Endpoint for retrieving broad based information about the users current location
@@ -138,23 +140,34 @@ app.get('/broad', (req, res) => {
   }).catch((error) => { console.log(error); });
 });
 
+// LOGIN RELATED INFORMATION
+
+app.get('/isLoggedIn', (req, res) => {
+  res.send('hitting server!!!!');
+});
+
 app.post('/login', (req, res) => {
   console.log('server post login endpoint');
   console.log(req.body, 'rrreeeqqqq......bbbbooooddddyyyy')
   // helpers.loginUser(req, res);
   // helpers.createUser(req, res);
-  res.send("logged in");
+  res.send(req.body);
+  
+  // res.send('logged in');
 });
 
 app.post('/signUp', (user, req, res) => {
   console.log('signUp user fired');
   console.log('user: ', user);
+  console.log(req.body);
+  res.send('sign up endpoint');
 });
 
 // Endpoint to allow a logged in user to save favorite locations or points of interest
 app.post('/addToFavorites', (req, res) => {
   console.log('add to user favorites');
   console.log(req.body);
+
   // helper.addToFavorites(req, res);
 });
 
