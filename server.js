@@ -142,7 +142,8 @@ app.post('/login', (req, res) => {
   console.log('server post login endpoint');
   console.log(req.body, 'rrreeeqqqq......bbbbooooddddyyyy')
   // helpers.loginUser(req, res);
-  helpers.createUser(req, res);
+  // helpers.createUser(req, res);
+  res.send("logged in");
 });
 
 app.post('/signUp', (user, req, res) => {

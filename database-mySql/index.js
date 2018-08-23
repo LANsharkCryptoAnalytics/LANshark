@@ -103,7 +103,7 @@ User.sync({
     // console.log('findAll', users[0].dataValues);
   });
 }).then(() => {
-  // add a user
+  // add a user for testing
   User.findOrCreate({ where: { firstName: 'Josef', lastName: 'Butts', email: 'email@email.com' } })
     .spread((user, created) => {
       console.log(user.get({

@@ -6,10 +6,11 @@ const {
 } = require('./index.js');
 
 
-// finds a user
+// finds a user - if you want to do that sort of thing
 const findUser = (userInfo) => {
   console.log('-----------------------------');
   console.log('findUser, user sought: ', userInfo);
+  // searches by email since that is the unique identifier
   return User.findOne({
     where: {
       email: userInfo.email,
