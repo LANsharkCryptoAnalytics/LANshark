@@ -116,14 +116,15 @@ export default class ViroSample extends Component {
       isLoading: false,
       displayText: false,
       posComp: true,
-      latitude: null,
-      longitude: null,
+      latitude: 29.9761692,
+      longitude: -90.076438,
       error: null,
       generalData: textArray,
       posPhone: false,
       narrowData: textArray2,
       dataStore: null,
-      isLoggedIn: true,
+      isLoggedIn: false,
+      mapView: false,
     }
   }
 
