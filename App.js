@@ -13,7 +13,7 @@ import {
   TouchableHighlight,
   Image,
   Alert,
-} from 'react-native';
+git } from 'react-native';
 
 import axios from 'axios';
 
