@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({
 app.get('/', (req, res) => {
     res.send('LANSHARK');
 });
+
 app.get('/isLoggedIn', (req, res) => {
     res.send('hitting server!!!!');
 });
@@ -26,7 +27,7 @@ app.get('/neighborhood', (req, res) => {
     //29.928714, -90.001709
     //req.query.latitude.slice(0,9), req.query.longitude.slice(0,10), req.query.i
 
-    //TODO: what does i represent?
+    //TODO: What does i represent?
     let i = req.query.i ? req.query.i : 0;
     let lat = req.query.latitude.slice(0, 9);
     let long = req.query.longitude.slice(0, 10);
@@ -36,7 +37,7 @@ app.get('/neighborhood', (req, res) => {
             let neighborhoods = helpers.formatNeighborhoodData(json).filter(n => {
                 return n.type === "neighborhood";
             });
-
+            
             if (i > neighborhoods.length) {
                 i = i - neighborhoods.length;
             }
@@ -76,7 +77,9 @@ app.get('/neighborhood', (req, res) => {
         .catch(function (error) { console.log(error); });
 });
 
+//Endpoint for retrieving broad based information about the users current location
 app.get('/broad', (req, res) => {
+    //TODO: please add comments for readability and to facilitate testing
     //req.query.i represents what?
     let i = req.query.i ? req.query.i : 0;
     const lat = req.query.latitude.slice(0, 9);
@@ -96,7 +99,7 @@ app.get('/broad', (req, res) => {
             if (i > neighborhoods.length) {
                 i = i - neighborhoods.length;
             }
-            //if neighborhoods have length
+            //if neighborhoods have length ?
             if (neighborhoods.length) {
                 if (neighborhoods[i].coord) {
                     //TODO: I don't believe these variable are being used anywhere
@@ -147,12 +150,14 @@ app.get('/broad', (req, res) => {
         });
 });
 
+// endpoint to facilitate user login and auth
 app.post('/login', (req, res) => {
     console.log("server post login endpoint");
     // helpers.loginUser(req, res);
     helpers.createUser(req, res);
 })
 
+//Endpoint to allow a logged in user to save favorite locations or points of interest
 app.post('/addToFavorites', (req, res) => {
     console.log('add to user favorites');
     console.log(req.body)
@@ -166,7 +171,8 @@ app.listen(8200, function () {
     console.log('App listening on port 8200');
 });
 
-
+//******************************************************************** */
+// Information regarding the redirection of the server to port 80 from 8200
 //This is what I had to do to get the Amazone EC2 instance to redirect
 //from 8200 to 80. Works until we update the env file on the server or some
 //other solution: something similar to this:
