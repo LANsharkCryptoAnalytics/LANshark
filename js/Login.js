@@ -19,7 +19,7 @@ export default class Login extends Component {
   // Open URL in a browser
 
   loggingIn = () => {
-    axios.get('http://172.24.6.45:8200/isLoggedIn')
+    axios.get('http://localhost:8200/isLoggedIn')
     .then((data) => alert(data))
     .catch((e) => alert(e))
   }
