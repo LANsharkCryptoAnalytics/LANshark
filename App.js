@@ -40,8 +40,9 @@ var isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
 var textIMG = require('./js/res/cracked-wallpaper-9.jpg');
 var textArray = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.')
 var textArray2 = 'cha cha changes, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.')
-  var dataCounter = 0;
-  var dataLength = textArray.length - 1;
+var dataCounter = 0;
+var dataLength = textArray.length - 1;
+var locationProgression = 0; 
 
 export default class ViroSample extends Component {
   constructor(props) {
@@ -57,7 +58,7 @@ export default class ViroSample extends Component {
         axios.get(`http://ec2-34-238-240-14.compute-1.amazonaws.com/neighborhood`, {
           params: {
             latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
+            longitude: position.coords.longitude,
           }
         })
         .then(res => {
@@ -122,6 +123,7 @@ export default class ViroSample extends Component {
       posPhone: false,
       narrowData: textArray2,
       dataStore: null,
+      isLoggedIn: false,
     }
   }
 
@@ -218,15 +220,37 @@ export default class ViroSample extends Component {
   }
 
   _onDisplayDialog() {
+    if(this.state.isLoggedIn){
     Alert.alert(
-    'Choose an object',
-    'Select an object to place in the world!',
+    'Learn About The Area Around You',
+    'Choose an Option Below',
     [
-      {text: 'Loc', onPress: () => this._onShowLoc(0, dataCounter, 0 )},
+     
+      // {text: 'Save Location', onPress: () => this._onShowLoc(0, dataCounter, 0 )},
       {text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0 )},
       {text: 'New Location', onPress: () => this._onRemoveText()}, 
     ],
     );
+  } else {
+    Alert.alert(
+      'Learn About The Area Around You',
+      'Choose an Option Below',
+    [
+        {text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0 )},
+        {text: 'New Location', onPress: () => this._onRemoveText()}, 
+        {text: 'User Menu', onPress: () => Alert.alert(
+          'User Menu',
+          'Please Choose an option',
+          [
+            {text: 'Save Location', onPress: () => this._onShowLoc(0, dataCounter, 0 )},
+            // {text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0 )},
+            // {text: 'New Location', onPress: () => this._onRemoveText()}, 
+          ],
+          )
+        },
+      ],
+      );
+  }
   }
   _onDisplayDialog2() {
     Alert.alert(
@@ -254,10 +278,24 @@ export default class ViroSample extends Component {
     });
   }
   _onShowLoc(objIndex, objUniqueName, yOffset){
+    axios.post('http://ec2-34-238-240-14.compute-1.amazonaws.com/addToFavorites', {
+      latitude: this.state.latitude,
+      longitude: this.state.longitude,
+      wideData: this.state.generalData,
+      narrowData: this.state.narrowData,
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
     this.setState({
       displayText: true,
 
-        viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:String(this.state.latitude) + String(this.state.longitude)},
+      viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource: 'Location Information Saved!'},
+
+        // viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:String(this.state.latitude) + String(this.state.longitude)},
     });
   }
   _onShowText2(objIndex, objUniqueName, yOffset){
@@ -280,6 +318,7 @@ export default class ViroSample extends Component {
   }
 
   _onRemoveText(){
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
         this.setState({
@@ -291,9 +330,11 @@ export default class ViroSample extends Component {
           params: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
+            i: locationProgression,
           }
         })
         .then(res => {
+          locationProgression++;
           const narrowData = res.data;
           this.setState({ narrowData });
         })
@@ -349,7 +390,7 @@ ViroMaterials.createMaterials({
   },
   backMaterial: {
     // lightingModel: "Lambert",
-    bloomThreshold: .2,
+    bloomThreshold: 2.0,
     diffuseColor: '#333333',
   },
   sideMaterial: {
