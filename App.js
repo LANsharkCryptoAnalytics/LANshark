@@ -313,7 +313,7 @@ export default class ViroSample extends Component {
       this.setState({posComp: true})
   }, this.setState({ generalData: this.state.narrowData }))
   }
-}
+
 
 
 render() {
@@ -364,6 +364,7 @@ render() {
       )}
     </View>
   );
+}
 }
 
 var localStyles = StyleSheet.create({
