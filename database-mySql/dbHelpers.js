@@ -27,9 +27,10 @@ const createUser = (user) => {
   console.log('create user fired userInfo:', user);
   User.findOrCreate({
     where: {
-      firstName: user.firstName,
-      lastName: user.lastName,
+      userName: user.userName,
       email: user.email,
+      password: user.password,
+      favorites: user.favorites,
     },
   })
     .spread((user, created) => {
@@ -53,7 +54,7 @@ const createUser = (user) => {
  In the example above, the "spread" on line 39 divides the array into its 2 parts and passes them as arguments to the callback function defined beginning at line 39, which treats them as "user" and "created" in this case. (So "user" will be the object from index 0 of the returned array and "created" will equal "true".)
     */
     });
-}
+};
 
 // TODO: build out- adds an association to a particular place to a user
 const addToUserFavorites = ((user, favoritesToAdd) => {
@@ -79,11 +80,13 @@ const createNeighborhood = ((neighborHoodInfo) => {
 const createPoi = ((poiInfo) => {
   console.log('createPoi fired');
   return Poi.findOrCreate({
-    name: poiInfo.name,
-    lat: poiInfo.lat,
-    long: poiInfo.long,
-    address: poiInfo.address,
-    fullPage: poiInfo.fullPage,
+    where: {
+      name: poiInfo.name,
+      lat: poiInfo.lat,
+      long: poiInfo.long,
+      address: poiInfo.address,
+      fullPage: poiInfo.fullPage,
+    },
   });
 });
 
@@ -91,9 +94,17 @@ const createPoi = ((poiInfo) => {
 // TODO: build out the function
 const createVcs = ((vcsInfo) => {
   console.log('createVcs fired');
-  return Vcs.create({
+  return Vcs.findOrCreate({
+    where: {
+      lotNumber: vcsInfo.lotNumber,
+      name: vcsInfo.name,
+      lat: vcsInfo.name,
+      long: vcsInfo.long,
+      address: vcsInfo.address,
+      infoText: vcsInfo.text,
+      ownership: vcsInfo.ownership,
+    },
     // load up vcs model here
-
   });
 });
 
