@@ -25,6 +25,7 @@
     "node-fetch": "^2.2.0",
     "react": "16.3.1",
     "react-native": "0.55.1",
+    "react-native-elements": "^0.19.1",
     "react-viro": "2.9.0",
     "scrape": "^0.2.3",
     "scrape-it": "^5.0.5",

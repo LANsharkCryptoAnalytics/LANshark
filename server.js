@@ -127,8 +127,9 @@ app.get('/broad', (req, res) => {
         });
 });
 
-app.post('/login', (req, res) =>{
+app.get('/login', (req, res) =>{
     console.log("server post login endpoint");
+    console.log(req.body, 'rrreeeqqqq......bbbbooooddddyyyy')
     // helpers.loginUser(req, res);
     helpers.createUser(req, res);
 })
