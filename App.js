@@ -137,13 +137,8 @@ export default class ViroSample extends Component {
       posPhone: false,
       narrowData: textArray2,
       dataStore: null,
-<<<<<<< HEAD
       isLoggedIn: false,
     }
-=======
-      isLoggedIn: true,
-    };
->>>>>>> 40bcdbabd5b4019cbe2a528ad77cc3fa89c3adc2
   }
 
 
