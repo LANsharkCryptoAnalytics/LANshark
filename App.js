@@ -73,7 +73,7 @@ export default class ViroSample extends Component {
             const generalData = res.data;
             this.setState({ generalData });
           })
-          .catch(err => this.state.error = err);
+          .catch(error => this.setState({ error }));
       },
       error => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
