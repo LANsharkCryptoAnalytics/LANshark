@@ -140,7 +140,8 @@ app.post('/login', (req, res) =>{
 
 app.patch('/addToFavorites', (req, res)=>{
     console.log('add to user favorites');
-    helper.addToFavorites(req, res);
+    console.log(req.body)
+    // helper.addToFavorites(req, res);
 })
 
 // helpers.searchByTitle('Garden District, New Orleans');
