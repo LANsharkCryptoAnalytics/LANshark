@@ -7,14 +7,12 @@
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
-  Button,
   Text,
   View,
   StyleSheet,
   TouchableHighlight,
   Image,
   Alert,
-  WebView,
 } from 'react-native';
 
 import axios from 'axios';
