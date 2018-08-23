@@ -143,7 +143,7 @@ export default class ViroSample extends Component {
   }
 
   _handleARSupported() {
-    console.log('yeah');
+
   }
 
   _handleARNotSupported() {
