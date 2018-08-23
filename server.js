@@ -29,43 +29,49 @@ app.get('/neighborhood', (req, res) => {
             return n.type === "neighborhood";
         });
         
-        if(i > 0){ neighborhoods = helpers.formatNeighborhoodData(json); }
         if(i > neighborhoods.length){ i = i - neighborhoods.length; }
         if(neighborhoods.length){
             if(neighborhoods[i].coord){
         const long = neighborhoods[i].coord.split(' ')[0];
         const lat = neighborhoods[i].coord.split(' ')[1];
             }
-        
+        //get the full page for the current neighborhood
         helpers.getFullPage(`${neighborhoods[i].title},_New_Orleans`).then(({ data, response }) => {
-            let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
-            results = results.replace(/[\r\n]/g, " ");
-            results = results.split('.');
+            let results = helpers.formatResults(data.paragraph);
 
             if(data.paragraph.length > 100){
                 res.send(results);
             }else{
                 helpers.getFullPage(neighborhoods[i].title).then(({ data, response }) => {
-                    let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
-                    results = results.replace(/[\r\n]/g, " ");
-                    results = results.split('.');
-                    res.send(results);
-                });
+                    let results = helpers.formatResults(data.paragraph);
                 if(data.paragraph.length < 100){
-                    res.send(neighborhoods[i].title);
+                    helpers.getPOINarrow(req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)).then(stuff=> {
+                        
+                       let results = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ""));
+                        
+                        res.send(results);
+                    })
+                    .catch(function (error) {
+                      console.log(error);
+                    });
+                }else{
+                    res.send(results);
                 }
+            }).catch(function (error) {
+                console.log(error);
+              });
             }
         }).catch(function (error) {
           console.log(error);
         });
-    }else{
+    }
+    else{
         res.send(helpers.formatNeighborhoodData(json)[i].title);
     }
         })
         .catch(function (error) {
           console.log(error);
         });
-
 });
 
 app.get('/broad', (req, res) => {
@@ -91,16 +97,11 @@ app.get('/broad', (req, res) => {
             }else{
                 helpers.getFullPage(neighborhoods[i].title).then(({ data, response }) => {
                     let results = helpers.formatResults(data.paragraph);
-                    // console.log(results);
-                    
-                
                 if(data.paragraph.length < 100){
                     helpers.getPOINarrow(req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)).then(stuff=> {
-                        // console.log(stuff.data.query);
+                        
                        let results = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ""));
-                        // results = results.replace(/<[^>]+>/g, ' ')
-                        // results = results.replace('  ', ' ').trim();
-                        // results = results.split('.');
+                        
                         res.send(results);
                     })
                     .catch(function (error) {
@@ -124,8 +125,6 @@ app.get('/broad', (req, res) => {
         .catch(function (error) {
           console.log(error);
         });
-    // console.log( req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)) ;
-    
 });
 
 app.get('/login', (req, res) =>{
