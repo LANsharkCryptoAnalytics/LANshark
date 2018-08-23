@@ -132,12 +132,13 @@ Neighborhood.sync({
   long: 91,
   fullPage: 'wertwuyiweurytwertweyrtiyweritwierutyiuwert',
   pois: '00000000',
-})).then(() => Neighborhood.findOrCreate({
+})).then(() => Neighborhood.findOrCreate({ where : {
   name: 'Lake View',
   lat: 22,
   long: 90,
   fullPage: 'oioioiowieoiwoet',
   pois: 'wewewewe',
+},
 }))
   .then(() => {
     Neighborhood.findAll().then((neighborhoods) => {
