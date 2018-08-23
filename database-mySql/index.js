@@ -218,6 +218,7 @@ Poi.sync({
 }));
 
 
+
 User.belongsToMany(Poi, {
   through: 'UserPoi',
 });
