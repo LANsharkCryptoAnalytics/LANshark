@@ -133,10 +133,7 @@ app.post('/login', (req, res) =>{
 
 app.post('/addToFavorites', (req, res)=>{
     console.log('add to user favorites');
-<<<<<<< HEAD
     console.log(req.body)
-=======
->>>>>>> 79266f51ff292bcb74560a3ee728c372baef8012
     // helper.addToFavorites(req, res);
 })
 
