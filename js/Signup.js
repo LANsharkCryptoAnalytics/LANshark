@@ -50,7 +50,7 @@ export default class Signup extends Component {
     collection.password = this.state.password,
     console.warn(collection);
 
-    var url = 'http://192.168.0.15:8200/login';
+    var url = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login';
 
 fetch(url, {
   method: 'POST', // or 'PUT'
