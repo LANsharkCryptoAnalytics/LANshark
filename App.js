@@ -11,7 +11,7 @@ import {
   Image,
   Alert,
 } from 'react-native';
-import Login from './js/Login'
+import Signup from './js/Signup'
 
 import axios from 'axios'
 
@@ -123,7 +123,7 @@ export default class ViroSample extends Component {
       posPhone: false,
       narrowData: textArray2,
       dataStore: null,
-      isLoggedIn: false,
+      isLoggedIn: true,
     }
   }
 
@@ -131,8 +131,8 @@ export default class ViroSample extends Component {
     return (
       <View style={localStyles.outer} >
       {renderIf(!this.state.isLoggedIn,
-        <View>
-          <Login logIn={this.logIn} />
+        <View style={styles.login}>
+          <Signup logIn={this.logIn} />
         </View>
       )}
       {renderIf(this.state.posPhone && this.state.isLoggedIn,
@@ -145,15 +145,16 @@ export default class ViroSample extends Component {
           initialScene={{scene:InitialARScene, passProps:{displayObject:this.state.displayObject}}} ref="scene" viroAppProps={this.state.viroAppProps}
         />
        )}
-
-        {this._renderTrackingText()}
+        {renderIf(this.state.isLoggedIn,
+        this._renderTrackingText()
+        )}
 
         {renderIf(this.state.isLoading && this.state.isLoggedIn,
           <View style={{position:'absolute', left:0, right:0, top:0, bottom:0,  justifyContent:'center'}}>
             <ActivityIndicator size='large' animating={this.state.isLoading} color='#ffffff'/>
           </View>)
         }
-        {renderIf (this.state.isLoggedIn && this.state.isLoggedIn,
+        {renderIf (this.state.isLoggedIn,
         <View style={{position: 'absolute',  left: 50, right: 0, bottom: 77, alignItems: 'center',flex: 1, flexDirection: 'row', justifyContent: 'space-between',}}>
         <TouchableHighlight style={localStyles.buttons}
             onPress={() => this._onShowText3(0, dataCounter, 0)}           
@@ -179,6 +180,13 @@ export default class ViroSample extends Component {
     isARSupportedOnDevice(this._handleARNotSupported, this._handleARSupported);
    
   }
+
+  logIn() {
+    this.setState({
+      isLoggedIn: true
+    })
+  }
+
   _handleARSupported() {
     console.log('yeah');
   }
@@ -402,6 +410,13 @@ ViroMaterials.createMaterials({
 });
 //"Comic Sans MS", cursive, sans-serif
 var styles = StyleSheet.create({
+  login: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#36485f',
+    paddingLeft: 60,
+    paddingRight: 60,
+  },
   helloWorldTextStyle: {
     fontFamily: 'Roboto',
     // fontStyle: 'italic',
