@@ -331,10 +331,17 @@ export default class ViroSample extends Component {
       dataCounter = 0;
     }
     const currentProps = { ...this.state.viroAppProps };
-    this.setState({
-      viroAppProps: {
-        ...currentProps, displayObject: true, yOffset, displayObjectName: objUniqueName, objectSource: this.state.generalData[dataCounter],
-      },
+    this.setState((prevState) => {
+      const objectSource = prevState.generalData[dataCounter];
+      return {
+        viroAppProps: {
+          ...currentProps,
+          displayObject: true,
+          yOffset,
+          displayObjectName: objUniqueName,
+          objectSource,
+        },
+      };
     });
   }
 
@@ -343,10 +350,18 @@ export default class ViroSample extends Component {
     if (dataCounter < 0) {
       dataCounter = 0;
     }
-    this.setState({
-      viroAppProps: {
-        ...this.state.viroAppProps, displayObject: true, yOffset, displayObjectName: objUniqueName, objectSource: this.state.generalData[dataCounter],
-      },
+    const currentProps = { ...this.state.viroAppProps };
+    this.setState((prevState) => {
+      const objectSource = prevState.generalData[dataCounter];
+      return {
+        viroAppProps: {
+          ...currentProps,
+          displayObject: true,
+          yOffset,
+          displayObjectName: objUniqueName,
+          objectSource,
+        },
+      };
     });
   }
 
