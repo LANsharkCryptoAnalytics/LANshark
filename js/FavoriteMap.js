@@ -60,7 +60,7 @@ export default class FavoriteMap extends Component {
 <div id='map'></div>
 
 <script>
-	var map = L.map('map').setView([${this.props.lat.slice(0, 9)}, ${this.props.long.slice(0, 10)}], 16);
+	var map = L.map('map').setView([${String(this.props.lat).slice(0, 9)}, ${String(this.props.long).slice(0, 10)}], 16);
   let favs = [{
     title: 'Rivoli Theatre',
        long: -90.075462,
@@ -100,7 +100,7 @@ for( let i = 0; i < favs.length; i++){
 
     
 
-	L.marker([${this.props.lat.slice(0, 9)}, ${this.props.long.slice(0, 10)}], {icon: starIcon}).addTo(map)
+	L.marker([${String(this.props.lat).slice(0, 9)}, ${String(this.props.long).slice(0, 10)}], {icon: starIcon}).addTo(map)
 		.bindPopup("<b>You are here</b><br />");
 	var popup = L.popup();
 	map.on('click', onMapClick);
