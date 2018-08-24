@@ -7,13 +7,16 @@ import {
   View,
 } from 'react-native';
 import axios from 'axios';
+import Signup from './Signup';
+import renderIf from './helpers/renderIf';
 
 const styles = StyleSheet.create({
   login: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
+    flex: 1,
+    paddingTop: '10%',
   },
   header: {
+    textAlign: 'center',
     fontSize: 40,
     fontWeight: 'bold',
     color: '#fff',
@@ -23,12 +26,13 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   textinput: {
-    fontSize: 40,
+    backgroundColor: 'white',
+    fontSize: 15,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
     alignSelf: 'stretch',
-    height: 40,
-    marginBottom: 30,
+    height: 60,
+    marginBottom: 0,
     borderBottomColor: '#f8f8f8',
     borderBottomWidth: 1,
   },
@@ -44,6 +48,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
   },
+  signuptext: {
+    alignSelf: 'stretch',
+    textAlign: 'center',
+    marginTop: 30,
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
 });
 
 
@@ -52,23 +64,33 @@ export default class Login extends Component {
     super(props);
 
     this.state = {
-      name: '',
       email: '',
       password: '',
+      loginPage: true,
+      signupPage: false,
     };
   }
 
+  signup() {
+    this.setState({
+      loginPage: false,
+      signupPage: true,
+    });
+  }
+
   submit() {
-    const url1 = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login';
-    // const url2 = 'http://172.24.6.45:8200/login';
     axios({
-      method: 'get',
-      url: url1,
+      method: 'post',
+      url: 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login',
       data: this.state,
     })
       .then((response) => {
         console.warn(response);
         this.props.arView();
+      })
+      .then((response) => {
+        console.warn(response);
+        this.props.arView().bind(this);
       })
       .catch((error) => {
         throw error;
@@ -78,16 +100,25 @@ export default class Login extends Component {
   render() {
     return (
       <View style={styles.login}>
+        {renderIf(this.state.loginPage,
+        <View>
+          <Text style={styles.header}>Welcome to AR History Tour</Text>
 
-        <Text style={styles.header}>Welcome to HistARy Tour</Text>
+          <TextInput style={styles.textinput} placeholder="   Email" onChangeText={(text) => this.setState({email: text})}/>
 
-        <TextInput style={styles.textinput} placeholder="Email" onChangeText={(text) => this.setState({email: text})}/>
+          <TextInput style={styles.textinput} secureTextEntry={true} placeholder="   Password" onChangeText={(text) => this.setState({password: text})} />
 
-        <TextInput style={styles.textinput} secureTextEntry={true} placeholder="Password" onChangeText={(text) => this.setState({password: text})} />
+          <TouchableOpacity style={styles.button} onPress={() => { this.submit() }}>
+            <Text style={styles.btntext}>Login</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={() => {this.submit()}}>
-          <Text style={styles.btntext}>Login</Text>
-        </TouchableOpacity>
+          <Text style={styles.signuptext} onPress={() => { this.signup() }}>Sign Up</Text>
+        </View>)}
+
+        {renderIf(this.state.signupPage,
+          <View>
+            <Signup />
+          </View>)}
 
       </View>
     )

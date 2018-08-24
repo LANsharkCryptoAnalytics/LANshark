@@ -155,11 +155,11 @@ app.post('/login', (req, res) => {
   // res.send('logged in');
 });
 
-app.post('/signUp', (user, req, res) => {
+app.post('/signUp', (req, res) => {
   console.log('signUp user fired');
-  console.log('user: ', user);
+  // console.log('user: ', user);
   console.log(req.body);
-  res.send('sign up endpoint');
+  res.send(req.body);
 });
 
 // Endpoint to allow a logged in user to save favorite locations or points of interest
