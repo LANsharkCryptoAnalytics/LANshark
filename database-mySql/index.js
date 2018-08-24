@@ -22,15 +22,15 @@ sequelize
 
 const User = sequelize.define('user', {
 
-  firstName: {
-    type: Sequelize.STRING,
-  },
-  lastName: {
+  userName: {
     type: Sequelize.STRING,
   },
   email: {
     type: Sequelize.STRING,
     unique: true,
+  },
+  password: {
+    type: Sequelize.STRING,
   },
   favorites: Sequelize.STRING, // needs to be an array of strings really
   // foreign keys etc.
@@ -90,8 +90,8 @@ const Poi = sequelize.define('poi', {
 User.sync({
   force: true,
 }).then(() => User.create({
-  firstName: 'John',
-  lastName: 'Hancock',
+  userName: 'John',
+  password: '12345',
   email: 'me@me.com',
   favorites: '123123',
 })).then(() => {
@@ -104,7 +104,7 @@ User.sync({
   });
 }).then(() => {
   // add a user for testing
-  User.findOrCreate({ where: { firstName: 'Josef', lastName: 'Butts', email: 'email@email.com' } })
+  User.findOrCreate({ where: { userName: 'Josef', email: 'email@email.com' } })
     .spread((user, created) => {
       console.log(user.get({
         plain: true,
@@ -113,8 +113,8 @@ User.sync({
     });
 })
   .then(() => {
-    // add teh same user again to test function - should return false
-    User.findOrCreate({ where: { firstName: 'Josef', lastName: 'Butts', email: 'email@email.com' } })
+    // add the same user again to test function - should return false
+    User.findOrCreate({ where: { userName: 'Josef', email:'email@email.com' } })
       .spread((user, created) => {
         console.log(user.get({
           plain: true,
@@ -132,10 +132,11 @@ Neighborhood.sync({
   long: 91,
   fullPage: 'wertwuyiweurytwertweyrtiyweritwierutyiuwert',
   pois: '00000000',
-})).then(() => Neighborhood.findOrCreate({ where : {
+})).then(() => Neighborhood.findOrCreate({ 
+   long: 90,
+ where : {
   name: 'Lake View',
   lat: 22,
-  long: 90,
   fullPage: 'oioioiowieoiwoet',
   pois: 'wewewewe',
 },
