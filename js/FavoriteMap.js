@@ -83,21 +83,25 @@ export default class FavoriteMap extends Component {
   }).addTo(map);
   var LeafIcon = L.Icon.extend({
     options: {
-       iconSize: [30, 30],
+       iconSize: [15, 15],
+       popupAnchor:  [0, -15],
     }
 });
-var greenIcon = new LeafIcon({
+var fIcon = new LeafIcon({
   iconUrl: 'https://emojipedia-us.s3.amazonaws.com/thumbs/160/apple/81/fleur-de-lis_269c.png',
 })
+var starIcon = new LeafIcon({
+  iconUrl: 'https://www.shareicon.net/download/2017/05/09/885829_star_512x512.png',
+})
 for( let i = 0; i < favs.length; i++){
-  L.marker([favs[i].lat, favs[i].long], {icon: greenIcon}).addTo(map)
-.bindPopup("<b>Hello world!</b><br />I am a popup.");
+  L.marker([favs[i].lat, favs[i].long], {icon: fIcon}).addTo(map)
+.bindPopup(favs[i].title, favs[i].lat, favs[i].long );
 }
 
     
 
-	L.marker([${this.props.lat.slice(0, 9)}, ${this.props.long.slice(0, 10)}], {icon: greenIcon}).addTo(map)
-		.bindPopup("<b>Hello world!</b><br />I am a popup.");
+	L.marker([${this.props.lat.slice(0, 9)}, ${this.props.long.slice(0, 10)}], {icon: starIcon}).addTo(map)
+		.bindPopup("<b>You are here</b><br />");
 	var popup = L.popup();
 	map.on('click', onMapClick);
 </script>
