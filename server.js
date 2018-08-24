@@ -34,10 +34,10 @@ app.get('/neighborhood', (req, res) => {
   
   // the current index in the neighborhoods array
   let i = req.query.i ? req.query.i : 0;
-  // const lat = req.query.latitude.slice(0, 9);
-  // const long = req.query.longitude.slice(0, 10);
+  const lat = req.query.latitude.slice(0, 9);
+  const long = req.query.longitude.slice(0, 10);
 
-  helpers.getNeighborhood(29.976169, -90.076438)
+  helpers.getNeighborhood(lat, long)
     .then(body => body.json())
     .then((json) => {
       const neighborhoods = helpers.formatNeighborhoodData(json).filter((n) => n.type === 'neighborhood');
