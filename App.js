@@ -13,6 +13,7 @@ import {
   TouchableHighlight,
   Image,
   Alert,
+  git,
 } from 'react-native';
 
 import axios from 'axios';
@@ -29,7 +30,8 @@ import {
 } from 'react-viro';
 import { viroKey } from './config';
 import Signup from './js/Signup';
-import Map from './js/Map.js';
+import Map from './js/Map';
+import FavoriteMap from './js/FavoriteMap.js';
 import renderIf from './js/helpers/renderIf';
 
 const InitialARScene = require('./js/ARHist');
@@ -109,6 +111,7 @@ export default class ViroSample extends Component {
     this._onDisplayDialog2 = this._onDisplayDialog2.bind(this);
     this._onAttemptHNOC = this._onAttemptHNOC.bind(this);
     this._showMapView = this._showMapView.bind(this);
+    this._showFavMapView = this._showFavMapView.bind(this);
     // this._renderTrackingText = this._renderTrackingText.bind(this);
     this._onTrackingInit = this._onTrackingInit.bind(this);
     this._onDisplayDialog = this._onDisplayDialog.bind(this);
@@ -131,6 +134,7 @@ export default class ViroSample extends Component {
       dataStore: null,
       isLoggedIn: true,
       mapView: false,
+      favMapView: false,
     };
   }
 
@@ -148,6 +152,11 @@ export default class ViroSample extends Component {
   _showMapView() {
     const currentMap = !this.state.mapView;
     this.setState({ mapView: currentMap });
+  }
+
+  _showFavMapView() {
+    const currentMap = !this.state.favMapView;
+    this.setState({ favMapView: currentMap });
   }
 
   _handleARSupported() {
@@ -375,14 +384,16 @@ export default class ViroSample extends Component {
           </View>)}
         {renderIf(this.state.mapView,
           <Map showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
-        {renderIf(this.state.posPhone && this.state.isLoggedIn && !this.state.mapView,
+        {renderIf(this.state.favMapView,
+          <FavoriteMap showFavMapView={this._showFavMapView} lat={this.state.latitude} long={this.state.longitude} />)}
+        {renderIf(this.state.posPhone && this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
           <View>
             <Text>
               Sorry your phone sucks! heres some data for you anyway
               {this.state.generalData[dataCounter]}
             </Text>
           </View>)}
-        {renderIf(this.state.posComp && !this.state.posPhone && this.state.isLoggedIn && !this.state.mapView,
+        {renderIf(this.state.posComp && !this.state.posPhone && this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
           <ViroARSceneNavigator
             style={localStyles.arView}
             apiKey={viroKey}
@@ -393,7 +404,7 @@ export default class ViroSample extends Component {
         {/* {renderIf(this.state.isLoggedIn,
           this._renderTrackingText())} */}
 
-        {renderIf(this.state.isLoading && this.state.isLoggedIn && !this.state.mapView,
+        {renderIf(this.state.isLoading && this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
           <View style={{
             position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, justifyContent: 'center',
           }}
@@ -401,7 +412,7 @@ export default class ViroSample extends Component {
             <ActivityIndicator size="large" animating={this.state.isLoading} color="#ffffff" />
           </View>)
       }
-        {renderIf(this.state.isLoggedIn && !this.state.mapView,
+        {renderIf(this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
           <View style={{
             position: 'absolute', left: 50, right: 0, bottom: 77, alignItems: 'center', flex: 1, flexDirection: 'row', justifyContent: 'space-between',
           }}
