@@ -103,7 +103,7 @@ export default class ViroSample extends Component {
 
 
     // this._onShowObject = this._onShowObject.bind(this);
-    this._onShowLoc = this._onShowLoc.bind(this);
+    this._onSaveLocation = this._onSaveLocation.bind(this);
     this._onShowText = this._onShowText.bind(this);
     this._onShowText2 = this._onShowText2.bind(this);
     this._onShowText3 = this._onShowText3.bind(this);
@@ -220,7 +220,7 @@ export default class ViroSample extends Component {
         'Choose an Option Below',
         [
 
-          // {text: 'Save Location', onPress: () => this._onShowLoc(0, dataCounter, 0 )},
+          // {text: 'Save Location', onPress: () => this._onSaveLocation(0, dataCounter, 0 )},
           { text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0) },
           { text: 'New Location', onPress: () => this._onRemoveText() },
           { text: 'Show Map', onPress: () => this._showMapView() },
@@ -240,7 +240,7 @@ export default class ViroSample extends Component {
               'User Menu',
               'Please Choose an option',
               [
-                { text: 'Save Location', onPress: () => this._onShowLoc(0, dataCounter, 0) },
+                { text: 'Save Location', onPress: () => this._onSaveLocation(0, dataCounter, 0) },
                 // {text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0 )},
                 // {text: 'New Location', onPress: () => this._onRemoveText()},
               ],
@@ -273,12 +273,16 @@ export default class ViroSample extends Component {
     const currentProps = { ...this.state.viroAppProps };
     this.setState({
       viroAppProps: {
-        ...currentProps, displayObject: true, yOffset, displayObjectName: objUniqueName, objectSource: this.state.generalData[dataCounter],
+        ...currentProps,
+        displayObject: true,
+        yOffset,
+        displayObjectName: objUniqueName,
+        objectSource: this.state.generalData[dataCounter],
       },
     });
   }
 
-  _onShowLoc(objIndex, objUniqueName, yOffset) {
+  _onSaveLocation(objIndex, objUniqueName, yOffset) {
     axios.post('http://ec2-34-238-240-14.compute-1.amazonaws.com/addToFavorites', {
       latitude: this.state.latitude,
       longitude: this.state.longitude,
@@ -291,10 +295,10 @@ export default class ViroSample extends Component {
       .catch((error) => {
         console.log(error);
       });
+    const currentProps = { ...this.state.viroAppProps };
     this.setState({
-
       viroAppProps: {
-        ...this.state.viroAppProps, displayObject: true, yOffset, displayObjectName: objUniqueName, objectSource: 'Location Information Saved!',
+        ...currentProps, displayObject: true, yOffset, displayObjectName: objUniqueName, objectSource: 'Location Information Saved!',
       },
 
       // viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:String(this.state.latitude) + String(this.state.longitude)},
