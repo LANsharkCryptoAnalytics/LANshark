@@ -12,8 +12,8 @@ import renderIf from './helpers/renderIf';
 
 const styles = StyleSheet.create({
   login: {
-    flex: 1,
-    paddingTop: '20%',
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   header: {
     textAlign: 'center',
@@ -70,36 +70,37 @@ export default class Signup extends Component {
       loginPage: false,
       signupPage: true,
     };
-  }
 
-  loginPage() {
+    this._loginPage = this._loginPage.bind(this);
+    this._signup = this._signup.bind(this);
+    this._submit = this._submit.bind(this);
+  }
+ 
+
+  _loginPage() {
     this.setState({
       loginPage: true,
       signupPage: false,
     });
   }
 
-  signup() {
+  _signup() {
     this.setState({
       signupPage: true,
       loginPage: false,
     });
   }
 
-  submit() {
-    console.warn(this.props, 'props');
+  _submit() {
+    // console.warn(this.props, 'props');
     axios({
       method: 'post',
       url: 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login',
       data: this.state,
     })
       .then((response) => {
-        console.warn('response', response);
-        this.props.logIn();
-      })
-      .then((response) => {
-        console.warn('response', response);
-        this.props.logIn();
+        // console.warn('response', response);
+        this.props._logIn();
       })
       .catch((error) => {
         throw error;
@@ -119,16 +120,16 @@ export default class Signup extends Component {
 
         <TextInput style={styles.textinput} placeholder="   Password" secureTextEntry={true} onChangeText={(text) => this.setState({password: text})} />
 
-        <TouchableOpacity style={styles.signupbutton} onPress={() => { this.submit() }}>
+        <TouchableOpacity style={styles.signupbutton} onPress={() => { this._submit() }}>
           <Text style={styles.btntext}>Sign Up</Text>
         </TouchableOpacity>
         
-          <Text style={styles.logintext} onPress={() => { this.loginPage();} }>Login Here</Text>
+          <Text style={styles.logintext} onPress={() => { this._loginPage();} }>Login Here</Text>
           </View>
         )}
         {renderIf(!this.state.signupPage && this.state.loginPage,
         <View>
-          <Login arView={this.props.logIn} signup={this.props.signup}/>
+          <Login arView={this.props._logIn} signup={this.props._signup}/>
         </View>)}
 
       </View>

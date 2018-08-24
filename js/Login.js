@@ -12,8 +12,8 @@ import renderIf from './helpers/renderIf';
 
 const styles = StyleSheet.create({
   login: {
-    flex: 1,
-    paddingTop: '10%',
+    alignItems: 'center',
+    alignSelf: 'center',
   },
   header: {
     textAlign: 'center',
@@ -69,27 +69,30 @@ export default class Login extends Component {
       loginPage: true,
       signupPage: false,
     };
+
+    this._signup = this._signup.bind(this);
+    this._submit = this._submit.bind(this);
   }
 
-  signup() {
+  _signup() {
     this.setState({
       loginPage: false,
       signupPage: true,
     });
   }
 
-  submit() {
+  _submit() {
     axios({
       method: 'post',
       url: 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login',
       data: this.state,
     })
       .then((response) => {
-        console.warn(response);
+        // console.warn(response);
         this.props.arView();
       })
       .then((response) => {
-        console.warn(response);
+        // console.warn(response);
         this.props.arView().bind(this);
       })
       .catch((error) => {
@@ -108,11 +111,11 @@ export default class Login extends Component {
 
           <TextInput style={styles.textinput} secureTextEntry={true} placeholder="   Password" onChangeText={(text) => this.setState({password: text})} />
 
-          <TouchableOpacity style={styles.button} onPress={() => { this.submit() }}>
+          <TouchableOpacity style={styles.button} onPress={() => { this._submit() }}>
             <Text style={styles.btntext}>Login</Text>
           </TouchableOpacity>
 
-          <Text style={styles.signuptext} onPress={() => { this.signup() }}>Sign Up</Text>
+          <Text style={styles.signuptext} onPress={() => { this._signup() }}>Sign Up</Text>
         </View>)}
 
         {renderIf(this.state.signupPage,
