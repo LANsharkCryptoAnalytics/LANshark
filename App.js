@@ -134,7 +134,7 @@ export default class ViroSample extends Component {
       dataStore: null,
       isLoggedIn: true,
       mapView: false,
-      favMapView: true,
+      favMapView: false,
     };
   }
 
