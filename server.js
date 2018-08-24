@@ -170,12 +170,12 @@ app.post('/addToFavorites', (req, res) => {
   console.log('add to user favorites');
   console.log(req.body);
   helpers.addToFavorites(req)
-  .then(()=>{
-    res.send('saved to favorites');
-  }).catch((error)=>{
-    console.log('unable to save');
-  });
-
+    .then(() => {
+      res.send('saved to favorites');
+    }).catch(() => {
+      console.log('unable to save');
+    });
+});
 // helpers.searchByTitle('Garden District, New Orleans');
 // helpers.getFullPage('Garden District, New Orleans');
 
