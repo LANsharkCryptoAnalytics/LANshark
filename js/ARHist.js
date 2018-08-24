@@ -29,13 +29,13 @@ import {
   ViroText,
 } from 'react-viro';
 
-import TimerMixin from 'react-timer-mixin';
+// import TimerMixin from 'react-timer-mixin';
 import PropTypes from 'prop-types';
 
 const createReactClass = require('create-react-class');
 
 const ARHist = createReactClass({
-  mixins: [TimerMixin],
+  // mixins: [TimerMixin],
 
   getInitialState() {
     return {

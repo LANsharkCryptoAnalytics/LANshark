@@ -29,7 +29,7 @@ import {
 } from 'react-viro';
 import { viroKey } from './config';
 import Signup from './js/Signup';
-import Map from './js/Map.jsx';
+import Map from './js/Map.js';
 import renderIf from './js/helpers/renderIf';
 
 const InitialARScene = require('./js/ARHist');
@@ -71,7 +71,7 @@ export default class ViroSample extends Component {
             const generalData = res.data;
             this.setState({ generalData });
           })
-          .catch(err => this.state.error = err);
+          .catch(error => this.setState({ error }));
       },
       error => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
@@ -107,6 +107,8 @@ export default class ViroSample extends Component {
     this._onShowText3 = this._onShowText3.bind(this);
     this._onRemoveText = this._onRemoveText.bind(this);
     this._onDisplayDialog2 = this._onDisplayDialog2.bind(this);
+    this._onAttemptHNOC = this._onAttemptHNOC.bind(this);
+    this._showMapView = this._showMapView.bind(this);
     // this._renderTrackingText = this._renderTrackingText.bind(this);
     this._onTrackingInit = this._onTrackingInit.bind(this);
     this._onDisplayDialog = this._onDisplayDialog.bind(this);
@@ -142,9 +144,12 @@ export default class ViroSample extends Component {
       isLoggedIn: true,
     });
   }
-  changeView = () => {
-    this.setState({mapView: false});
+
+  _showMapView() {
+    const currentMap = !this.state.mapView;
+    this.setState({ mapView: currentMap });
   }
+
   _handleARSupported() {
 
   }
@@ -200,7 +205,7 @@ export default class ViroSample extends Component {
   }
 
   _onDisplayDialog() {
-    if (this.state.isLoggedIn) {
+    if (!this.state.isLoggedIn) {
       Alert.alert(
         'Learn About The Area Around You',
         'Choose an Option Below',
@@ -209,6 +214,7 @@ export default class ViroSample extends Component {
           // {text: 'Save Location', onPress: () => this._onShowLoc(0, dataCounter, 0 )},
           { text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0) },
           { text: 'New Location', onPress: () => this._onRemoveText() },
+          { text: 'Show Map', onPress: () => this._showMapView() },
         ],
       );
     } else {
@@ -218,6 +224,7 @@ export default class ViroSample extends Component {
         [
           { text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0) },
           { text: 'New Location', onPress: () => this._onRemoveText() },
+          { text: 'Show Map', onPress: () => this._showMapView() },
           {
             text: 'User Menu',
             onPress: () => Alert.alert(
@@ -283,6 +290,19 @@ export default class ViroSample extends Component {
 
       // viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:String(this.state.latitude) + String(this.state.longitude)},
     });
+  }
+
+  _onAttemptHNOC() {
+    axios.post('http://ec2-34-238-240-14.compute-1.amazonaws.com/', {
+      latitude: this.state.latitude,
+      longitude: this.state.longitude,
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   _onShowText2(objIndex, objUniqueName, yOffset) {
@@ -354,7 +374,7 @@ export default class ViroSample extends Component {
             <Signup logIn={this.logIn} />
           </View>)}
         {renderIf(this.state.mapView,
-          <Map changeView={this.changeView} lat={this.state.latitude} long={this.state.longitude}/>)}
+          <Map showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
         {renderIf(this.state.posPhone && this.state.isLoggedIn && !this.state.mapView,
           <View>
             <Text>
