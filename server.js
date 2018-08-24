@@ -52,7 +52,7 @@ app.get('/neighborhood', (req, res) => {
           const long = neighborhoods[i].coord.split(' ')[0];
           const lat = neighborhoods[i].coord.split(' ')[1];
         }
-        // get the full page for the current neighborhood
+        // Get the full page for the current neighborhood
         helpers.getFullPage(`${neighborhoods[i].title},_New_Orleans`)
           .then(({ data, response }) => {
             const results = helpers.formatResults(data.paragraph);

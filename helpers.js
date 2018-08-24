@@ -203,15 +203,9 @@ exports.getFullPageURI = (uri, req, res) => {
 
 exports.loginUser = (user, response, reject) => {
   console.log('login user helper fired');
-  // TODO:give me data Senai !
+  // TODO:PUT YOUR LOGIN STUFF HERE SENAI
 
-  // the below works but this isn't really the proper place for it
-  // possible shift to findAndUPdate or something similar
-  // db.findUser(user.body).then((userData)=>{
-  //   console.log(`response ${userData}`);
-  //   console.log('do whatever we need to do here to log them in');
 
-  // }).catch( (err)=> { console.log(err)});
 };
 
 // Create a new user
@@ -232,12 +226,7 @@ exports.createUser = (user, response, reject) => {
 // addToUserFavorites
 exports.addToFavorites = (favorite, response, reject) => {
   // console.log('addToUserFavorites');
-  db.addToUserFavorites(favorite).then(() => {
-    console.log('favorite added');
-    // res.end; .then((res) => { return res.data.query; })
-  }).catch((reject) => {
-    console.log('add to user favorites failed');
-  });
+  db.addToUserFavorites(favorite);
 };
 
 /////////////////////////////////////////////////////////
@@ -247,30 +236,14 @@ exports.addToFavorites = (favorite, response, reject) => {
 // Create data helpers
 exports.neighborhoodCreate = (neighborhood, res, reject) => {
   console.log('neighborhoodCreate');
-  db.createNeighborhood(neighborhood).then((response) => {
-    console.log('hood created', response);
-    res.end();
-  }).catch((reject) => {
-    console.log('reject');
-  });
+  db.createNeighborhood(neighborhood);
 };
 
 exports.poiCreate = (poi, response, reject) => {
   console.log('poiCreate');
-  db.createPoi(poi).then((response) => {
-    console.log('poi created', response);
-    res.end;
-  }).catch((reject) => {
-    console.log('reject');
-  });
+  db.createPoi(poi);
 };
 
 exports.vcsCreate = (vcsInfo, res, reject) => {
   console.log('vieux carre address entry create fired');
-  db.createVcs(vcsInfo).then((response) => {
-    console.log('vc data created', response);
-    res.end();
-  }).catch((reject) => {
-    console.log("you're a reject");
-  });
-};
+  db.createVcs(vcsInfo);

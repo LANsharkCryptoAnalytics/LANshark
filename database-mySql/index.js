@@ -133,12 +133,12 @@ Neighborhood.sync({
   fullPage: 'wertwuyiweurytwertweyrtiyweritwierutyiuwert',
   pois: '00000000',
 })).then(() => Neighborhood.findOrCreate({ 
-   long: 90,
- where : {
-  name: 'Lake View',
-  lat: 22,
-  fullPage: 'oioioiowieoiwoet',
-  pois: 'wewewewe',
+  where : {
+    name: 'Lake View',
+    long: 90,
+    lat: 22,
+    fullPage: 'oioioiowieoiwoet',
+    pois: 'wewewewe',
 },
 }))
   .then(() => {
