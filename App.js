@@ -14,14 +14,10 @@ import {
   Image,
   Alert,
 } from 'react-native';
-<<<<<<< HEAD
-import axios from 'axios';
-=======
 
 import axios from 'axios';
 
 
->>>>>>> 57130ef692a4e165aac365aeaadf975c11656fe5
 import {
   ViroARScene,
   ViroARSceneNavigator,
@@ -33,10 +29,7 @@ import {
 } from 'react-viro';
 import { viroKey } from './config';
 import Signup from './js/Signup';
-<<<<<<< HEAD
-=======
-import Map from './js/Map.jsx';
->>>>>>> 57130ef692a4e165aac365aeaadf975c11656fe5
+import Map from './js/Map.js';
 import renderIf from './js/helpers/renderIf';
 
 const InitialARScene = require('./js/ARHist');
@@ -115,6 +108,7 @@ export default class ViroSample extends Component {
     this._onRemoveText = this._onRemoveText.bind(this);
     this._onDisplayDialog2 = this._onDisplayDialog2.bind(this);
     this._onAttemptHNOC = this._onAttemptHNOC.bind(this);
+    this._showMapView = this._showMapView.bind(this);
     // this._renderTrackingText = this._renderTrackingText.bind(this);
     this._onTrackingInit = this._onTrackingInit.bind(this);
     this._onDisplayDialog = this._onDisplayDialog.bind(this);
@@ -136,12 +130,8 @@ export default class ViroSample extends Component {
       narrowData: textArray2,
       dataStore: null,
       isLoggedIn: true,
-<<<<<<< HEAD
-    }
-=======
       mapView: false,
     };
->>>>>>> 57130ef692a4e165aac365aeaadf975c11656fe5
   }
 
 
@@ -154,9 +144,12 @@ export default class ViroSample extends Component {
       isLoggedIn: true,
     });
   }
-  changeView = () => {
-    this.setState({mapView: false});
+
+  _showMapView() {
+    const currentMap = !this.state.mapView;
+    this.setState({ mapView: currentMap });
   }
+
   _handleARSupported() {
 
   }
@@ -221,6 +214,7 @@ export default class ViroSample extends Component {
           // {text: 'Save Location', onPress: () => this._onShowLoc(0, dataCounter, 0 )},
           { text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0) },
           { text: 'New Location', onPress: () => this._onRemoveText() },
+          { text: 'Show Map', onPress: () => this._showMapView() },
         ],
       );
     } else {
@@ -230,6 +224,7 @@ export default class ViroSample extends Component {
         [
           { text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0) },
           { text: 'New Location', onPress: () => this._onRemoveText() },
+          { text: 'Show Map', onPress: () => this._showMapView() },
           {
             text: 'User Menu',
             onPress: () => Alert.alert(
@@ -379,7 +374,7 @@ export default class ViroSample extends Component {
             <Signup logIn={this.logIn} />
           </View>)}
         {renderIf(this.state.mapView,
-          <Map changeView={this.changeView} lat={this.state.latitude} long={this.state.longitude}/>)}
+          <Map showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
         {renderIf(this.state.posPhone && this.state.isLoggedIn && !this.state.mapView,
           <View>
             <Text>
