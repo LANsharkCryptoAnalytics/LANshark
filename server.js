@@ -116,7 +116,7 @@ app.get('/broad', (req, res) => {
       helpers.getFullPage(`${neighborhoods[i].title},_New_Orleans`)
         .then(({ data }) => {
           // Format the results using formatREsults function
-          let results = helpers.formatResults(data.paragraph);
+          const results = helpers.formatResults(data.paragraph);
           // if paragraph is greater than 100 chars send results?
           if (data.paragraph.length > 100) {
             res.send(results);
@@ -149,12 +149,12 @@ app.get('/isLoggedIn', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
+  // TODO: Senai do some stuff here
   console.log('server post login endpoint');
-  console.log(req.body, 'rrreeeqqqq......bbbbooooddddyyyy')
+  console.log(req.body, 'rrreeeqqqq......bbbbooooddddyyyy');
   // helpers.loginUser(req, res);
   // helpers.createUser(req, res);
   res.send(req.body);
-  
   // res.send('logged in');
 });
 
@@ -166,15 +166,10 @@ app.post('/signUp', (user, req, res) => {
 });
 
 // Endpoint to allow a logged in user to save favorite locations or points of interest
-app.post('/addToFavorites', (req, res) => {
+app.post('/addToFavorites', (req) => {
   console.log('add to user favorites');
   console.log(req.body);
-  helpers.addToFavorites(req)
-    .then(() => {
-      res.send('saved to favorites');
-    }).catch(() => {
-      console.log('unable to save');
-    });
+  helpers.addToFavorites(req.body);
 });
 // helpers.searchByTitle('Garden District, New Orleans');
 // helpers.getFullPage('Garden District, New Orleans');

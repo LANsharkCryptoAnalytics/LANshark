@@ -201,7 +201,7 @@ exports.getFullPageURI = (uri, req, res) => {
 //   USER RELATED FUNCTIONS                //
 /////////////////////////////////////////////
 
-exports.loginUser = (user, response, reject) => {
+exports.loginUser = (user) => {
   console.log('login user helper fired');
   // TODO:PUT YOUR LOGIN STUFF HERE SENAI
 
@@ -212,7 +212,7 @@ exports.loginUser = (user, response, reject) => {
 exports.createUser = (user, response, reject) => {
   console.log('create user helper fired');
 
-  db.createUser = (userInfo, sequelize) => {
+  db.createUser = (userInfo) => {
     (userInfo.body).then((userData) => {
       console.log(`response ${userData}`);
       console.log('do whatever we need to do here to log them in');
@@ -224,9 +224,15 @@ exports.createUser = (user, response, reject) => {
 };
 
 // addToUserFavorites
-exports.addToFavorites = (favorite, response, reject) => {
+exports.addToFavorites = (favorite) => {
   // console.log('addToUserFavorites');
-  db.addToUserFavorites(favorite);
+   db.addToUserFavorites(favorite)
+   .then(()=>{
+     res.send("saved to favorites")
+   })
+   .catch((error) => {
+     console.log('error saving');
+   });
 };
 
 /////////////////////////////////////////////////////////
@@ -247,3 +253,4 @@ exports.poiCreate = (poi, response, reject) => {
 exports.vcsCreate = (vcsInfo, res, reject) => {
   console.log('vieux carre address entry create fired');
   db.createVcs(vcsInfo);
+};
