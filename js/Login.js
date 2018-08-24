@@ -23,10 +23,12 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   textinput: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    color: 'white',
     alignSelf: 'stretch',
     height: 40,
     marginBottom: 30,
-    color: '#fff',
     borderBottomColor: '#f8f8f8',
     borderBottomWidth: 1,
   },
@@ -60,12 +62,13 @@ export default class Login extends Component {
     const url1 = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login';
     // const url2 = 'http://172.24.6.45:8200/login';
     axios({
-      method: 'post',
+      method: 'get',
       url: url1,
       data: this.state,
     })
       .then((response) => {
         console.warn(response);
+        this.props.arView();
       })
       .catch((error) => {
         throw error;
@@ -80,10 +83,10 @@ export default class Login extends Component {
 
         <TextInput style={styles.textinput} placeholder="Email" onChangeText={(text) => this.setState({email: text})}/>
 
-        <TextInput style={styles.textinput} placeholder="Password" onChangeText={(text) => this.setState({password: text})} />
+        <TextInput style={styles.textinput} secureTextEntry={true} placeholder="Password" onChangeText={(text) => this.setState({password: text})} />
 
         <TouchableOpacity style={styles.button} onPress={() => {this.submit()}}>
-          <Text style={styles.btntext}>Sign Up</Text>
+          <Text style={styles.btntext}>Login</Text>
         </TouchableOpacity>
 
       </View>

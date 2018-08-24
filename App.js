@@ -128,7 +128,8 @@ export default class ViroSample extends Component {
       posPhone: false,
       narrowData: textArray2,
       dataStore: null,
-      isLoggedIn: false,
+      isLoggedIn: true,
+      isLogInPage: false,
     };
   }
 
@@ -347,10 +348,10 @@ export default class ViroSample extends Component {
   render() {
     return (
       <View style={localStyles.outer}>
-        {renderIf(!this.state.isLoggedIn,
+        {/* {renderIf(!this.state.isLoggedIn,
           <View style={styles.login}>
             <Signup logIn={() => { this.logIn(); }} />
-          </View>)}
+          </View>)} */}
         {renderIf(this.state.posPhone && this.state.isLoggedIn,
           <View>
             <Text>

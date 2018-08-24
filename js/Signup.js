@@ -7,6 +7,8 @@ import {
   View,
 } from 'react-native';
 import axios from 'axios';
+import Login from './Login';
+import renderIf from './helpers/renderIf';
 
 const styles = StyleSheet.create({
   login: {
@@ -23,19 +25,29 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   textinput: {
+    fontSize: 40,
+    fontWeight: 'bold',
+    color: 'white',
     alignSelf: 'stretch',
     height: 40,
     marginBottom: 30,
-    color: '#fff',
     borderBottomColor: '#f8f8f8',
     borderBottomWidth: 1,
   },
-  button: {
+  signupbutton: {
     alignSelf: 'stretch',
     alignItems: 'center',
     padding: 20,
     backgroundColor: '#59cbbd',
     marginTop: 30,
+  },
+  logintext: {
+    alignSelf: 'stretch',
+    textAlign: 'center',
+    marginTop: 30,
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   btntext: {
     color: '#fff',
@@ -53,7 +65,14 @@ export default class Signup extends Component {
       name: '',
       email: '',
       password: '',
+      loginPage: false,
     };
+  }
+
+  loginPage() {
+    this.setState({
+      loginPage: true
+    })
   }
 
   submit() {
@@ -77,18 +96,27 @@ export default class Signup extends Component {
   render() {
     return (
       <View style={styles.login}>
-
+      {renderIf(!this.state.loginPage,
+        <View>
         <Text style={styles.header}>Welcome to HistARy Tour</Text>
 
-        <TextInput style={styles.textinput} placeholder="Your Name" onChangeText={(text) => this.setState({name: text})} />
+        <TextInput style={styles.textinput} placeholder="Name" onChangeText={(text) => this.setState({name: text})} />
 
         <TextInput style={styles.textinput} placeholder="Email" onChangeText={(text) => this.setState({email: text})}/>
 
-        <TextInput style={styles.textinput} placeholder="Password" onChangeText={(text) => this.setState({password: text})} />
+        <TextInput style={styles.textinput} placeholder="Password" secureTextEntry={true} onChangeText={(text) => this.setState({password: text})} />
 
-        <TouchableOpacity style={styles.button} onPress={() => {this.submit()}}>
+        <TouchableOpacity style={styles.signupbutton} onPress={() => {this.submit()}}>
           <Text style={styles.btntext}>Sign Up</Text>
         </TouchableOpacity>
+        
+          <Text style={styles.logintext} onPress={() => {this.loginPage()}}>Login Here</Text>
+          </View>
+        )}
+        {renderIf(this.state.loginPage,
+        <View>
+          <Login arView={this.props.logIn} />
+        </View>)}
 
       </View>
     )
