@@ -1,0 +1,140 @@
+import React, { Component } from 'react';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  WebView,
+} from 'react-native';
+
+export default class FavoriteMap extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  // Open URL in a browser
+
+  //   loggingIn = () => {
+  //     axios.get('http://localhost:8200/map')
+  //     .then((data) => alert(data))
+  //     .catch((e) => alert(e))
+  //   }
+
+
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <WebView
+            source={{
+              html: `
+              <!DOCTYPE html>
+<html>
+<head>
+	<title>Favorites Map</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
+
+
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		#map {
+			width: 600px;
+			height: 400px;
+		}
+	</style>
+
+	<style>body { padding: 0; margin: 0; } #map { height: 100%; width: 100vw; }</style>
+</head>
+<body>
+
+<div id='map'></div>
+
+<script>
+	var map = L.map('map').setView([${this.props.lat.slice(0, 9)}, ${this.props.long.slice(0, 10)}], 16);
+    var favs = [ { title: 'Rivoli Theatre',
+    long: '-90.0754624',
+    lat: '29.9755143',
+    type: 'movie theater' },
+  { title: 'Rivoli Theatre',
+    long: '-90.0754624',
+    lat:  '29.9755143',
+    type: 'former building or structure' },
+  { title: 'Bell Theatre',
+    long: '-90.077997',
+    lat:  '29.979401',
+    type: 'movie theater' },
+   ];
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+		maxZoom: 18,
+		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		id: 'mapbox.streets'
+  }).addTo(map);
+  var LeafIcon = L.Icon.extend({
+    options: {
+       iconSize: [30, 30],
+    }
+});
+var greenIcon = new LeafIcon({
+  iconUrl: 'https://emojipedia-us.s3.amazonaws.com/thumbs/160/apple/81/fleur-de-lis_269c.png',
+})
+
+    favs.forEach(fav =>{
+      
+    })
+  
+	L.marker([${this.props.lat.slice(0, 9)}, ${this.props.long.slice(0, 10)}], {icon: greenIcon}).addTo(map)
+		.bindPopup("<b>Hello world!</b><br />I am a popup.");
+
+
+	var popup = L.popup();
+
+
+	map.on('click', onMapClick);
+</script>
+
+
+
+</body>`,
+            }}
+            style={{ flex: 1 }}
+            scalesPageToFit
+            onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest} // for iOS
+            onNavigationStateChange={this.onShouldStartLoadWithRequest}
+          />
+        </View>
+        <View>
+          <TouchableOpacity style={styles.button} onPress={() => { this.props.changeView(); }}>
+            <Text style={styles.btntext}>AR View</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+}
+
+var styles = StyleSheet.create({
+
+  button: {
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#59cbbd',
+  },
+  btntext: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
