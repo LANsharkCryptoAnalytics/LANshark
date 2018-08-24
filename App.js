@@ -29,7 +29,8 @@ import {
 } from 'react-viro';
 import { viroKey } from './config';
 import Signup from './js/Signup';
-import Map from './js/Map.jsx';
+import Map from './js/Map';
+import FavoriteMap from './js/FavoriteMap.js';
 import renderIf from './js/helpers/renderIf';
 
 const InitialARScene = require('./js/ARHist');
@@ -128,7 +129,7 @@ export default class ViroSample extends Component {
       narrowData: textArray2,
       dataStore: null,
       isLoggedIn: true,
-      mapView: false,
+      mapView: true,
     };
   }
 
@@ -354,7 +355,7 @@ export default class ViroSample extends Component {
             <Signup logIn={this.logIn} />
           </View>)}
         {renderIf(this.state.mapView,
-          <Map changeView={this.changeView} lat={this.state.latitude} long={this.state.longitude}/>)}
+          <FavoriteMap changeView={this.changeView} lat={this.state.latitude} long={this.state.longitude}/>)}
         {renderIf(this.state.posPhone && this.state.isLoggedIn && !this.state.mapView,
           <View>
             <Text>

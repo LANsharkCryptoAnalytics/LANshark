@@ -27,14 +27,15 @@ app.get('/neighborhood', (req, res) => {
   // 29.9666281,-90.0914401
   // 40.747214,-74.007082
   // 29.928714, -90.001709
+  // 29.976169,-90.076438
   // req.query.latitude.slice(0,9), req.query.longitude.slice(0,10), req.query.i
 
-  // TODO: What does i represent?
+  // the current index in the neighborhoods array
   let i = req.query.i ? req.query.i : 0;
-  const lat = req.query.latitude.slice(0, 9);
-  const long = req.query.longitude.slice(0, 10);
+  // const lat = req.query.latitude.slice(0, 9);
+  // const long = req.query.longitude.slice(0, 10);
 
-  helpers.getNeighborhood(lat, long)
+  helpers.getNeighborhood(29.976169, -90.076438)
     .then(body => body.json())
     .then((json) => {
       const neighborhoods = helpers.formatNeighborhoodData(json).filter((n) => {
