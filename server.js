@@ -1,8 +1,8 @@
 const express = require('express');
-//TODO: axios isn't used on this page
+// TODO: axios isn't used on this page
 const axios = require('axios');
-const hnocSearch = require('./hnocSearch.js');
 const bodyParser = require('body-parser');
+const hnocSearch = require('./hnocSearch.js');
 const helpers = require('./helpers.js');
 const db = require('./database-mySql/index.js');
 require('dotenv').config();
@@ -29,9 +29,10 @@ app.get('/neighborhood', (req, res) => {
   // 29.9666281,-90.0914401
   // 40.747214,-74.007082
   // 29.928714, -90.001709
+  // 29.976169,-90.076438
   // req.query.latitude.slice(0,9), req.query.longitude.slice(0,10), req.query.i
-
-  // TODO: What does i represent?
+  
+  // the current index in the neighborhoods array
   let i = req.query.i ? req.query.i : 0;
   const lat = req.query.latitude.slice(0, 9);
   const long = req.query.longitude.slice(0, 10);
@@ -39,10 +40,8 @@ app.get('/neighborhood', (req, res) => {
   helpers.getNeighborhood(lat, long)
     .then(body => body.json())
     .then((json) => {
-      const neighborhoods = helpers.formatNeighborhoodData(json).filter((n) => {
-        return n.type === 'neighborhood';
-      });
-    
+      const neighborhoods = helpers.formatNeighborhoodData(json).filter((n) => n.type === 'neighborhood');
+
       if (i > neighborhoods.length) {
         i -= neighborhoods.length;
       }
@@ -62,11 +61,11 @@ app.get('/neighborhood', (req, res) => {
             } else {
               helpers.getFullPage(neighborhoods[i].title)
                 .then(({ data }) => {
-                  let results = helpers.formatResults(data.paragraph);
+                  const results = helpers.formatResults(data.paragraph);
                   if (data.paragraph.length < 100) {
                     helpers.getPOINarrow(lat, long)
                       .then((stuff) => {
-                        let results = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ''));
+                        const results = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ''));
                         res.send(results);
                       }).catch((error) => { console.log(error); });
                   } else {
@@ -97,9 +96,7 @@ app.get('/broad', (req, res) => {
     if (i > 0) {
       // what does this function do, produce a list of neighborhoods as json?
       // or return a list of non neighborhoods?
-      neighborhoods = helpers.formatNeighborhoodData(json).filter((n) => {
-        return n.type !== 'neighborhood';
-      });
+      neighborhoods = helpers.formatNeighborhoodData(json).filter((n) => n.type !== 'neighborhood');
     }
     // TODO: What is i?
     if (i > neighborhoods.length) {
@@ -116,20 +113,20 @@ app.get('/broad', (req, res) => {
       helpers.getFullPage(`${neighborhoods[i].title},_New_Orleans`)
         .then(({ data }) => {
           // Format the results using formatREsults function
-          let results = helpers.formatResults(data.paragraph);
+          const results = helpers.formatResults(data.paragraph);
           // if paragraph is greater than 100 chars send results?
           if (data.paragraph.length > 100) {
             res.send(results);
           } else {
             // else get full page data for ?neighborhoods i?
             helpers.getFullPage(neighborhoods[i].title)
-              .then(( {data }) => {
-                let results = helpers.formatResults(data.paragraph);
+              .then(({ data }) => {
+                const results = helpers.formatResults(data.paragraph);
                 // if paragraph is less than 100 chars get narrow info???
                 if (data.paragraph.length < 100) {
                   helpers.getPOINarrow(lat, long)
                     .then((stuff) => {
-                      let results = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ''));
+                      const results = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ''));
                       res.send(results);
                     }).catch((error) => { console.log(error); });
                 } else { res.send(results); }
@@ -150,11 +147,11 @@ app.get('/isLoggedIn', (req, res) => {
 
 app.post('/login', (req, res) => {
   console.log('server post login endpoint');
-  console.log(req.body, 'rrreeeqqqq......bbbbooooddddyyyy')
+  console.log(req.body, 'rrreeeqqqq......bbbbooooddddyyyy');
   // helpers.loginUser(req, res);
   // helpers.createUser(req, res);
   res.send(req.body);
-  
+
   // res.send('logged in');
 });
 
