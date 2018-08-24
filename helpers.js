@@ -1,7 +1,7 @@
 const axios = require('axios');
 const fetch = require('node-fetch');
 const scrapeIt = require('scrape-it');
-const db = require('./database-mySql/dbHelpers.js')
+const db = require('./database-mySql/dbHelpers.js');
 
 exports.formatResults = (text) => {
   let results = text;
@@ -31,9 +31,8 @@ exports.formatResults = (text) => {
   results = results.split(/[,.;]+/);
   results.forEach((result, i) => {
     results[i] = result.trim();
-    //removing double and triple spacing
-    results[i] = results[i].replace(/  /g, " ");
-    results[i] = results[i].replace(/  /g, " ");
+    results[i] = results[i].replace(/ {2}/g, ' ');
+    results[i] = results[i].replace(/ {2}/g, ' ');
   });
   return results;
   // return results.split(/[,.;]+/);
@@ -57,8 +56,7 @@ exports.getNeighborhood = (lat, long) => {
 
   const fullUrl = `${endpointUrl}?query=${encodeURIComponent(sparqlQuery)}`;
 
-    
-  const headers = { Accept: 'application/sparql-results+json'};
+  const headers = { Accept: 'application/sparql-results+json' };
 
   return fetch(fullUrl, {
     headers,
@@ -75,6 +73,7 @@ exports.formatNeighborhoodData = ((json) => {
     },
     results,
   } = json;
+
   for (const result of results.bindings) {
     hood.push(result)
     for (const variable of vars) {
@@ -98,7 +97,7 @@ exports.formatNeighborhoodData = ((json) => {
           coord: place.coordinate_location.value.slice(6, -1),
           dist: dist,
           type: type
-        })
+        });
       }
     }
   });
@@ -108,7 +107,6 @@ exports.formatNeighborhoodData = ((json) => {
 
 // Retrieves the full wikipedia page for a given title
 exports.getFullPage = (title, req, res) => {
-
   title = title.split(' ').join('_');
   const url = `https://en.wikipedia.org/wiki/${title}`;
   // console.log(url);
@@ -121,7 +119,7 @@ exports.getFullPage = (title, req, res) => {
 // Retrieves the neighboorhood map using a wikipedeai Sparql query
 exports.getNeighborhoodMap = (lat, long, req, res) => {
   const endpointUrl = 'https://query.wikidata.org/sparql';
-   const sparqlQuery = `#defaultView:Map{"layer":"?instance_ofLabel"}
+  const sparqlQuery = `#defaultView:Map{"layer":"?instance_ofLabel"}
       SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instance_ofLabel WHERE {
         SERVICE wikibase:around {
           ?place wdt:P625 ?coordinate_location.
@@ -136,9 +134,8 @@ exports.getNeighborhoodMap = (lat, long, req, res) => {
 
   const fullUrl = `${endpointUrl}?query=${encodeURIComponent(sparqlQuery)}`;
 
-
   const headers = {
-    Accept: 'application/sparql-results+json'
+    Accept: 'application/sparql-results+json',
   };
 
   fetch(fullUrl, {
@@ -150,6 +147,7 @@ exports.getNeighborhoodMap = (lat, long, req, res) => {
       },
       results,
     } = json;
+
     for (const result of results.bindings) {
       for (const variable of vars) {
         console.log('%s: %o', variable, result[variable]);
@@ -157,56 +155,45 @@ exports.getNeighborhoodMap = (lat, long, req, res) => {
       console.log('---');
     }
   });
-}
+};
 
 exports.getPOINarrow = (lat, long) => axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&prop=coordinates%7Cpageimages%7Cpageterms%7Cextracts&exlimit=5&generator=geosearch&colimit=1&piprop=thumbnail&pithumbsize=144&pilimit=10&wbptterms=description&ggscoord=${lat}%7C${long}&ggsradius=1500&ggslimit=1`);
 
 // get the address at the current lat and long
 // MapQuet API key is required
 // https://www.mapquestapi.com/geocoding/v1/reverse?key=KEY&location=29.92878%2C-90.08422&outFormat=json&thumbMaps=false
+
 exports.getAddress = (lat, long, req, res) => {
-  axios.get(`https://www.mapquestapi.com/geocoding/v1/reverse?key=${process.env.MAPQUESTKEY}&location=${lat}%2C${long}&outFormat=json&thumbMaps=false`).then(function (res) {
-      // console.log(res.data.results[0].locations[0].street);
-      return res.data.results[0].locations[0].street;
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+  return axios.get(`https://www.mapquestapi.com/geocoding/v1/reverse?key=${process.env.MAPQUESTKEY}&location=${lat}%2C${long}&outFormat=json&thumbMaps=false`);
   // https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=1403+Washington+Ave
-}
+};
 
-exports.searchByAddress = (add, req, res) => {
-  add = add.split(' ').join('+');
-  axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${add}+New+Orleans`).then(function (res) {
-      res.data.query;
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}
+exports.searchByAddress = (address, req, res) => {
+  const add = address.split(' ').join('+');
+  return axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${add}+New+Orleans`);
+};
 
-exports.searchByTitle = (title, req, res) => {
-  title = title.split(' ').join('+');
-  axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${title}`).then(function (res) {
-    // console.log(res.data.query);
-    return res.data.query;
-  }).catch(function (error) {
-    console.log(error);
-  });
-}
+exports.searchHnoc = (searchString) => {
+  return db.hnocSearch(searchString);
+};
+
+exports.searchByTitle = (titleInput, req, res) => {
+  const title = titleInput.split(' ').join('+');
+  return axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${title}`);
+};
 
 exports.getFullPageURI = (uri, req, res) => {
   scrapeIt(uri, {
-      title: 'h1',
-      paragraph: 'p',
-    })
+    title: 'h1',
+    paragraph: 'p',
+  })
     .then(({ data, response }) => {
-      let results = data.paragraph.replace(/ *\[[^)]*\] */g, " ");
-      results = results.replace(/[\r\n]/g, "");
+      let results = data.paragraph.replace(/ *\[[^)]*\] */g, ' ');
+      results = results.replace(/[\r\n]/g, '');
       results = results.split('.');
       // console.log(results);
-      res.send(results)
-    }).catch(function (error) {
+      res.send(results);
+    }).catch((error) => {
       console.log(error);
     });
 };
@@ -225,47 +212,48 @@ exports.loginUser = (user, response, reject) => {
   //   console.log('do whatever we need to do here to log them in');
 
   // }).catch( (err)=> { console.log(err)});
-}
+};
 
+// Create a new user
 exports.createUser = (user, response, reject) => {
   console.log('create user helper fired');
 
   db.createUser = (userInfo, sequelize) => {
-    (user.body).then((userData) => {
+    (userInfo.body).then((userData) => {
       console.log(`response ${userData}`);
       console.log('do whatever we need to do here to log them in');
-      res.end
+      // res.end();
     }).catch((err) => {
-      console.log(err)
+      console.log(err);
     });
-  }
-}
+  };
+};
 
-//addToUserFavorites
+// addToUserFavorites
 exports.addToFavorites = (favorite, response, reject) => {
-  console.log('addToUserFavorites');
-  db.addToUserFavorites(favorite).then((response) => {
-    console.log('favorite added', response);
-    res.end;
+  // console.log('addToUserFavorites');
+  db.addToUserFavorites(favorite).then(() => {
+    console.log('favorite added');
+    // res.end; .then((res) => { return res.data.query; })
   }).catch((reject) => {
-    console.log('reject');
-  })
-}
+    console.log('add to user favorites failed');
+  });
+};
 
 /////////////////////////////////////////////////////////
 // END OF USER RELATED FUNCTIONS                       //
 /////////////////////////////////////////////////////////
 
-
-exports.neighborhoodCreate = (neighborhood, response, reject) => {
+// Create data helpers
+exports.neighborhoodCreate = (neighborhood, res, reject) => {
   console.log('neighborhoodCreate');
   db.createNeighborhood(neighborhood).then((response) => {
     console.log('hood created', response);
-    res.end;
+    res.end();
   }).catch((reject) => {
     console.log('reject');
-  })
-}
+  });
+};
 
 exports.poiCreate = (poi, response, reject) => {
   console.log('poiCreate');
@@ -274,16 +262,15 @@ exports.poiCreate = (poi, response, reject) => {
     res.end;
   }).catch((reject) => {
     console.log('reject');
-  })
-}
+  });
+};
 
-exports.vcsCreate = (vcsInfo, respose, reject) => {
+exports.vcsCreate = (vcsInfo, res, reject) => {
   console.log('vieux carre address entry create fired');
   db.createVcs(vcsInfo).then((response) => {
-    console.log("vc data created", response);
-    res.end;
+    console.log('vc data created', response);
+    res.end();
   }).catch((reject) => {
-    console.log("you\'re a reject");
+    console.log("you're a reject");
   });
-
-}
+};
