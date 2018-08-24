@@ -31,7 +31,7 @@ import {
 import { viroKey } from './config';
 import Signup from './js/Signup';
 import Map from './js/Map';
-import FavoriteMap from './js/FavoriteMap.js';
+import FavoriteMap from './js/FavoriteMap';
 import renderIf from './js/helpers/renderIf';
 
 const InitialARScene = require('./js/ARHist');
