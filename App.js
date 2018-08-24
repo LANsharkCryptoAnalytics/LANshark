@@ -120,7 +120,7 @@ export default class ViroSample extends Component {
       posPhone: false,
       narrowData: textArray2,
       dataStore: null,
-      isLoggedIn: true,
+      isLoggedIn: false,
       mapView: false,
       favMapView: false,
     };
