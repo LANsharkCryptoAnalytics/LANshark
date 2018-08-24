@@ -369,10 +369,12 @@ export default class ViroSample extends Component {
   render() {
     return (
       <View style={localStyles.outer}>
-        {/* {renderIf(!this.state.isLoggedIn,
+        {renderIf(!this.state.isLoggedIn && !this.state.mapView,
           <View style={styles.login}>
             <Signup logIn={() => { this.logIn(); }} />
-          </View>)} */}
+          </View>)}
+        {renderIf(this.state.mapView,
+          <Map showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
         {renderIf(this.state.posPhone && this.state.isLoggedIn,
           <View>
             <Text>
