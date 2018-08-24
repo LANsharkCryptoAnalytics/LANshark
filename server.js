@@ -1,3 +1,5 @@
+var passport = require('passport')
+  , LocalStrategy = require('passport-local').Strategy;
 const express = require('express');
 // TODO: axios isn't used on this page
 const axios = require('axios');
@@ -6,12 +8,34 @@ const hnocSearch = require('./hnocSearch.js');
 const helpers = require('./helpers.js');
 const db = require('./database-mySql/index.js');
 require('dotenv').config();
-
 const app = express(); // (2)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false,
 }));
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.findOne({ username: username }, function(err, user) {
+      if (err) { return done(err); }
+      if (!user) {
+        return done(null, false, { message: 'Incorrect username.' });
+      }
+      if (!user.validPassword(password)) {
+        return done(null, false, { message: 'Incorrect password.' });
+      }
+      return done(null, user);
+    });
+  }
+));
+
+app.post('/login',
+  passport.authenticate('local', { 
+    successRedirect: '/',
+    failureRedirect: '/login',
+    failureFlash: true,
+  }),
+);
 
 app.get('/', (req, res) => {
   res.send('LANSHARK');
