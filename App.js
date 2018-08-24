@@ -13,18 +13,13 @@ import {
   TouchableHighlight,
   Image,
   Alert,
-  git,
 } from 'react-native';
 
 import axios from 'axios';
 
 
 import {
-  ViroARScene,
   ViroARSceneNavigator,
-  ViroNode,
-  ViroSphere,
-  ViroText,
   ViroMaterials,
   ViroUtils,
 } from 'react-viro';
@@ -35,21 +30,13 @@ import FavoriteMap from './js/FavoriteMap.js';
 import renderIf from './js/helpers/renderIf';
 
 const InitialARScene = require('./js/ARHist');
-
-const isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
-
-
-// var textArray = [
-//   'Testing how to',
-//   'make the changes',
-//   'to Text',
-//   ];
 const textIMG = require('./js/res/cracked-wallpaper-9.jpg');
 
+const isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
 const textArray = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.');
 const textArray2 = 'cha cha changes, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.');
-let dataCounter = 0;
 const dataLength = textArray.length - 1;
+let dataCounter = 0;
 let locationProgression = 0;
 
 export default class ViroSample extends Component {
@@ -127,6 +114,7 @@ export default class ViroSample extends Component {
       posComp: true,
       latitude: '29.97616921',
       longitude: '-90.0764381',
+      success: null,
       error: null,
       generalData: textArray,
       posPhone: false,
@@ -271,38 +259,57 @@ export default class ViroSample extends Component {
   _onShowText(objIndex, objUniqueName, yOffset) {
     dataCounter = 0;
     const currentProps = { ...this.state.viroAppProps };
-    this.setState({
-      viroAppProps: {
-        ...currentProps,
-        displayObject: true,
-        yOffset,
-        displayObjectName: objUniqueName,
-        objectSource: this.state.generalData[dataCounter],
-      },
+    this.setState((prevState) => {
+      const objectSource = prevState.generalData[dataCounter];
+      return {
+        viroAppProps: {
+          ...currentProps,
+          displayObject: true,
+          yOffset,
+          displayObjectName: objUniqueName,
+          objectSource,
+        },
+      };
     });
   }
 
   _onSaveLocation(objIndex, objUniqueName, yOffset) {
+    const isSaved = 'Location Information Saved!';
+    const notSaved = 'Sorry, We could\'nt Save the Information';
+    let saveMessage;
+
     axios.post('http://ec2-34-238-240-14.compute-1.amazonaws.com/addToFavorites', {
       latitude: this.state.latitude,
       longitude: this.state.longitude,
       wideData: this.state.generalData,
       narrowData: this.state.narrowData,
     })
-      .then((response) => {
-        console.log(response);
+      .then(() => {
+        saveMessage = isSaved;
+        const currentProps = { ...this.state.viroAppProps };
+        this.setState({
+          viroAppProps: {
+            ...currentProps,
+            displayObject: true,
+            yOffset,
+            displayObjectName: objUniqueName,
+            objectSource: saveMessage,
+          },
+          // viroAppProps:{...this.state.viroAppProps,
+          // displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName,
+          // objectSource:String(this.state.latitude) + String(this.state.longitude)},
+        });
       })
       .catch((error) => {
-        console.log(error);
+        this.setState({ error });
+        saveMessage = notSaved;
+        const currentProps = { ...this.state.viroAppProps };
+        this.setState({
+          viroAppProps: {
+            ...currentProps, displayObject: true, yOffset, displayObjectName: objUniqueName, objectSource: saveMessage,
+          },
+        });
       });
-    const currentProps = { ...this.state.viroAppProps };
-    this.setState({
-      viroAppProps: {
-        ...currentProps, displayObject: true, yOffset, displayObjectName: objUniqueName, objectSource: 'Location Information Saved!',
-      },
-
-      // viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:String(this.state.latitude) + String(this.state.longitude)},
-    });
   }
 
   _onAttemptHNOC() {
