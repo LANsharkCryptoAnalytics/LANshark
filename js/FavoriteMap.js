@@ -61,19 +61,19 @@ export default class FavoriteMap extends Component {
 
 <script>
 	var map = L.map('map').setView([${this.props.lat.slice(0, 9)}, ${this.props.long.slice(0, 10)}], 16);
-    var favs = [ { title: 'Rivoli Theatre',
-    long: '-90.0754624',
-    lat: '29.9755143',
-    type: 'movie theater' },
-  { title: 'Rivoli Theatre',
-    long: '-90.0754624',
-    lat:  '29.9755143',
-    type: 'former building or structure' },
-  { title: 'Bell Theatre',
-    long: '-90.077997',
-    lat:  '29.979401',
-    type: 'movie theater' },
-   ];
+  let favs = [{
+    title: 'Rivoli Theatre',
+       long: -90.075462,
+       lat: 29.975514,
+       type: 'movie theater' 
+   },
+     {
+    title: 'Bell Theatre',
+       long: -90.077997,
+       lat: 29.979401,
+       type: 'movie theater' 
+   },
+     ];
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
 		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
@@ -89,18 +89,16 @@ export default class FavoriteMap extends Component {
 var greenIcon = new LeafIcon({
   iconUrl: 'https://emojipedia-us.s3.amazonaws.com/thumbs/160/apple/81/fleur-de-lis_269c.png',
 })
+for( let i = 0; i < favs.length; i++){
+  L.marker([favs[i].lat, favs[i].long], {icon: greenIcon}).addTo(map)
+.bindPopup("<b>Hello world!</b><br />I am a popup.");
+}
 
-    favs.forEach(fav =>{
-      
-    })
-  
+    
+
 	L.marker([${this.props.lat.slice(0, 9)}, ${this.props.long.slice(0, 10)}], {icon: greenIcon}).addTo(map)
 		.bindPopup("<b>Hello world!</b><br />I am a popup.");
-
-
 	var popup = L.popup();
-
-
 	map.on('click', onMapClick);
 </script>
 
@@ -115,7 +113,7 @@ var greenIcon = new LeafIcon({
           />
         </View>
         <View>
-          <TouchableOpacity style={styles.button} onPress={() => { this.props.changeView(); }}>
+          <TouchableOpacity style={styles.button} onPress={() => { this.props.showFavMapView(); }}>
             <Text style={styles.btntext}>AR View</Text>
           </TouchableOpacity>
         </View>
