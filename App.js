@@ -14,7 +14,14 @@ import {
   Image,
   Alert,
 } from 'react-native';
+<<<<<<< HEAD
 import axios from 'axios';
+=======
+
+import axios from 'axios';
+
+
+>>>>>>> 57130ef692a4e165aac365aeaadf975c11656fe5
 import {
   ViroARScene,
   ViroARSceneNavigator,
@@ -26,6 +33,10 @@ import {
 } from 'react-viro';
 import { viroKey } from './config';
 import Signup from './js/Signup';
+<<<<<<< HEAD
+=======
+import Map from './js/Map.jsx';
+>>>>>>> 57130ef692a4e165aac365aeaadf975c11656fe5
 import renderIf from './js/helpers/renderIf';
 
 const InitialARScene = require('./js/ARHist');
@@ -117,15 +128,20 @@ export default class ViroSample extends Component {
       trackingInitialized: false,
       isLoading: false,
       posComp: true,
-      latitude: null,
-      longitude: null,
+      latitude: '29.97616921',
+      longitude: '-90.0764381',
       error: null,
       generalData: textArray,
       posPhone: false,
       narrowData: textArray2,
       dataStore: null,
       isLoggedIn: true,
+<<<<<<< HEAD
     }
+=======
+      mapView: false,
+    };
+>>>>>>> 57130ef692a4e165aac365aeaadf975c11656fe5
   }
 
 
@@ -138,7 +154,9 @@ export default class ViroSample extends Component {
       isLoggedIn: true,
     });
   }
-
+  changeView = () => {
+    this.setState({mapView: false});
+  }
   _handleARSupported() {
 
   }
@@ -356,18 +374,20 @@ export default class ViroSample extends Component {
   render() {
     return (
       <View style={localStyles.outer}>
-        {renderIf(!this.state.isLoggedIn,
+        {renderIf(!this.state.isLoggedIn && !this.state.mapView,
           <View style={styles.login}>
             <Signup logIn={this.logIn} />
           </View>)}
-        {renderIf(this.state.posPhone && this.state.isLoggedIn,
+        {renderIf(this.state.mapView,
+          <Map changeView={this.changeView} lat={this.state.latitude} long={this.state.longitude}/>)}
+        {renderIf(this.state.posPhone && this.state.isLoggedIn && !this.state.mapView,
           <View>
             <Text>
-Sorry your phone sucks! heres some data for you anyway
+              Sorry your phone sucks! heres some data for you anyway
               {this.state.generalData[dataCounter]}
             </Text>
           </View>)}
-        {renderIf(this.state.posComp && !this.state.posPhone && this.state.isLoggedIn,
+        {renderIf(this.state.posComp && !this.state.posPhone && this.state.isLoggedIn && !this.state.mapView,
           <ViroARSceneNavigator
             style={localStyles.arView}
             apiKey={viroKey}
@@ -378,7 +398,7 @@ Sorry your phone sucks! heres some data for you anyway
         {/* {renderIf(this.state.isLoggedIn,
           this._renderTrackingText())} */}
 
-        {renderIf(this.state.isLoading && this.state.isLoggedIn,
+        {renderIf(this.state.isLoading && this.state.isLoggedIn && !this.state.mapView,
           <View style={{
             position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, justifyContent: 'center',
           }}
@@ -386,7 +406,7 @@ Sorry your phone sucks! heres some data for you anyway
             <ActivityIndicator size="large" animating={this.state.isLoading} color="#ffffff" />
           </View>)
       }
-        {renderIf(this.state.isLoggedIn,
+        {renderIf(this.state.isLoggedIn && !this.state.mapView,
           <View style={{
             position: 'absolute', left: 50, right: 0, bottom: 77, alignItems: 'center', flex: 1, flexDirection: 'row', justifyContent: 'space-between',
           }}
@@ -423,6 +443,9 @@ const localStyles = StyleSheet.create({
     flex: 1,
   },
   arView: {
+    flex: 1,
+  },
+  container: {
     flex: 1,
   },
   buttons: {
@@ -479,6 +502,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     textAlign: 'center',
   },
+
 });
 
 module.exports = ViroSample;
