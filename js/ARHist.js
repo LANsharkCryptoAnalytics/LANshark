@@ -1,18 +1,11 @@
-/**
- * Copyright (c) 2017-present, Viro Media, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
+
 /* eslint-disable react/prefer-es6-class */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/destructuring-assignment */
 
 
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet } from 'react-native';
 
 import {
@@ -30,7 +23,7 @@ import {
 } from 'react-viro';
 
 // import TimerMixin from 'react-timer-mixin';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 
 const createReactClass = require('create-react-class');
 
