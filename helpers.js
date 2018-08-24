@@ -1,7 +1,7 @@
 const axios = require('axios');
 const fetch = require('node-fetch');
 const scrapeIt = require('scrape-it');
-const db = require('./database-mySql/dbHelpers.js')
+const db = require('./database-mySql/dbHelpers.js');
 
 exports.formatResults = (text) => {
   let results = text;
@@ -31,8 +31,8 @@ exports.formatResults = (text) => {
   results = results.split(/[,.;]+/);
   results.forEach((result, i) => {
     results[i] = result.trim();
-    results[i] = results[i].replace(/  /g, ' ');
-    results[i] = results[i].replace(/  /g, ' ');
+    results[i] = results[i].replace(/ {2}/g, ' ');
+    results[i] = results[i].replace(/ {2}/g, ' ');
   });
   return results;
   // return results.split(/[,.;]+/);
@@ -73,7 +73,7 @@ exports.formatNeighborhoodData = ((json) => {
     },
     results,
   } = json;
-  
+
   for (const result of results.bindings) {
     hood.push(result)
     for (const variable of vars) {
@@ -97,7 +97,7 @@ exports.formatNeighborhoodData = ((json) => {
           coord: place.coordinate_location.value.slice(6, -1),
           dist: dist,
           type: type
-        })
+        });
       }
     }
   });
@@ -107,7 +107,6 @@ exports.formatNeighborhoodData = ((json) => {
 
 // Retrieves the full wikipedia page for a given title
 exports.getFullPage = (title, req, res) => {
-
   title = title.split(' ').join('_');
   const url = `https://en.wikipedia.org/wiki/${title}`;
   // console.log(url);
@@ -135,9 +134,8 @@ exports.getNeighborhoodMap = (lat, long, req, res) => {
 
   const fullUrl = `${endpointUrl}?query=${encodeURIComponent(sparqlQuery)}`;
 
-
   const headers = {
-    Accept: 'application/sparql-results+json'
+    Accept: 'application/sparql-results+json',
   };
 
   fetch(fullUrl, {
@@ -157,7 +155,7 @@ exports.getNeighborhoodMap = (lat, long, req, res) => {
       console.log('---');
     }
   });
-}
+};
 
 exports.getPOINarrow = (lat, long) => axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&prop=coordinates%7Cpageimages%7Cpageterms%7Cextracts&exlimit=5&generator=geosearch&colimit=1&piprop=thumbnail&pithumbsize=144&pilimit=10&wbptterms=description&ggscoord=${lat}%7C${long}&ggsradius=1500&ggslimit=1`);
 
@@ -170,22 +168,18 @@ exports.getAddress = (lat, long, req, res) => {
   // https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=1403+Washington+Ave
 };
 
-exports.searchByAddress = (add, req, res) => {
-  add = add.split(' ').join('+');
-  axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${add}+New+Orleans`)
-    .then((res) => res.data.query)
-    .catch((error) => {
-      console.log(error);
-    });
-}
+exports.searchByAddress = (address, req, res) => {
+  const add = address.split(' ').join('+');
+  return axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${add}+New+Orleans`);
+};
 
-exports.searchByTitle = (title, req, res) => {
-  title = title.split(' ').join('+');
-  axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${title}`)
-    .then((res) => { return res.data.query; })
-    .catch((error) => {
-      console.log(error);
-    });
+exports.searchHnoc = (searchString) => {
+  return db.hnocSearch(searchString);
+};
+
+exports.searchByTitle = (titleInput, req, res) => {
+  const title = titleInput.split(' ').join('+');
+  return axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${title}`);
 };
 
 exports.getFullPageURI = (uri, req, res) => {
@@ -218,8 +212,9 @@ exports.loginUser = (user, response, reject) => {
   //   console.log('do whatever we need to do here to log them in');
 
   // }).catch( (err)=> { console.log(err)});
-}
+};
 
+// Create a new user
 exports.createUser = (user, response, reject) => {
   console.log('create user helper fired');
 
@@ -231,17 +226,17 @@ exports.createUser = (user, response, reject) => {
     }).catch((err) => {
       console.log(err);
     });
-  }
-}
+  };
+};
 
 // addToUserFavorites
 exports.addToFavorites = (favorite, response, reject) => {
-  console.log('addToUserFavorites');
-  db.addToUserFavorites(favorite).then((response) => {
-    console.log('favorite added', response);
-    res.end;
+  // console.log('addToUserFavorites');
+  db.addToUserFavorites(favorite).then(() => {
+    console.log('favorite added');
+    // res.end; .then((res) => { return res.data.query; })
   }).catch((reject) => {
-    console.log('reject');
+    console.log('add to user favorites failed');
   });
 };
 
@@ -249,7 +244,7 @@ exports.addToFavorites = (favorite, response, reject) => {
 // END OF USER RELATED FUNCTIONS                       //
 /////////////////////////////////////////////////////////
 
-
+// Create data helpers
 exports.neighborhoodCreate = (neighborhood, res, reject) => {
   console.log('neighborhoodCreate');
   db.createNeighborhood(neighborhood).then((response) => {

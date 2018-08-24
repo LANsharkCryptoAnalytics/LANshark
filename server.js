@@ -1,15 +1,16 @@
 const express = require('express');
 //TODO: axios isn't used on this page
 const axios = require('axios');
-
+const hnocSearch = require('./hnocSearch.js');
 const bodyParser = require('body-parser');
 const helpers = require('./helpers.js');
 const db = require('./database-mySql/index.js');
 require('dotenv').config();
+
 const app = express(); // (2)
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-  extended: false
+  extended: false,
 }));
 
 app.get('/', (req, res) => {
@@ -19,6 +20,7 @@ app.get('/', (req, res) => {
 
 app.get('/vcs', (req, res) => {
   console.log('vcs endoint hit');
+
   res.send('vcs endpoint');
 });
 
@@ -40,9 +42,9 @@ app.get('/neighborhood', (req, res) => {
       const neighborhoods = helpers.formatNeighborhoodData(json).filter((n) => {
         return n.type === 'neighborhood';
       });
-            
+    
       if (i > neighborhoods.length) {
-        i = i - neighborhoods.length;
+        i -= neighborhoods.length;
       }
       if (neighborhoods.length) {
         // TODO: these variables aren't used anywhere
@@ -59,7 +61,7 @@ app.get('/neighborhood', (req, res) => {
               res.send(results);
             } else {
               helpers.getFullPage(neighborhoods[i].title)
-                .then(({ data,response }) => {
+                .then(({ data }) => {
                   let results = helpers.formatResults(data.paragraph);
                   if (data.paragraph.length < 100) {
                     helpers.getPOINarrow(lat, long)
@@ -83,7 +85,7 @@ app.get('/neighborhood', (req, res) => {
 // Endpoint for retrieving broad based information about the users current location
 app.get('/broad', (req, res) => {
   // TODO: please add addittional comments for readability and to facilitate testing
-  // and so that we can all understand the algorithm 
+  // and so that we can all understand the algorithm
   // req.query.i represents what?
   let i = req.query.i ? req.query.i : 0;
   const lat = req.query.latitude.slice(0, 9);
@@ -101,7 +103,7 @@ app.get('/broad', (req, res) => {
     }
     // TODO: What is i?
     if (i > neighborhoods.length) {
-      i = i - neighborhoods.length;
+      i -= neighborhoods.length;
     }
     // if neighborhoods have length ?
     if (neighborhoods.length) {
@@ -112,7 +114,7 @@ app.get('/broad', (req, res) => {
       }
       // get the full page for the current neighborhood
       helpers.getFullPage(`${neighborhoods[i].title},_New_Orleans`)
-        .then(({ data, response}) => {
+        .then(({ data }) => {
           // Format the results using formatREsults function
           let results = helpers.formatResults(data.paragraph);
           // if paragraph is greater than 100 chars send results?
@@ -121,7 +123,7 @@ app.get('/broad', (req, res) => {
           } else {
             // else get full page data for ?neighborhoods i?
             helpers.getFullPage(neighborhoods[i].title)
-              .then(({data,response }) => {
+              .then(( {data }) => {
                 let results = helpers.formatResults(data.paragraph);
                 // if paragraph is less than 100 chars get narrow info???
                 if (data.paragraph.length < 100) {
@@ -167,9 +169,12 @@ app.post('/signUp', (user, req, res) => {
 app.post('/addToFavorites', (req, res) => {
   console.log('add to user favorites');
   console.log(req.body);
-
-  // helper.addToFavorites(req, res);
-});
+  helpers.addToFavorites(req)
+  .then(()=>{
+    res.send('saved to favorites');
+  }).catch((error)=>{
+    console.log('unable to save');
+  });
 
 // helpers.searchByTitle('Garden District, New Orleans');
 // helpers.getFullPage('Garden District, New Orleans');
