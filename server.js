@@ -31,7 +31,7 @@ app.get('/neighborhood', (req, res) => {
   // 29.928714, -90.001709
   // 29.976169,-90.076438
   // req.query.latitude.slice(0,9), req.query.longitude.slice(0,10), req.query.i
-  
+
   // the current index in the neighborhoods array
   let i = req.query.i ? req.query.i : 0;
   const lat = req.query.latitude.slice(0, 9);
@@ -40,7 +40,7 @@ app.get('/neighborhood', (req, res) => {
   helpers.getNeighborhood(lat, long)
     .then(body => body.json())
     .then((json) => {
-      const neighborhoods = helpers.formatNeighborhoodData(json).filter((n) => n.type === 'neighborhood');
+      const neighborhoods = helpers.formatNeighborhoodData(json).filter(n => n.type === 'neighborhood');
 
       if (i > neighborhoods.length) {
         i -= neighborhoods.length;
@@ -83,60 +83,65 @@ app.get('/neighborhood', (req, res) => {
 
 // Endpoint for retrieving broad based information about the users current location
 app.get('/broad', (req, res) => {
-  // TODO: please add addittional comments for readability and to facilitate testing
-  // and so that we can all understand the algorithm
-  // req.query.i represents what?
-  let i = req.query.i ? req.query.i : 0;
-  const lat = req.query.latitude.slice(0, 9);
-  const long = req.query.longitude.slice(0, 10);
+  // req.query.i the current index passed from the client
+  // req.query.latitude, req.query.longitude
+  // '29.97616921','-90.0764381'
+  let i = 0;
+  
+  let lat = '29.97616921'.slice(0, 9);
+  let long = '-90.0764381'.slice(0, 10);
 
   helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
-    let neighborhoods = helpers.formatNeighborhoodData(json);
-    // filter out the neighborhood results?
-    if (i > 0) {
-      // what does this function do, produce a list of neighborhoods as json?
-      // or return a list of non neighborhoods?
-      neighborhoods = helpers.formatNeighborhoodData(json).filter((n) => n.type !== 'neighborhood');
+    // find the places nearby that aren't neighborhoods
+    let placesNearby = helpers.formatNeighborhoodData(json).filter(n => n.type !== 'neighborhood' || n.type !== 'unincorporated community');
+    console.log(placesNearby, '????????????????????????????????????????????????????????????????????????????')
+   
+
+    if (i > placesNearby.length) {
+      i -= placesNearby.length;
     }
-    // TODO: What is i?
-    if (i > neighborhoods.length) {
-      i -= neighborhoods.length;
-    }
-    // if neighborhoods have length ?
-    if (neighborhoods.length) {
-      if (neighborhoods[i].coord) {
-        // TODO: I don't believe these variable are being used anywhere
-        const long = neighborhoods[i].coord.split(' ')[0];
-        const lat = neighborhoods[i].coord.split(' ')[1];
+    if (placesNearby) {
+      if (placesNearby[i].coord) {
+        long = placesNearby[i].coord.split(' ')[0];
+        lat = placesNearby[i].coord.split(' ')[1];
       }
+      // get the full page for the current neighborhood in New Orleans
+      helpers.getFullPage(`${placesNearby[i].title},_New_Orleans`)
+      .then(({ placesinCity}) => {
+        const results = helpers.formatResults(placesinCity.paragraph);
+        res.send(placesNearby[i].title);
+      })
+
       // get the full page for the current neighborhood
-      helpers.getFullPage(`${neighborhoods[i].title},_New_Orleans`)
-        .then(({ data }) => {
-          // Format the results using formatREsults function
-          const results = helpers.formatResults(data.paragraph);
-          // if paragraph is greater than 100 chars send results?
-          if (data.paragraph.length > 100) {
-            res.send(results);
-          } else {
-            // else get full page data for ?neighborhoods i?
-            helpers.getFullPage(neighborhoods[i].title)
-              .then(({ data }) => {
-                const results = helpers.formatResults(data.paragraph);
-                // if paragraph is less than 100 chars get narrow info???
-                if (data.paragraph.length < 100) {
-                  helpers.getPOINarrow(lat, long)
-                    .then((stuff) => {
-                      const results = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ''));
-                      res.send(results);
-                    }).catch((error) => { console.log(error); });
-                } else { res.send(results); }
-              }).catch((error) => { console.log(error); });
-          }
-        }).catch((error) => { console.log(error); });
-    } else {
+    //   helpers.getFullPage(`${placesNearby[i].title},_New_Orleans`)
+    //     .then(({ data }) => {
+    //       // Format the results using formatREsults function
+    //       const results = helpers.formatResults(data.paragraph);
+    //       // if paragraph is greater than 100 chars send results?
+    //       if (data.paragraph.length > 100) {
+    //         res.send(results);
+    //       } else {
+    //         // else get full page data for ?placesNearby i?
+    //         helpers.getFullPage(placesNearby[i].title)
+    //           .then(({ data }) => {
+    //             const results = helpers.formatResults(data.paragraph);
+    //             // if paragraph is less than 100 chars get narrow info???
+    //             if (data.paragraph.length < 100) {
+    //               helpers.getPOINarrow(lat, long)
+    //                 .then((stuff) => {
+    //                   const results = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ''));
+    //                   res.send(results);
+    //                 }).catch((error) => { console.log(error); });
+    //             } else { res.send(results); }
+    //           }).catch((error) => { console.log(error); });
+    //       }
+    //     }).catch((error) => { console.log(error); });
+    } 
+    else {
       res.send(helpers.formatNeighborhoodData(json)[i].title);
     }
-  }).catch((error) => { console.log(error); });
+  })
+  .catch((error) => { console.log(error); });
 });
 
 // LOGIN RELATED INFORMATION
