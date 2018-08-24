@@ -128,8 +128,7 @@ export default class ViroSample extends Component {
       posPhone: false,
       narrowData: textArray2,
       dataStore: null,
-      isSigningIn: true,
-      isAr: false,
+      isLoggedIn: false,
     };
   }
 
@@ -138,10 +137,9 @@ export default class ViroSample extends Component {
     isARSupportedOnDevice(this._handleARNotSupported, this._handleARSupported);
   }
 
-  signingIn = () => {
+  logIn = () => {
     this.setState({
-      isAr: true,
-      isSigningIn: false,
+      isLoggedIn: true,
     });
   }
 
@@ -349,18 +347,18 @@ export default class ViroSample extends Component {
   render() {
     return (
       <View style={localStyles.outer}>
-        {renderIf(this.state.isSigningIn,
-          <View style={styles.form}>
-            <Signup renderAr={this.signingIn} />
+        {renderIf(!this.state.isLoggedIn,
+          <View style={styles.login}>
+            <Signup logIn={() => { this.logIn(); }} />
           </View>)}
-        {renderIf(this.state.posPhone && this.state.isAr,
+        {renderIf(this.state.posPhone && this.state.isLoggedIn,
           <View>
             <Text>
 Sorry your phone sucks! heres some data for you anyway
               {this.state.generalData[dataCounter]}
             </Text>
           </View>)}
-        {renderIf(this.state.posComp && !this.state.posPhone && this.state.isAr,
+        {renderIf(this.state.posComp && !this.state.posPhone && this.state.isLoggedIn,
           <ViroARSceneNavigator
             style={localStyles.arView}
             apiKey={viroKey}
@@ -371,15 +369,14 @@ Sorry your phone sucks! heres some data for you anyway
         {/* {renderIf(this.state.isLoggedIn,
           this._renderTrackingText())} */}
 
-        {renderIf(this.state.isLoading && this.state.isAr,
+        {renderIf(this.state.isLoading && !this.state.posPhone && this.state.isLoggedIn,
           <View style={{
             position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, justifyContent: 'center',
           }}
           >
             <ActivityIndicator size="large" animating={this.state.isLoading} color="#ffffff" />
-          </View>)
-      }
-        {renderIf(this.state.isAr,
+          </View>)}
+        {renderIf(this.state.isLoggedIn && !this.state.posPhone,
           <View style={{
             position: 'absolute', left: 50, right: 0, bottom: 77, alignItems: 'center', flex: 1, flexDirection: 'row', justifyContent: 'space-between',
           }}
@@ -457,7 +454,7 @@ ViroMaterials.createMaterials({
 });
 // "Comic Sans MS", cursive, sans-serif
 const styles = StyleSheet.create({
-  form: {
+  login: {
     flex: 1,
     justifyContent: 'center',
     backgroundColor: '#36485f',

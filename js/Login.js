@@ -56,25 +56,6 @@ export default class Login extends Component {
     };
   }
 
-  // Open URL in a browser
-
-
-  updateValue(text, field) {
-    if (field === 'name') {
-      this.setState({
-        name: text,
-      });
-    } else if (field === 'email') {
-      this.setState({
-        email: text,
-      });
-    } else if (field === 'password') {
-      this.setState({
-        password: text,
-      });
-    }
-  }
-
   submit() {
     const url1 = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login';
     // const url2 = 'http://172.24.6.45:8200/login';
