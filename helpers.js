@@ -99,8 +99,8 @@ exports.formatNeighborhoodData = ((json) => {
   });
   hood.forEach((p) => {
     // filter out results that don't have a title
-    let type = null;
-    let dist = null;
+    let type = '';
+    let dist = '';
     // check for instance of label
     if (p.instance_ofLabel !== undefined) {
       type = p.instance_ofLabel.value;

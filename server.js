@@ -48,8 +48,8 @@ app.get('/neighborhood', (req, res) => {
       if (neighborhoods.length) {
         // TODO: these variables aren't used anywhere
         if (neighborhoods[i].coord) {
-          const long = neighborhoods[i].coord.split(' ')[0];
-          const lat = neighborhoods[i].coord.split(' ')[1];
+          long = neighborhoods[i].coord.split(' ')[0];
+          lat = neighborhoods[i].coord.split(' ')[1];
         }
         // get the full page for the current neighborhood
         helpers.getFullPage(`${neighborhoods[i].title},_New_Orleans`)
@@ -81,67 +81,72 @@ app.get('/neighborhood', (req, res) => {
     .catch((error) => { console.log(error); });
 });
 
-// Endpoint for retrieving broad based information about the users current location
+/**
+ *  Endpoint for retrieving broad based information about the users current location
+ */
 app.get('/broad', (req, res) => {
   // req.query.i the current index passed from the client
   // req.query.latitude, req.query.longitude
   // '29.97616921','-90.0764381'
-  let i = 0;
+  let i = req.query.i ? req.query.i : 0;
   
-  let lat = '29.97616921'.slice(0, 9);
-  let long = '-90.0764381'.slice(0, 10);
+  //29.976169,-90.076438
+  //29.928714, -90.001709
+  let lat = req.query.latitude.slice(0, 9);
+  let long = req.query.longitude.slice(0, 10);
 
   helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
     // find the places nearby that aren't neighborhoods
-    let placesNearby = helpers.formatNeighborhoodData(json).filter(n => n.type !== 'neighborhood' || n.type !== 'unincorporated community');
-    console.log(placesNearby, '????????????????????????????????????????????????????????????????????????????')
-   
-
+    const placesNearby = helpers.formatNeighborhoodData(json).filter(n => n.type !== 'neighborhood' || n.type !== 'unincorporated community');
+    console.log(placesNearby, '????????????????????????????????????????????????????????????????????????????');
+    // ensure that the current index in the array is less than the length of the array
+    // fix this calculation problem
     if (i > placesNearby.length) {
       i -= placesNearby.length;
     }
+    if (!placesNearby) { res.send({ content: 'sorry there are no results in your area' }); }
     if (placesNearby) {
       if (placesNearby[i].coord) {
         long = placesNearby[i].coord.split(' ')[0];
         lat = placesNearby[i].coord.split(' ')[1];
       }
-      // get the full page for the current neighborhood in New Orleans
-      helpers.getFullPage(`${placesNearby[i].title},_New_Orleans`)
-      .then(({ placesinCity}) => {
-        const results = helpers.formatResults(placesinCity.paragraph);
-        res.send(placesNearby[i].title);
-      })
+      //set the city
+      const city = '_New_Orleans'
+      // get the full page for the current neighborhood in current city
+      let descs = placesNearby[i].type === '' ? [placesNearby[i].title] : [placesNearby[i].title, placesNearby[i].type];
+      console.log(descs, "descs ????????????/");
 
-      // get the full page for the current neighborhood
-    //   helpers.getFullPage(`${placesNearby[i].title},_New_Orleans`)
-    //     .then(({ data }) => {
-    //       // Format the results using formatREsults function
-    //       const results = helpers.formatResults(data.paragraph);
-    //       // if paragraph is greater than 100 chars send results?
-    //       if (data.paragraph.length > 100) {
-    //         res.send(results);
-    //       } else {
-    //         // else get full page data for ?placesNearby i?
-    //         helpers.getFullPage(placesNearby[i].title)
-    //           .then(({ data }) => {
-    //             const results = helpers.formatResults(data.paragraph);
-    //             // if paragraph is less than 100 chars get narrow info???
-    //             if (data.paragraph.length < 100) {
-    //               helpers.getPOINarrow(lat, long)
-    //                 .then((stuff) => {
-    //                   const results = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ''));
-    //                   res.send(results);
-    //                 }).catch((error) => { console.log(error); });
-    //             } else { res.send(results); }
-    //           }).catch((error) => { console.log(error); });
-    //       }
-    //     }).catch((error) => { console.log(error); });
-    } 
-    else {
-      res.send(helpers.formatNeighborhoodData(json)[i].title);
+      helpers.getFullPage(`${placesNearby[i].title},${city}`)
+        .then(({ data }) => {
+          const resultsNO = helpers.formatResults(data.paragraph);
+          
+          // search for the wikipedia article with the name and appended city
+          if (resultsNO.length > 100) {
+            placesNearby[i].content = descs.concat(resultsNO);
+            res.send(placesNearby[i]);
+          } else{ // search for the wikipedia article with the name without appended city
+            helpers.getFullPage(placesNearby[i].title)
+              .then(({ data }) => {
+                const results = helpers.formatResults(data.paragraph);
+                if (results[0].length > 100 && results.includes(city)) {
+                  res.send(placesNearby[i]);
+                } else {
+                  // search for wikipedia article using generator search
+                  helpers.getPOINarrow(lat, long)
+                    .then((stuff) => {
+                      const resultsPOI = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ''));
+                      if (resultsPOI.includes(placesNearby[i].title)) {
+                        placesNearby[i].content = descs.concat(resultsPOI);
+                      } else { placesNearby[i].content = descs; }
+                      res.send(placesNearby[i]);
+                    }).catch((error) => { throw error; });
+                }
+              });
+          }
+        }).catch((e) => { throw error; });
     }
   })
-  .catch((error) => { console.log(error); });
+    .catch((error) => { console.log(error); });
 });
 
 // LOGIN RELATED INFORMATION
