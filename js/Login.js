@@ -91,10 +91,6 @@ export default class Login extends Component {
         // console.warn(response);
         this.props.arView();
       })
-      .then((response) => {
-        // console.warn(response);
-        this.props.arView().bind(this);
-      })
       .catch((error) => {
         throw error;
       });
