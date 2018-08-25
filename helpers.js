@@ -97,24 +97,24 @@ exports.formatNeighborhoodData = ((json) => {
       place[variable] = result[variable];
     });
   });
-  hood.forEach((p) => {
+  hood.forEach((currPlace) => {
     // filter out results that don't have a title
     let type = '';
     let dist = '';
     // check for instance of label
-    if (p.instance_ofLabel !== undefined) {
-      type = p.instance_ofLabel.value;
+    if (currPlace.instance_ofLabel !== undefined) {
+      type = currPlace.instance_ofLabel.value;
     }
     // check for distance
-    if (p.dist !== undefined) {
-      dist = p.dist.value;
+    if (currPlace.dist !== undefined) {
+      dist = currPlace.dist.value;
     }
     // filter out results saved by wikidata ID and add the formatted places to the array
-    if (p.placeLabel.value[0] !== 'Q' && p.placeLabel.value.length !== 9) {
-      if (p.placeLabel) {
+    if (currPlace.placeLabel.value[0] !== 'Q' && currPlace.placeLabel.value.length !== 9) {
+      if (currPlace.placeLabel) {
         places.push({
-          title: p.placeLabel.value,
-          coord: p.coordinate_location.value.slice(6, -1),
+          title: currPlace.placeLabel.value,
+          coord: currPlace.coordinate_location.value.slice(6, -1),
           dist,
           type,
         });
@@ -218,8 +218,6 @@ exports.searchByTitle = (titleInput) => {
 exports.loginUser = (user) => {
   console.log('login user helper fired');
   // TODO:PUT YOUR LOGIN STUFF HERE SENAI
-
-
 };
 
 // Create a new user
@@ -238,15 +236,16 @@ exports.createUser = (user, response, reject) => {
 };
 
 // addToUserFavorites
-exports.addToFavorites = (favorite) => {
+exports.addToFavorites = (favorite, user) => {
   // console.log('addToUserFavorites');
-  db.addToUserFavorites(favorite)
-  .then(() => {
-  res.send("saved to favorites")
-  })
-  .catch((error) => {
-  console.log('error saving');
-   });
+  db.addToUserFavorites(favorite, user)
+    .then(() => {
+      console.log('saved');
+      // res.send("saved to favorites");
+    })
+    .catch(() => {
+      console.log('error saving');
+    });
 };
 
 // ///////////////////////////////////////////////////////
@@ -268,3 +267,4 @@ exports.vcsCreate = (vcsInfo, res, reject) => {
   console.log('vieux carre address entry create fired');
   db.createVcs(vcsInfo);
 };
+
