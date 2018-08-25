@@ -101,6 +101,8 @@ exports.formatNeighborhoodData = ((json) => {
     // filter out results that don't have a title
     let type = '';
     let dist = '';
+    console.log('///////////////////////////////////////////////////////////////////////////////////////////////');
+    console.log( currPlace);
     // check for instance of label
     if (currPlace.instance_ofLabel !== undefined) {
       type = currPlace.instance_ofLabel.value;
