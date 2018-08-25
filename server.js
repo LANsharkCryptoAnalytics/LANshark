@@ -7,36 +7,34 @@ const helpers = require('./helpers.js');
 const dbHelpers = require('./database-mySql/dbHelpers');
 const db = require('./database-mySql/index.js');
 require('dotenv').config();
-app.use(passport.initialize());
 const app = express();
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false,
 }));
 
-passport.use(new LocalStrategy(
-  ((username, password, done) => {
-    db.User.findOne({ username: username }, (err, user) => {
-      if (err) { return done(err); }
-      if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
-      }
-      if (!user.validPassword(password)) {
-        return done(null, false, { message: 'Incorrect password.' });
-      }
-      return done(null, user);
-    });
-  }),
-));
 
-app.post('/login',
-  passport.authenticate('local'), (req, res) => {
-    res.redirect('/users/' + req.user.username);
-  });
+// passport.use(new LocalStrategy(
+//   ((username, password, done) => {
+//     db.User.findOne({ username: username }, (err, user) => {
+//       if (err) { return done(err); }
+//       if (!user) {
+//         return done(null, false, { message: 'Incorrect username.' });
+//       }
+//       if (!user.validPassword(password)) {
+//         return done(null, false, { message: 'Incorrect password.' });
+//       }
+//       return done(null, user);
+//     });
+//   }),
+// ));
 
-app.get('/users/', (req, res) => {
-  res.send('success');
-});
+// app.post('/login',
+//   passport.authenticate('local'), (req, res) => {
+//     res.status(200);
+//   });
 
 app.get('/', (req, res) => {
   res.send('LANSHARK');
@@ -180,14 +178,26 @@ app.get('/broad', (req, res) => {
 // LOGIN RELATED INFORMATION
 
 app.get('/login', (req, res) => {
-  const isUserInDB = helpers.loginUser(req, res);
-  res.send(isUserInDB);
+  helpers.loginUser(req)
+    .then((user) => {
+      console.warn('userFound', user);
+      res.send('User Found');
+    })
+    .catch((error) => {
+      console.warn(error);
+    });
 });
 
-app.post('/signUp', (req, res) => {
+app.post('/signup', (req, res) => {
   console.log(req.body);
-  const doesUserExist = helpers.createUser(req.body);
-  res.send(doesUserExist);
+  dbHelpers.createUser(req.body)
+    .then((data) => {
+      console.log(data, 'aaaaaaaaaaaaaaaaaaaaaaaa');
+      res.send(data);
+    })
+    .catch((error) => {
+      throw error;
+    });
 });
 
 // Endpoint to allow a logged in user to save favorite locations or points of interest

@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const sequelize = new Sequelize(`mysql://${process.env.DBUSER}:${process.env.DBPASSWORD}@${process.env.DBHOST}/ARHISTORY`);
 
+
 sequelize
   .authenticate()
   .then(() => {
@@ -105,7 +106,7 @@ User.sync({
 })
   .then(() => {
     // add the same user again to test function - should return false
-    User.findOrCreate({ where: { userName: 'Josef', email: 'email@email.com' } })
+    User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
       .spread((user, created) => {
         console.log(user.get({
           plain: true,

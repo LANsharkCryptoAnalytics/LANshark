@@ -220,30 +220,13 @@ exports.loginUser = (user) => {
 
   // the below works but this isn't really the proper place for it
   // possible shift to findAndUPdate or something similar
-  db.findUser(user.body)
-    .then((userData) => {
-      console.warn(`response ${userData}`);
-      console.warn('do whatever we need to do here to log them in');
-      response.send('a');
-    })
-    .catch((err) => { console.warn(err); });
+  return db.findUser(user.body);
 };
 
 // Create a new user
 exports.createUser = (user, response, reject) => {
-  console.log('create user helper fired');
-  if (!db.findUser(user)) {
-    db.createUser = (userInfo, sequelize) => {
-      (userInfo.body).then((userData) => {
-        console.log(`response ${userData}`);
-        console.log('do whatever we need to do here to log them in');
-        // res.end();
-      }).catch((err) => {
-        console.log(err);
-      });
-    };
-  }
-  response.send('Email address has already been used');
+  console.log('create user helper fired', user);
+  return db.createUser(user, sequelize);
 };
 
 // addToUserFavorites

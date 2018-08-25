@@ -15,17 +15,7 @@ const findUser = (userInfo) => {
     where: {
       email: userInfo.email,
     },
-  })
-    .then((user) => {
-      console.log('userFound', user);
-      if (user.password === userInfo.password) {
-        return 'User Found';
-      }
-      return 'Password Incorrect';
-    })
-    .catch((error) => {
-      console.warn(error);
-    });
+  });
 };
 
 // TODO:function to create a new user
@@ -38,7 +28,6 @@ const createUser = (user) => {
       username: user.username,
       email: user.email,
       password: user.password,
-      favorites: user.favorites,
     },
   })
     .spread((user, created) => {

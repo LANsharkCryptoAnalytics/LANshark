@@ -85,7 +85,7 @@ export default class Login extends Component {
     // const url1 = 'http://ec2-34-238-240-14.compute-1.amßazonaws.com/login';
     const testServer = 'http://172.24.6.45:8200/login';
     axios({
-      method: 'post',
+      method: 'get',
       url: testServer,
       data: this.state,
     })
