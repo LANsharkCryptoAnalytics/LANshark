@@ -3,7 +3,6 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable prefer-destructuring */
 
-
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
@@ -38,6 +37,8 @@ const textArray2 = 'cha cha changes, consectetur adipiscing elit. Etiam gravida 
 const dataLength = textArray.length - 1;
 let dataCounter = 0;
 let locationProgression = 0;
+
+
 
 export default class ViroSample extends Component {
   constructor(props) {
