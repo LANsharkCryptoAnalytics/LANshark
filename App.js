@@ -30,13 +30,15 @@ import renderIf from './js/helpers/renderIf';
 
 const InitialARScene = require('./js/ARHist');
 const textIMG = require('./js/res/cracked-wallpaper-9.jpg');
-
 const isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
 const textArray = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.');
 const textArray2 = 'cha cha changes, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.');
 let dataLength = textArray.length - 1;
 let dataCounter = 0;
 let locationProgression = 0;
+let wideWiki = '';
+let narrowWiki = '';
+let wikiImage = '';
 
 const localStyles = StyleSheet.create({
   outer: {
@@ -125,6 +127,7 @@ export default class ViroSample extends Component {
         })
           .then((res) => {
             const generalData = res.data.content;
+            wideWiki = res.data.wideWiki;
             dataLength = generalData.length - 1;
             this.setState({ generalData });
           })
@@ -148,6 +151,8 @@ export default class ViroSample extends Component {
         })
           .then((res) => {
             const narrowData = res.data.content;
+            narrowWiki = res.data.narrowWiki;
+            wikiImage = res.data.wikiImage;
             dataLength = narrowData.length - 1;
             this.setState({ narrowData });
           })
@@ -201,28 +206,6 @@ export default class ViroSample extends Component {
 
   componentDidMount() {
     isARSupportedOnDevice(this._handleARNotSupported, this._handleARSupported);
-  }
-
-  _logIn() {
-    this.setState({
-      isLoggedIn: true,
-    });
-  }
-
-  _signup() {
-    this.setState({
-      signupView: true,
-    });
-  }
-
-  _showMapView() {
-    const currentMap = !this.state.mapView;
-    this.setState({ mapView: currentMap });
-  }
-
-  _showFavMapView() {
-    const currentMap = !this.state.favMapView;
-    this.setState({ favMapView: currentMap });
   }
 
   _handleARSupported() {
@@ -351,6 +334,28 @@ export default class ViroSample extends Component {
     });
   }
 
+  _logIn() {
+    this.setState({
+      isLoggedIn: true,
+    });
+  }
+
+  _signup() {
+    this.setState({
+      signupView: true,
+    });
+  }
+
+  _showMapView() {
+    const currentMap = !this.state.mapView;
+    this.setState({ mapView: currentMap });
+  }
+
+  _showFavMapView() {
+    const currentMap = !this.state.favMapView;
+    this.setState({ favMapView: currentMap });
+  }
+
   _onSaveLocation(objIndex, objUniqueName, yOffset) {
     const isSaved = 'Location Information Saved!';
     const notSaved = 'Sorry, We could\'nt Save the Information';
@@ -361,6 +366,9 @@ export default class ViroSample extends Component {
       longitude: this.state.longitude,
       wideData: this.state.generalData,
       narrowData: this.state.narrowData,
+      wideWiki,
+      narrowWiki,
+      wikiImage,
     })
       .then(() => {
         saveMessage = isSaved;

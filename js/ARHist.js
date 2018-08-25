@@ -120,47 +120,47 @@ const ARHist = createReactClass({
     this.props.arSceneNavigator.viroAppProps._onTrackingInit();
   },
 
-  _onArHitTestResults(position, forward, results) {
-    // Default position is just 1.5 meters in front of the user.
-    let newPosition = [forward[0] * 1.5, forward[1] * 1.5, forward[2] * 1.5];
-    let hitResultPosition;
+  // _onArHitTestResults(position, forward, results) {
+  //   // Default position is just 1.5 meters in front of the user.
+  //   let newPosition = [forward[0] * 1.5, forward[1] * 1.5, forward[2] * 1.5];
+  //   let hitResultPosition;
 
-    // Filter the hit test results based on the position.
-    if (results.length > 0) {
-      for (const i = 0; i < results.length; i++) {
-        const result = results[i];
-        if (result.type == 'ExistingPlaneUsingExtent') {
-          const distance = Math.sqrt(((result.transform.position[0] - position[0]) * (result.transform.position[0] - position[0])) + ((result.transform.position[1] - position[1]) * (result.transform.position[1] - position[1])) + ((result.transform.position[2] - position[2]) * (result.transform.position[2] - position[2])));
-          if (distance > 0.2 && distance < 10) {
-            // If we found a plane greater than .2 and less than 10 meters away then choose it!
-            hitResultPosition = result.transform.position;
-            break;
-          }
-        } else if (result.type == 'FeaturePoint' && !hitResultPosition) {
-          // If we haven't found a plane and this feature point is within range, then we'll use it
-          // as the initial display point.
-          const distance = this._distance(position, result.transform.position);
-          if (distance > 0.2 && distance < 10) {
-            hitResultPosition = result.transform.position;
-          }
-        }
-      }
-    }
+  //   // Filter the hit test results based on the position.
+  //   if (results.length > 0) {
+  //     for (const i = 0; i < results.length; i++) {
+  //       const result = results[i];
+  //       if (result.type == 'ExistingPlaneUsingExtent') {
+  //         const distance = Math.sqrt(((result.transform.position[0] - position[0]) * (result.transform.position[0] - position[0])) + ((result.transform.position[1] - position[1]) * (result.transform.position[1] - position[1])) + ((result.transform.position[2] - position[2]) * (result.transform.position[2] - position[2])));
+  //         if (distance > 0.2 && distance < 10) {
+  //           // If we found a plane greater than .2 and less than 10 meters away then choose it!
+  //           hitResultPosition = result.transform.position;
+  //           break;
+  //         }
+  //       } else if (result.type == 'FeaturePoint' && !hitResultPosition) {
+  //         // If we haven't found a plane and this feature point is within range, then we'll use it
+  //         // as the initial display point.
+  //         const distance = this._distance(position, result.transform.position);
+  //         if (distance > 0.2 && distance < 10) {
+  //           hitResultPosition = result.transform.position;
+  //         }
+  //       }
+  //     }
+  //   }
 
-    if (hitResultPosition) {
-      newPosition = hitResultPosition;
-    }
+  //   if (hitResultPosition) {
+  //     newPosition = hitResultPosition;
+  //   }
 
-    // Set the initial placement of the object using new position from the hit test.
-    this._setInitialPlacement(newPosition);
-  },
+  //   // Set the initial placement of the object using new position from the hit test.
+  //   this._setInitialPlacement(newPosition);
+  // },
 
-  _setInitialPlacement(position) {
-    this.setState({
-      objPosition: position,
-    });
-    this.setTimeout(() => { this._updateInitialRotation(); }, 200);
-  },
+  // _setInitialPlacement(position) {
+  //   this.setState({
+  //     objPosition: position,
+  //   });
+  //   this.setTimeout(() => { this._updateInitialRotation(); }, 200);
+  // },
 
   // Calculate distance between two vectors
   _distance(vectorOne, vectorTwo) {
