@@ -341,7 +341,7 @@ export default class ViroSample extends Component {
     }
     const currentProps = { ...this.state.viroAppProps };
     this.setState((prevState) => {
-      const objectSource = prevState.generalData.content[dataCounter];
+      const objectSource = prevState.generalData[dataCounter];
       return {
         viroAppProps: {
           ...currentProps,
@@ -361,7 +361,7 @@ export default class ViroSample extends Component {
     }
     const currentProps = { ...this.state.viroAppProps };
     this.setState((prevState) => {
-      const objectSource = prevState.generalData.content[dataCounter];
+      const objectSource = prevState.generalData[dataCounter];
       return {
         viroAppProps: {
           ...currentProps,
