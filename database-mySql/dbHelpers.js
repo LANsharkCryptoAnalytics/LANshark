@@ -58,18 +58,18 @@ const createUser = (user) => {
 
 // TODO: build out- adds an association to a particular place to a user
 const addToUserFavorites = ((favorite, user) => {
-  // not tested yet
-  // console.log(`add to favorites, userName: ${user.userName} ${user}`);
-  // again untested and probably broken
-  // way 2
+
+  console.log(JSON.stringify(favorite));
   return Favorite.create({
     name: favorite.name,
     lat: favorite.latitude,
     long: favorite.longitude,
-    wide: JSON.stringify(favorite.wide),
-    narrow: JSON.stringify(favorite.narrow),
+    wide: JSON.stringify(favorite.wideData),
+    narrow: JSON.stringify(favorite.narrowData),
     foreignKey: user.id,
-  }).then(() => { console.log('favorite created', favorite); }).catch(() => {
+  }).then(() => {
+    console.log('favorite created');
+  }).catch(() => {
     console.log('error in addToUserFavorites');
   });
 });
