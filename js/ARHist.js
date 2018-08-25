@@ -11,15 +11,12 @@ import { StyleSheet } from 'react-native';
 import {
   ViroARScene,
   ViroAmbientLight,
-  ViroARPlane,
   ViroNode,
-  ViroUtils,
-  ViroQuad,
   ViroSpotLight,
-  Viro3DObject,
   ViroAnimations,
   ViroMaterials,
   ViroText,
+  ViroQuad,
 } from 'react-viro';
 
 // import TimerMixin from 'react-timer-mixin';
@@ -33,7 +30,7 @@ const ARHist = createReactClass({
   getInitialState() {
     return {
       objPosition: [0, 0, 0],
-      scale: [0.5, 0.5, 0.5],
+      // scale: [0.5, 0.5, 0.5],
       rotation: [0, 0, 0],
       shouldBillboard: false,
     };
@@ -44,9 +41,8 @@ const ARHist = createReactClass({
     const modelArray = [];
     if (!this.props.arSceneNavigator.viroAppProps.displayObject || this.props.arSceneNavigator.viroAppProps.displayObjectName === undefined) {
       return;
-    }
-
-    const transformBehaviors = {};
+    } 
+      const transformBehaviors = {};
     if (this.state.shouldBillboard) {
       transformBehaviors.transformBehaviors = this.state.shouldBillboard ? 'billboardY' : [];
     }
@@ -98,15 +94,18 @@ const ARHist = createReactClass({
           onRotate={this._onRotate}
           onPinch={this._onPinch} /> */}
 
-      {/* <ViroQuad
-            rotation={[-90, 0, 0]}
-            position={[0, -.001, 0]}
-            width={2.5} height={2.5}
-            arShadowReceiver={true}
-            ignoreEventHandling={true} /> */}
+      <ViroQuad
+        rotation={[-90, 0, 0]}
+        position={[0, -0.001, 0]}
+        width={2.5}
+        height={2.5}
+        arShadowReceiver={true}
+        ignoreEventHandling={true}
+      />
 
                     </ViroNode>);
     return modelArray;
+        
   },
 
   _setARNodeRef(component) {
@@ -120,58 +119,6 @@ const ARHist = createReactClass({
   _onTrackInit() {
     this.props.arSceneNavigator.viroAppProps._onTrackingInit();
   },
-
-
-  /*
-   Rotation should be relative to its current rotation *not* set to the absolute
-   value of the given rotationFactor.
-   */
-  // _onRotate(rotateState, rotationFactor, source) {
-  //   if (rotateState == 3) {
-  //     this.setState({
-  //       rotation : [this.state.rotation[0], this.state.rotation[1] + rotationFactor, this.state.rotation[2]]
-  //     })
-  //     return;
-  //   }
-
-  //   this.arNodeRef.setNativeProps({rotation:[this.state.rotation[0], this.state.rotation[1] + rotationFactor, this.state.rotation[2]]});
-  // },
-
-  // /*
-  //  Pinch scaling should be relative to its last value *not* the absolute value of the
-  //  scale factor. So while the pinching is ongoing set scale through setNativeProps
-  //  and multiply the state by that factor. At the end of a pinch event, set the state
-  //  to the final value and store it in state.
-  //  */
-  // _onPinch(pinchState, scaleFactor, source) {
-  //   const newScale = this.state.scale.map((x)=>{return x * scaleFactor})
-
-  //   if (pinchState == 3) {
-  //     this.setState({
-  //       scale : newScale
-  //     });
-  //     return;
-  //   }
-
-  //   this.arNodeRef.setNativeProps({scale:newScale});
-  //   this.spotLight.setNativeProps({shadowFarZ: 6 * newScale[0]});
-  // },
-
-  // _onLoadStart() {
-  //   this.setState({
-  //     shouldBillboard : true,
-  //   });
-  //   this.props.arSceneNavigator.viroAppProps._onLoadStart();
-  // },
-  // // Perform a hit test on load end to display object.
-  // _onLoadEnd() {
-  //   this.refs["arscene"].getCameraOrientationAsync().then((orientation) => {
-  //     this.refs["arscene"].performARHitTestWithRay(orientation.forward).then((results)=>{
-  //         this._onArHitTestResults(orientation.position, orientation.forward, results);
-  //     })
-  //   });
-  //   this.props.arSceneNavigator.viroAppProps._onLoadEnd();
-  // },
 
   _onArHitTestResults(position, forward, results) {
     // Default position is just 1.5 meters in front of the user.
@@ -214,27 +161,6 @@ const ARHist = createReactClass({
     });
     this.setTimeout(() => { this._updateInitialRotation(); }, 200);
   },
-
-  // Update the rotation of the object to face the user after it's positioned.
-  // _updateInitialRotation() {
-  //   this.arNodeRef.getTransformAsync().then((retDict)=>{
-  //      let rotation = retDict.rotation;
-  //      let absX = Math.abs(rotation[0]);
-  //      let absZ = Math.abs(rotation[2]);
-
-  //      let yRotation = (rotation[1]);
-
-  //      // If the X and Z aren't 0, then adjust the y rotation.
-  //      if (absX > 1 && absZ > 1) {
-  //        yRotation = 180 - (yRotation);
-  //      }
-
-  //      this.setState({
-  //        rotation : [0,yRotation,0],
-  //        shouldBillboard : false,
-  //      });
-  //    });
-  // },
 
   // Calculate distance between two vectors
   _distance(vectorOne, vectorTwo) {
