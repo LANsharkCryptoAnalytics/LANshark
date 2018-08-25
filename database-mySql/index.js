@@ -36,12 +36,12 @@ const User = sequelize.define('user', {
 
 
 const Favorite = sequelize.define('favorite', {
-  // id: {
-  //   type: Sequelize.INTEGER,
-  //   autoIncrement: true,
-  //   primaryKey: true,
-  //   unique: true,
-  // },
+  id: {
+    type: Sequelize.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    unique: true,
+  },
   lat: {
     type: Sequelize.STRING, // may need to be int
   },
@@ -124,20 +124,20 @@ const Vcs = sequelize.define('vcs', {
   },
 });
 
-Favorite.hasOne(User);
-
-
 Favorite.sync({
   force: true, // true drops database
+}).then(() => {
+  User.hasMany(Favorite, { foreignKey: 'id' });
+  Favorite.belongsTo(User, { foreignKey: 'id' });
 }).then(() => Favorite.create({
   // name: 'French Market',
   lat: 30,
   long: 90,
   wide: 'some stuff goes here!!!',
   narrow: 'Other stuff goes here',
-  userEmail: 'email@email.com',
-  
+  userEmail: 'josefbutts',
 }));
+
 
 // User.belongsToMany(Favorite, {
 //   through: 'UserFavorites',
