@@ -11,12 +11,12 @@ app.use(bodyParser.urlencoded({
   extended: false,
 }));
 
-app.get('/', (_req, res) => {
+app.get('/', (req, res) => {
   res.send('LANSHARK');
 });
 
 
-app.get('/vcs', (_req, res) => {
+app.get('/vcs', (req, res) => {
   console.log('vcs endpoint hit');
 
   res.send('vcs endpoint');
