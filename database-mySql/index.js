@@ -1,6 +1,9 @@
 const Sequelize = require('sequelize');
-// const dbHelpers = require('./dbHelpers.js');
-// const user = require('./models/user.js')
+
+// The below is required in this file only to enable the testing of the 
+// addFavorite function at the bottom
+const helpers = require('../helpers.js');
+
 require('dotenv').config();
 
 const sequelize = new Sequelize(`mysql://${process.env.DBUSER}:${process.env.DBPASSWORD}@${process.env.DBHOST}/ARHISTORY`);
@@ -52,20 +55,9 @@ const Favorite = sequelize.define('favorite', {
   long: {
     type: Sequelize.STRING, // may need to be int
   },
-  wikiDataLink: {
-    type: Sequelize.STRING,
-  },
-  wikipediaLink: {
-    type: Sequelize.STRING,
-  },
-  content: {
-    type: Sequelize.STRING, // TODO: make this an array, 
-  },
-  type: {
-    type: Sequelize.STRING,
-  },
-  images: {
-    type: Sequelize.STRING,
+  latLong: {
+    type: Sequelize.INTEGER,
+    unique: true,
   },
   wide: {
     type: Sequelize.STRING,
@@ -88,30 +80,30 @@ User.sync({
   // favorites: '123123',
 })).then(() => {
   User.findAll().then((users) => {
-    console.log('find all');
-    users.forEach((user) => {
-      console.log(user.dataValues);
-    });
+    // console.log('find all');
+    // users.forEach((user) => {
+    //   console.log(user.dataValues);
+    // });
     // console.log('findAll', users[0].dataValues);
   });
 }).then(() => {
   // add a user for testing
   User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
     .spread((user, created) => {
-      console.log(user.get({
-        plain: true,
-      }));
-      console.log(created);
+      // console.log(user.get({
+      //   plain: true,
+      // }));
+      // console.log(created);
     });
 })
   .then(() => {
     // add the same user again to test function - should return false
     User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
       .spread((user, created) => {
-        console.log(user.get({
-          plain: true,
-        }));
-        console.log(created);
+        // console.log(user.get({
+        //   plain: true,
+        // }));
+        // console.log(created);
       });
   });
 
@@ -155,10 +147,30 @@ Favorite.sync({
   // name: 'French Market',
   lat: 30,
   long: 90,
+  latLong: 3090,
   wide: 'some stuff goes here!!!',
   narrow: 'Other stuff goes here',
   foreignKey: 2,
-}));
+}))
+// THIS IS HERE TO TEST THE ADD TO FAVIORITES FUNCTION. CURRENTLY NO USER INFO BEING
+// PASSED FROM THE CLIENT. I HARD CODED A FAVORITE AND A USER FOR THIS PURPOSE
+  .then(() => {
+    const testFavorite = { latitude: 29.9773846936982,
+      longitude: -90.07604716542896,
+      wideData:
+       ['Fairgrounds'],
+      narrowData: ['Rivoli Theatre', 'movie theater'],
+    };
+    const testUser = {
+      userName: 'Satan',
+      email: '666@hell.com',
+      id: 13,
+    };
+    
+    // Test addToFavorites
+    console.log('test add to favorites');
+    helpers.addToFavorites(testFavorite, testUser);
+  });
 
 
 // User.belongsToMany(Favorite, {
