@@ -90,6 +90,8 @@ export default class ViroSample extends Component {
 
 
     // this._onShowObject = this._onShowObject.bind(this);
+    this._logIn = this._logIn.bind(this);
+    this._signup = this._signup.bind(this);
     this._onSaveLocation = this._onSaveLocation.bind(this);
     this._onShowText = this._onShowText.bind(this);
     this._onShowText2 = this._onShowText2.bind(this);
@@ -120,9 +122,10 @@ export default class ViroSample extends Component {
       posPhone: false,
       narrowData: textArray2,
       dataStore: null,
-      isLoggedIn: true,
+      isLoggedIn: false,
       mapView: false,
       favMapView: false,
+      signupView: false,
     };
   }
 
@@ -131,9 +134,15 @@ export default class ViroSample extends Component {
     isARSupportedOnDevice(this._handleARNotSupported, this._handleARSupported);
   }
 
-  logIn() {
+  _logIn() {
     this.setState({
       isLoggedIn: true,
+    });
+  }
+
+  _signup() {
+    this.setState({
+      signupView: true,
     });
   }
 
@@ -406,7 +415,7 @@ export default class ViroSample extends Component {
       <View style={localStyles.outer}>
         {renderIf(!this.state.isLoggedIn && !this.state.mapView,
           <View style={styles.login}>
-            <Signup logIn={this.logIn} />
+            <Signup _signup={this._signup} _logIn={this._logIn} />
           </View>)}
         {renderIf(this.state.mapView,
           <Map showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
