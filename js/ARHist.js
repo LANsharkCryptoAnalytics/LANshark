@@ -121,58 +121,6 @@ const ARHist = createReactClass({
     this.props.arSceneNavigator.viroAppProps._onTrackingInit();
   },
 
-
-  /*
-   Rotation should be relative to its current rotation *not* set to the absolute
-   value of the given rotationFactor.
-   */
-  // _onRotate(rotateState, rotationFactor, source) {
-  //   if (rotateState == 3) {
-  //     this.setState({
-  //       rotation : [this.state.rotation[0], this.state.rotation[1] + rotationFactor, this.state.rotation[2]]
-  //     })
-  //     return;
-  //   }
-
-  //   this.arNodeRef.setNativeProps({rotation:[this.state.rotation[0], this.state.rotation[1] + rotationFactor, this.state.rotation[2]]});
-  // },
-
-  // /*
-  //  Pinch scaling should be relative to its last value *not* the absolute value of the
-  //  scale factor. So while the pinching is ongoing set scale through setNativeProps
-  //  and multiply the state by that factor. At the end of a pinch event, set the state
-  //  to the final value and store it in state.
-  //  */
-  // _onPinch(pinchState, scaleFactor, source) {
-  //   const newScale = this.state.scale.map((x)=>{return x * scaleFactor})
-
-  //   if (pinchState == 3) {
-  //     this.setState({
-  //       scale : newScale
-  //     });
-  //     return;
-  //   }
-
-  //   this.arNodeRef.setNativeProps({scale:newScale});
-  //   this.spotLight.setNativeProps({shadowFarZ: 6 * newScale[0]});
-  // },
-
-  // _onLoadStart() {
-  //   this.setState({
-  //     shouldBillboard : true,
-  //   });
-  //   this.props.arSceneNavigator.viroAppProps._onLoadStart();
-  // },
-  // // Perform a hit test on load end to display object.
-  // _onLoadEnd() {
-  //   this.refs["arscene"].getCameraOrientationAsync().then((orientation) => {
-  //     this.refs["arscene"].performARHitTestWithRay(orientation.forward).then((results)=>{
-  //         this._onArHitTestResults(orientation.position, orientation.forward, results);
-  //     })
-  //   });
-  //   this.props.arSceneNavigator.viroAppProps._onLoadEnd();
-  // },
-
   _onArHitTestResults(position, forward, results) {
     // Default position is just 1.5 meters in front of the user.
     let newPosition = [forward[0] * 1.5, forward[1] * 1.5, forward[2] * 1.5];

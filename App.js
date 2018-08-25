@@ -34,7 +34,7 @@ const textIMG = require('./js/res/cracked-wallpaper-9.jpg');
 const isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
 const textArray = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.');
 const textArray2 = 'cha cha changes, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.');
-const dataLength = textArray.length - 1;
+let dataLength = textArray.length - 1;
 let dataCounter = 0;
 let locationProgression = 0;
 
@@ -57,7 +57,7 @@ export default class ViroSample extends Component {
           },
         })
           .then((res) => {
-            const generalData = res.data;
+            const generalData = res.data.content;
             this.setState({ generalData });
           })
           .catch(error => this.setState({ error }));
@@ -79,7 +79,7 @@ export default class ViroSample extends Component {
           },
         })
           .then((res) => {
-            const narrowData = res.data;
+            const narrowData = res.data.content;
             this.setState({ narrowData });
           })
           .catch((error) => { this.setState({ error }); });
@@ -391,10 +391,11 @@ export default class ViroSample extends Component {
         })
           .then((res) => {
             locationProgression += 1;
-            const narrowData = res.data;
+            const narrowData = res.data.content;
+            dataLength = narrowData.length - 1;
             this.setState({ narrowData });
           })
-          .catch(err => this.state.error = err);
+          .catch((error) => { this.setState({ error }); });
       },
       error => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
