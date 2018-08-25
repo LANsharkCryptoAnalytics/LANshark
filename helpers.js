@@ -170,8 +170,8 @@ exports.getNeighborhoodMap = (lat, long) => {
   });
 };
 /**
- * Retrieves the wikipedia search results within a certain radius
- * snippets can be accessed, to get the full page, you must search by title
+ * search for wikipedia article using generator search
+ * gets the closest full article
  * @param {String} lat the latitude of the current location
  * @param {String} long the longitude of the current location
  * @returns {function} the axios get request for wikipedia
