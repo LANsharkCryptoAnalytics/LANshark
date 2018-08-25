@@ -38,6 +38,73 @@ let dataLength = textArray.length - 1;
 let dataCounter = 0;
 let locationProgression = 0;
 
+const localStyles = StyleSheet.create({
+  outer: {
+    flex: 1,
+  },
+  arView: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+  },
+  buttons: {
+    height: 80,
+    width: 80,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // paddingTop:20,
+    // paddingBottom:20,
+    // marginTop: 10,
+    // marginBottom: 10,
+    backgroundColor: '#00000000',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ffffff00',
+  },
+});
+ViroMaterials.createMaterials({
+  frontMaterial: {
+    // bloomThreshold: 0.1,
+    shininess: 2.0,
+    // specularTexture: textIMG,
+    blendMode: 'None',
+    // lightingModel: 'Lambert',
+    diffuseColor: '#FFFFFF',
+  },
+  backMaterial: {
+    // lightingModel: "Lambert",
+    bloomThreshold: 2.0,
+    diffuseColor: '#333333',
+  },
+  sideMaterial: {
+    // lightingModel: "Lambert",
+    // shininess: 2.0,
+    // bloomThreshold: .5,
+    diffuseColor: '#333333',
+  },
+});
+// "Comic Sans MS", cursive, sans-serif
+const styles = StyleSheet.create({
+  login: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#36485f',
+    paddingLeft: 60,
+    paddingRight: 60,
+  },
+  helloWorldTextStyle: {
+    fontFamily: 'Roboto',
+    // fontStyle: 'italic',
+    fontSize: 8,
+    color: '#ffffff',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+  },
+
+});
+
 
 export default class ViroSample extends Component {
   constructor(props) {
@@ -58,6 +125,7 @@ export default class ViroSample extends Component {
         })
           .then((res) => {
             const generalData = res.data.content;
+            dataLength = generalData.length - 1;
             this.setState({ generalData });
           })
           .catch(error => this.setState({ error }));
@@ -80,6 +148,7 @@ export default class ViroSample extends Component {
         })
           .then((res) => {
             const narrowData = res.data.content;
+            dataLength = narrowData.length - 1;
             this.setState({ narrowData });
           })
           .catch((error) => { this.setState({ error }); });
@@ -479,72 +548,5 @@ export default class ViroSample extends Component {
     );
   }
 }
-
-const localStyles = StyleSheet.create({
-  outer: {
-    flex: 1,
-  },
-  arView: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-  },
-  buttons: {
-    height: 80,
-    width: 80,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    // paddingTop:20,
-    // paddingBottom:20,
-    // marginTop: 10,
-    // marginBottom: 10,
-    backgroundColor: '#00000000',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#ffffff00',
-  },
-});
-ViroMaterials.createMaterials({
-  frontMaterial: {
-    // bloomThreshold: 0.1,
-    shininess: 2.0,
-    // specularTexture: textIMG,
-    blendMode: 'None',
-    // lightingModel: 'Lambert',
-    diffuseColor: '#FFFFFF',
-  },
-  backMaterial: {
-    // lightingModel: "Lambert",
-    bloomThreshold: 2.0,
-    diffuseColor: '#333333',
-  },
-  sideMaterial: {
-    // lightingModel: "Lambert",
-    // shininess: 2.0,
-    // bloomThreshold: .5,
-    diffuseColor: '#333333',
-  },
-});
-// "Comic Sans MS", cursive, sans-serif
-const styles = StyleSheet.create({
-  login: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#36485f',
-    paddingLeft: 60,
-    paddingRight: 60,
-  },
-  helloWorldTextStyle: {
-    fontFamily: 'Roboto',
-    // fontStyle: 'italic',
-    fontSize: 8,
-    color: '#ffffff',
-    textAlignVertical: 'center',
-    textAlign: 'center',
-  },
-
-});
 
 module.exports = ViroSample;
