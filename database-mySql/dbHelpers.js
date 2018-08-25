@@ -1,7 +1,6 @@
 const {
   User,
   Favorite,
-  Neighborhood,
   Vcs,
 } = require('./index.js');
 
@@ -64,6 +63,7 @@ const addToUserFavorites = ((favorite, user) => {
     name: favorite.name,
     lat: favorite.latitude,
     long: favorite.longitude,
+    latLong: `${favorite.latitude}${favorite.longitude}`,
     wide: JSON.stringify(favorite.wideData),
     narrow: JSON.stringify(favorite.narrowData),
     foreignKey: user.id,
