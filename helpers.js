@@ -101,11 +101,22 @@ exports.formatNeighborhoodData = ((json) => {
     // filter out results that don't have a title
     let type = '';
     let dist = '';
+    let widewiki = '';
+    let narrowwiki = '';
+    let wikiimage = '';
     console.log('///////////////////////////////////////////////////////////////////////////////////////////////');
-    console.log( currPlace);
+    console.log(currPlace);
     // check for instance of label
     if (currPlace.instance_ofLabel !== undefined) {
       type = currPlace.instance_ofLabel.value;
+      if (currPlace.instance_ofLabel.value === 'neighborhood' || currPlace.instance_ofLabel.value === 'unincorporated community') {
+        widewiki = currPlace.place.value;
+      } else {
+        narrowwiki = currPlace.place.value;
+      }
+    }
+    if (currPlace.image) {
+      wikiimage = currPlace.image.value;
     }
     // check for distance
     if (currPlace.dist !== undefined) {
@@ -119,6 +130,9 @@ exports.formatNeighborhoodData = ((json) => {
           coord: currPlace.coordinate_location.value.slice(6, -1),
           dist,
           type,
+          widewiki,
+          narrowwiki,
+          wikiimage,
         });
       }
     }
@@ -220,8 +234,6 @@ exports.searchByTitle = (titleInput) => {
 exports.loginUser = (user) => {
   console.log('login user helper fired');
   // TODO:PUT YOUR LOGIN STUFF HERE SENAI
-
-
 };
 
 // Create a new user
@@ -243,12 +255,12 @@ exports.createUser = (user, response, reject) => {
 exports.addToFavorites = (favorite) => {
   // console.log('addToUserFavorites');
   db.addToUserFavorites(favorite)
-  .then(() => {
-  res.send("saved to favorites")
-  })
-  .catch((error) => {
-  console.log('error saving');
-   });
+    .then(() => {
+      res.send('saved to favorites');
+    })
+    .catch((error) => {
+      console.log('error saving');
+    });
 };
 
 // ///////////////////////////////////////////////////////
