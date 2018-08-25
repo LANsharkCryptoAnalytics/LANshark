@@ -218,8 +218,6 @@ exports.searchByTitle = (titleInput) => {
 exports.loginUser = (user) => {
   console.log('login user helper fired');
   // TODO:PUT YOUR LOGIN STUFF HERE SENAI
-
-
 };
 
 // Create a new user
@@ -238,15 +236,16 @@ exports.createUser = (user, response, reject) => {
 };
 
 // addToUserFavorites
-exports.addToFavorites = (favorite) => {
+exports.addToFavorites = (favorite, user) => {
   // console.log('addToUserFavorites');
-  db.addToUserFavorites(favorite)
-  .then(() => {
-  res.send("saved to favorites")
-  })
-  .catch((error) => {
-  console.log('error saving');
-   });
+  db.addToUserFavorites(favorite, user)
+    .then(() => {
+      console.log('saved');
+      // res.send("saved to favorites");
+    })
+    .catch(() => {
+      console.log('error saving');
+    });
 };
 
 // ///////////////////////////////////////////////////////
@@ -268,3 +267,4 @@ exports.vcsCreate = (vcsInfo, res, reject) => {
   console.log('vieux carre address entry create fired');
   db.createVcs(vcsInfo);
 };
+
