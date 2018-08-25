@@ -21,6 +21,7 @@ app.get('/vcs', (req, res) => {
 
   res.send('vcs endpoint');
 });
+
 /**
  *  Endpoint for retrieving neighborhood information about the users current location
  */
@@ -193,3 +194,4 @@ app.listen(8200, () => {
 // https://forums.aws.amazon.com/thread.jspa?threadID=109440
 
 // ec2 ip address: ec2-34-238-240-14.compute-1.amazonaws.com
+
