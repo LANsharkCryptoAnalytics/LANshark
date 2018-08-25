@@ -1,6 +1,6 @@
 const {
   User,
-  Poi,
+  Favorite,
   Neighborhood,
   Vcs,
 } = require('./index.js');
@@ -68,11 +68,28 @@ const createUser = (user) => {
 };
 
 // TODO: build out- adds an association to a particular place to a user
-const addToUserFavorites = ((user, favoritesToAdd) => {
+const addToUserFavorites = ((user, favorite) => {
   // not tested yet
   console.log(`add to favorites, username: ${user.username} ${user}`);
   // again untested and probably broken
-  // user.favorites = user.favorites + favoritesToAdd;
+  // way 2
+  return Favorite.create({
+    // name: favorite.name,
+    lat: favorite.latitude,
+    long: favorite.longitude,
+    wide: favorite.wide,
+    narrow: favorite.narrow,
+    user: user.email,
+  }).then(() => { console.log('favorite created'); });
+});
+
+const findUserFavorites = ((user) => {
+  console.log(`finding user favorite for: ${user}`);
+  return Favorite.findAll({
+    where: {
+      user: user.email,
+    },
+  });
 });
 
 // Creates a database entry for a given neighborhood
@@ -82,22 +99,8 @@ const createNeighborhood = ((neighborHoodInfo) => {
     name: neighborHoodInfo.name,
     lat: neighborHoodInfo.lat,
     long: neighborHoodInfo.long,
-    fullPage: neighborHoodInfo.fullPage,
-    pois: neighborHoodInfo.pois,
-  });
-});
-
-// creates a database entry for a point of interest
-const createPoi = ((poiInfo) => {
-  console.log('createPoi fired');
-  return Poi.findOrCreate({
-    where: {
-      name: poiInfo.name,
-      lat: poiInfo.lat,
-      long: poiInfo.long,
-      address: poiInfo.address,
-      fullPage: poiInfo.fullPage,
-    },
+    wide: neighborHoodInfo.fullPage,
+    narrow: neighborHoodInfo.narrow,
   });
 });
 
@@ -129,7 +132,6 @@ module.exports = {
   findUser,
   addToUserFavorites,
   createNeighborhood,
-  createPoi,
   createVcs,
-  // findUserFavorites
+  findUserFavorites,
 };

@@ -75,7 +75,7 @@ export default class Signup extends Component {
     this._signup = this._signup.bind(this);
     this._submit = this._submit.bind(this);
   }
- 
+
 
   _loginPage() {
     this.setState({
@@ -111,7 +111,7 @@ export default class Signup extends Component {
   render() {
     return (
       <View style={styles.login}>
-      {renderIf(this.state.signupPage && !this.state.loginPage,
+        {renderIf(this.state.signupPage && !this.state.loginPage,
         <View>
         <Text style={styles.header}>Welcome to AR History Tour</Text>
 
@@ -124,16 +124,14 @@ export default class Signup extends Component {
         <TouchableOpacity style={styles.signupbutton} onPress={() => { this._submit() }}>
           <Text style={styles.btntext}>Sign Up</Text>
         </TouchableOpacity>
-        
-          <Text style={styles.logintext} onPress={() => { this._loginPage();} }>Login Here</Text>
-          </View>
-        )}
-        {renderIf(!this.state.signupPage && this.state.loginPage,
-        <View>
-          <Login arView={this.props._logIn} signup={this.props._signup}/>
-        </View>)}
 
+          <Text style={styles.logintext} onPress={() => { this._loginPage(); }}>Login Here</Text>
+        </View>,)}
+        {renderIf(!this.state.signupPage && this.state.loginPage,
+          <View>
+          <Login arView={this.props._logIn} signup={this.props._signup} />
+        </View>)}
       </View>
-    )
+    );
   }
 }

@@ -2,12 +2,16 @@ const axios = require('axios');
 const fetch = require('node-fetch');
 const scrapeIt = require('scrape-it');
 const db = require('./database-mySql/dbHelpers.js');
-
+/**
+ * format and parse the string from html
+ * @param {String} text the string to format
+ * @returns {array} formatted text split into lines for display
+ */
 exports.formatResults = (text) => {
   let results = text;
   results = results.replace(/\[(.*?)\]/g, ' ');
-  results = results.replace(/[\r\n]/g, ' ');
-  results = results.replace(/<[^>]+>/g, ' ');
+  results = results.replace(/[\r\n]/g, ' '); // remove new lines
+  results = results.replace(/<[^>]+>/g, ' '); // parse html tags
   results = results.trim();
   results = results.split('—');
   results = results.join(' ');
@@ -35,10 +39,19 @@ exports.formatResults = (text) => {
     results[i] = results[i].replace(/ {2}/g, ' ');
   });
   return results;
-  // return results.split(/[,.;]+/);
 };
+/**
+ * get neighborhood at a current location
+ * @param {String} lat the latitude of the current location
+ * @param {String} long the longitude of the current location
+ * @returns {function} fetch with the sparql query for lat and long at current location
+ */
 exports.getNeighborhood = (lat, long) => {
+  //  endpoint for sparql query
   const endpointUrl = 'https://query.wikidata.org/sparql';
+  //  sparql query for geo sparql getting place, coordinate location,
+  //  and instance of label and image if it exists
+  //  sorted by distance
   const sparqlQuery = `PREFIX geo: <http://www.opengis.net/ont/geosparql#>
     SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instance_ofLabel WHERE {
       SERVICE wikibase:around {
@@ -53,50 +66,57 @@ exports.getNeighborhood = (lat, long) => {
     }
     ORDER BY ASC(?dist)
     LIMIT 100`;
-
+  // putting the two urls together to make a full url
   const fullUrl = `${endpointUrl}?query=${encodeURIComponent(sparqlQuery)}`;
-
+  // json formatted results
   const headers = { Accept: 'application/sparql-results+json' };
-
   return fetch(fullUrl, {
     headers,
   });
 };
-
+/**
+ * formats the data received from the wikidata API call
+ * @param {String} json the json formatted results from the query
+ * @returns {Array} place an array of objects containing data about all of the places
+ */
 exports.formatNeighborhoodData = ((json) => {
-  const hood = [];
-  const place = {};
-  const places = [];
-  const {
+  const hood = []; // array for storing all of the current neighborhoods
+  const place = {}; // object for storing data about the current place
+  const places = []; // an array for storing all the place objects in the area
+  const { // getting the variables and results from json data
     head: {
       vars,
     },
     results,
   } = json;
-
-  for (const result of results.bindings) {
-    hood.push(result)
-    for (const variable of vars) {
+  // get all of the variable names and results for each place
+  // in the neighborhood and store them in an object
+  results.bindings.forEach((result) => {
+    hood.push(result);
+    vars.forEach((variable) => {
       place[variable] = result[variable];
-    }
-  }
-  hood.forEach((place) => {
+    });
+  });
+  hood.forEach((currPlace) => {
     // filter out results that don't have a title
-    let type = null;
-    let dist = null;
-    if (place.instance_ofLabel !== undefined) {
-      type = place.instance_ofLabel.value;
+    let type = '';
+    let dist = '';
+    // check for instance of label
+    if (currPlace.instance_ofLabel !== undefined) {
+      type = currPlace.instance_ofLabel.value;
     }
-    if (place.dist !== undefined) {
-      dist = place.dist.value;
+    // check for distance
+    if (currPlace.dist !== undefined) {
+      dist = currPlace.dist.value;
     }
-    if (place.placeLabel.value[0] !== 'Q' && place.placeLabel.value.length !== 9) {
-      if (place.placeLabel) {
+    // filter out results saved by wikidata ID and add the formatted places to the array
+    if (currPlace.placeLabel.value[0] !== 'Q' && currPlace.placeLabel.value.length !== 9) {
+      if (currPlace.placeLabel) {
         places.push({
-          title: place.placeLabel.value,
-          coord: place.coordinate_location.value.slice(6, -1),
-          dist: dist,
-          type: type
+          title: currPlace.placeLabel.value,
+          coord: currPlace.coordinate_location.value.slice(6, -1),
+          dist,
+          type,
         });
       }
     }
@@ -104,20 +124,28 @@ exports.formatNeighborhoodData = ((json) => {
   console.log(places);
   return places;
 });
-
-// Retrieves the full wikipedia page for a given title
-exports.getFullPage = (title, req, res) => {
-  title = title.split(' ').join('_');
+/**
+ * gets a full page parsed by scrapeIt
+ * @param {String} lat the latitude of the current location
+ * @param {String} long the longitude of the current location
+ * @returns {function} fetch with the sparql query for lat and long at current location
+ */
+exports.getFullPage = (pagetitle) => {
+  const title = pagetitle.split(' ').join('_');
   const url = `https://en.wikipedia.org/wiki/${title}`;
-  // console.log(url);
   return scrapeIt(url, {
     title: 'h1',
     paragraph: 'p',
   });
 };
-
-// Retrieves the neighboorhood map using a wikipedeai Sparql query
-exports.getNeighborhoodMap = (lat, long, req, res) => {
+/**
+ * Retrieves the neighboorhood map using a wikipedia Sparql query currently not being used
+ * get neighborhood map at a current location
+ * @param {String} lat the latitude of the current location
+ * @param {String} long the longitude of the current location
+ * @returns {function} fetch with the sparql query for lat and long at current location
+ */
+exports.getNeighborhoodMap = (lat, long) => {
   const endpointUrl = 'https://query.wikidata.org/sparql';
   const sparqlQuery = `#defaultView:Map{"layer":"?instance_ofLabel"}
       SELECT ?place ?placeLabel ?image ?coordinate_location ?dist ?instance_of ?instance_ofLabel WHERE {
@@ -137,71 +165,57 @@ exports.getNeighborhoodMap = (lat, long, req, res) => {
   const headers = {
     Accept: 'application/sparql-results+json',
   };
-
-  fetch(fullUrl, {
+  return fetch(fullUrl, {
     headers,
-  }).then(body => body.json()).then((json) => {
-    const {
-      head: {
-        vars,
-      },
-      results,
-    } = json;
-
-    for (const result of results.bindings) {
-      for (const variable of vars) {
-        console.log('%s: %o', variable, result[variable]);
-      }
-      console.log('---');
-    }
   });
 };
-
+/**
+ * search for wikipedia article using generator search
+ * gets the closest full article
+ * @param {String} lat the latitude of the current location
+ * @param {String} long the longitude of the current location
+ * @returns {function} the axios get request for wikipedia
+ */
 exports.getPOINarrow = (lat, long) => axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&prop=coordinates%7Cpageimages%7Cpageterms%7Cextracts&exlimit=5&generator=geosearch&colimit=1&piprop=thumbnail&pithumbsize=144&pilimit=10&wbptterms=description&ggscoord=${lat}%7C${long}&ggsradius=1500&ggslimit=1`);
 
-// get the address at the current lat and long
-// MapQuet API key is required
 // https://www.mapquestapi.com/geocoding/v1/reverse?key=KEY&location=29.92878%2C-90.08422&outFormat=json&thumbMaps=false
+/**
+ * Retrieves the address from coordinate
+ * MapQuest API key is required
+ * @param {String} lat the latitude of the current location
+ * @param {String} long the longitude of the current location
+ * @returns {function} the axios get request for mapquest
+ */
+exports.getAddress = (lat, long) => axios.get(`https://www.mapquestapi.com/geocoding/v1/reverse?key=${process.env.MAPQUESTKEY}&location=${lat}%2C${long}&outFormat=json&thumbMaps=false`);
+// https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=1403+Washington+Ave
 
-exports.getAddress = (lat, long, req, res) => {
-  return axios.get(`https://www.mapquestapi.com/geocoding/v1/reverse?key=${process.env.MAPQUESTKEY}&location=${lat}%2C${long}&outFormat=json&thumbMaps=false`);
-  // https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=1403+Washington+Ave
-};
 
-exports.searchByAddress = (address, req, res) => {
+/**
+ * Retrieves the wikipedia search result at an address
+ * @param {String} address the address to search
+ * @returns {function} the axios get request for wikipedia
+ */
+exports.searchByAddress = (address) => {
   const add = address.split(' ').join('+');
   return axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${add}+New+Orleans`);
 };
 
-exports.searchHnoc = (searchString) => {
-  return db.hnocSearch(searchString);
-};
-
-exports.searchByTitle = (titleInput, req, res) => {
+exports.searchHnoc = searchString => db.hnocSearch(searchString);
+/**
+ * gets a search results from wikipedia by title
+ * @param {String} titleInput the title to search
+ * @returns {function} the axios get request for wikipedia
+ */
+exports.searchByTitle = (titleInput) => {
   const title = titleInput.split(' ').join('+');
   return axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${title}`);
 };
 
-exports.getFullPageURI = (uri, req, res) => {
-  scrapeIt(uri, {
-    title: 'h1',
-    paragraph: 'p',
-  })
-    .then(({ data, response }) => {
-      let results = data.paragraph.replace(/ *\[[^)]*\] */g, ' ');
-      results = results.replace(/[\r\n]/g, '');
-      results = results.split('.');
-      // console.log(results);
-      res.send(results);
-    }).catch((error) => {
-      console.log(error);
-    });
-};
-/////////////////////////////////////////////
+// ///////////////////////////////////////////
 //   USER RELATED FUNCTIONS                //
-/////////////////////////////////////////////
+// ///////////////////////////////////////////
 
-exports.loginUser = (user, response, reject) => {
+exports.loginUser = (user) => {
   console.log('login user helper fired');
 
   // the below works but this isn't really the proper place for it
@@ -233,47 +247,33 @@ exports.createUser = (user, response, reject) => {
 };
 
 // addToUserFavorites
-exports.addToFavorites = (favorite, response, reject) => {
+exports.addToFavorites = (favorite) => {
   // console.log('addToUserFavorites');
-  db.addToUserFavorites(favorite).then(() => {
-    console.log('favorite added');
-    // res.end; .then((res) => { return res.data.query; })
-  }).catch((reject) => {
-    console.log('add to user favorites failed');
-  });
+  db.addToUserFavorites(favorite)
+  .then(() => {
+  res.send("saved to favorites")
+  })
+  .catch((error) => {
+  console.log('error saving');
+   });
 };
 
-/////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////
 // END OF USER RELATED FUNCTIONS                       //
-/////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////
 
 // Create data helpers
 exports.neighborhoodCreate = (neighborhood, res, reject) => {
   console.log('neighborhoodCreate');
-  db.createNeighborhood(neighborhood).then((response) => {
-    console.log('hood created', response);
-    res.end();
-  }).catch((reject) => {
-    console.log('reject');
-  });
+  db.createNeighborhood(neighborhood);
 };
 
 exports.poiCreate = (poi, response, reject) => {
   console.log('poiCreate');
-  db.createPoi(poi).then((response) => {
-    console.log('poi created', response);
-    res.end;
-  }).catch((reject) => {
-    console.log('reject');
-  });
+  db.createPoi(poi);
 };
 
 exports.vcsCreate = (vcsInfo, res, reject) => {
   console.log('vieux carre address entry create fired');
-  db.createVcs(vcsInfo).then((response) => {
-    console.log('vc data created', response);
-    res.end();
-  }).catch((reject) => {
-    console.log("you're a reject");
-  });
+  db.createVcs(vcsInfo);
 };
