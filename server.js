@@ -53,7 +53,7 @@ app.get('/neighborhood', (req, res) => {
         .then(({ data }) => {
           const resultsNO = helpers.formatResults(data.paragraph);
           // check for short results and only results in current city
-          if (resultsNO.length > 50 && resultsNO.join().includes(city2)) {
+          if (resultsNO.join().length > 50 && resultsNO.join().includes(city2)) {
             neighborhoods[i].content = descs.concat(resultsNO);
             res.send(neighborhoods[i]);
           } else { // search for the wikipedia article with the name without appended city
@@ -61,7 +61,7 @@ app.get('/neighborhood', (req, res) => {
               .then(({ data }) => {
                 const results = helpers.formatResults(data.paragraph);
                 // check for short results and only results in current city
-                if (results.length > 50 && results.join().includes(city2)) {
+                if (results.join().length > 50 && results.join().includes(city2)) {
                   neighborhoods[i].content = descs.concat(results);
                   res.send(neighborhoods[i]);
                 } else {
@@ -151,7 +151,7 @@ app.get('/broad', (req, res) => {
 
 // LOGIN RELATED INFORMATION
 
-app.get('/isLoggedIn', (_req, res) => {
+app.get('/isLoggedIn', (req, res) => {
   res.send('hitting server!!!!');
 });
 
