@@ -9,21 +9,46 @@ const {
 // finds a user - if you want to do that sort of thing
 const findUser = (userInfo) => {
   console.log('------------------ inside dbHelpers findUser');
-  console.log('findUser, user sought: ', userInfo);
+  // console.log('findUser, user sought: ', userInfo);
   // searches by email since that is the unique identifier
   return User.findOne({
     where: {
       email: userInfo.email,
+      password: userInfo.password,
     },
-  });
+  })
+    .then((user) => {
+      console.log('userrrrrr in db.Helpers() => findUser()');
+      console.log('uuuussssseeeeeerrrrrrrr', user.dataValues);
+      console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+      console.log('userInfoooooooooooooo', userInfo);
+      
+    })
+    .catch((error) => {
+      console.log('errrrrrroorrrrrrr', error);
+      throw error;
+    });
 };
 
 // TODO:function to create a new user
 // needs to be built out and tested
 const createUser = (user) => {
   // bcrypt hashing password here
-  console.log('create user fired userInfo:', user);
-  User.findOrCreate({
+  console.log(`create user fired userInfo, checking to see if ${user} already exists in db:`, user);
+  const checkForUser = findUser(user)
+    .then((userFound) => {
+      console.log('User Foundddddddddddddddd', userFound);
+      return 'User already exists';
+    })
+    .catch((error) => {
+      throw error;
+    });
+
+  if (checkForUser === 'User already exists') {
+    return 'User already exists';
+  }
+  console.log('User does not exist');
+  return User.findOrCreate({
     where: {
       username: user.username,
       email: user.email,
@@ -35,13 +60,9 @@ const createUser = (user) => {
         plain: true,
       }));
       console.log(created);
-      if (created === false) {
-        return 'User already exists';
-      }
-      return 'User created';
       /*
     findOrCreate returns an array containing the object that was found or created and a boolean that will be true if a new object was created and false if not, like so:
-
+ 
     [ {
         username: 'sdepold',
         job: 'Technical Lead JavaScript',
@@ -50,12 +71,11 @@ const createUser = (user) => {
         updatedAt: Fri Mar 22 2013 21: 28: 34 GMT + 0100(CET)
       },
       true ]
-
+ 
   In the example above, the "spread" on line 39 divides the array into its 2 parts and passes them as arguments to the callback function defined beginning at line 39, which treats them as "user" and "created" in this case. (So "user" will be the object from index 0 of the returned array and "created" will equal "true".)
     */
     });
 };
-
 // TODO: build out- adds an association to a particular place to a user
 const addToUserFavorites = ((favorite, user) => {
 

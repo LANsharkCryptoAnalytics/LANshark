@@ -177,15 +177,25 @@ app.get('/broad', (req, res) => {
 
 // LOGIN RELATED INFORMATION
 
-app.get('/login', (req, res) => {
-  helpers.loginUser(req)
+app.post('/login', (req, res) => {
+  dbHelpers.findUser(req.body)
     .then((user) => {
-      console.warn('userFound', user);
-      res.send('User Found');
+      console.warn('uuuuuuuussssssseeeeeeerrrrrrrr   in  /login (server)', user);
+      res.send('success');
     })
     .catch((error) => {
       console.warn(error);
     });
+
+  // helpers.loginUser(req)
+  //   .then((user) => {
+  //     console.log('userFound', user);
+  //     console.warn('user found');
+  //     res.send('User Found');
+  //   })
+  //   .catch((error) => {
+  //     console.warn(error);
+  //   });
 });
 
 app.post('/signup', (req, res) => {

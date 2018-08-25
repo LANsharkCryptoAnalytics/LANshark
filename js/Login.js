@@ -85,13 +85,15 @@ export default class Login extends Component {
     // const url1 = 'http://ec2-34-238-240-14.compute-1.amßazonaws.com/login';
     const testServer = 'http://172.24.6.45:8200/login';
     axios({
-      method: 'get',
+      method: 'post',
       url: testServer,
       data: this.state,
     })
       .then((response) => {
-        // console.warn(response);
-        this.props.arView();
+        console.warn('response.data', response.data);
+        if (response.data === 'success') {
+          this.props.arView();
+        }
       })
       .catch((error) => {
         throw error;
