@@ -64,7 +64,7 @@ export default class Signup extends Component {
     super(props);
 
     this.state = {
-      name: '',
+      username: '',
       email: '',
       password: '',
       loginPage: false,
@@ -92,15 +92,16 @@ export default class Signup extends Component {
   }
 
   _submit() {
-    // console.warn(this.props, 'props');
+    // const url1 = 'http://ec2-34-238-240-14.compute-1.amßazonaws.com/signUp';
+    const testServer = 'http://172.24.6.45:8200/signUp';
     axios({
       method: 'post',
-      url: 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login',
+      url: testServer,
       data: this.state,
     })
       .then((response) => {
-        // console.warn('response', response);
-        this.props._logIn();
+        console.warn('response', response);
+        // this.props._logIn();
       })
       .catch((error) => {
         throw error;
@@ -114,7 +115,7 @@ export default class Signup extends Component {
         <View>
         <Text style={styles.header}>Welcome to AR History Tour</Text>
 
-        <TextInput style={styles.textinput} placeholder="   Name" onChangeText={(text) => this.setState({name: text})} />
+        <TextInput style={styles.textinput} placeholder="   Username" onChangeText={(text) => this.setState({username: text})} />
 
         <TextInput style={styles.textinput} placeholder="   Email" onChangeText={(text) => this.setState({email: text})}/>
 

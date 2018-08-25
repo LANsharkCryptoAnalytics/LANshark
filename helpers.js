@@ -203,30 +203,33 @@ exports.getFullPageURI = (uri, req, res) => {
 
 exports.loginUser = (user, response, reject) => {
   console.log('login user helper fired');
-  // TODO:give me data Senai !
 
   // the below works but this isn't really the proper place for it
   // possible shift to findAndUPdate or something similar
-  // db.findUser(user.body).then((userData)=>{
-  //   console.log(`response ${userData}`);
-  //   console.log('do whatever we need to do here to log them in');
-
-  // }).catch( (err)=> { console.log(err)});
+  db.findUser(user.body)
+    .then((userData) => {
+      console.warn(`response ${userData}`);
+      console.warn('do whatever we need to do here to log them in');
+      response.send('a');
+    })
+    .catch((err) => { console.warn(err); });
 };
 
 // Create a new user
 exports.createUser = (user, response, reject) => {
   console.log('create user helper fired');
-
-  db.createUser = (userInfo, sequelize) => {
-    (userInfo.body).then((userData) => {
-      console.log(`response ${userData}`);
-      console.log('do whatever we need to do here to log them in');
-      // res.end();
-    }).catch((err) => {
-      console.log(err);
-    });
-  };
+  if (!db.findUser(user)) {
+    db.createUser = (userInfo, sequelize) => {
+      (userInfo.body).then((userData) => {
+        console.log(`response ${userData}`);
+        console.log('do whatever we need to do here to log them in');
+        // res.end();
+      }).catch((err) => {
+        console.log(err);
+      });
+    };
+  }
+  response.send('Email address has already been used');
 };
 
 // addToUserFavorites

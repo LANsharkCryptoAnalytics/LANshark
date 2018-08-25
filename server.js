@@ -6,17 +6,19 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 const hnocSearch = require('./hnocSearch.js');
 const helpers = require('./helpers.js');
+const dbHelpers = require('./database-mySql/dbHelpers');
 const db = require('./database-mySql/index.js');
 require('dotenv').config();
 const app = express(); // (2)
+app.use(passport.initialize());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false,
 }));
 
 passport.use(new LocalStrategy(
-  function(username, password, done) {
-    User.findOne({ username: username }, function(err, user) {
+  ((username, password, done) => {
+    db.User.findOne({ username: username }, (err, user) => {
       if (err) { return done(err); }
       if (!user) {
         return done(null, false, { message: 'Incorrect username.' });
@@ -26,16 +28,17 @@ passport.use(new LocalStrategy(
       }
       return done(null, user);
     });
-  }
+  }),
 ));
 
 app.post('/login',
-  passport.authenticate('local', { 
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true,
-  }),
-);
+  passport.authenticate('local'), (req, res) => {
+    res.redirect('/users/' + req.user.username);
+  });
+
+app.get('/users/', (req, res) => {
+  res.send('success');
+});
 
 app.get('/', (req, res) => {
   res.send('LANSHARK');
@@ -165,25 +168,15 @@ app.get('/broad', (req, res) => {
 
 // LOGIN RELATED INFORMATION
 
-app.get('/isLoggedIn', (req, res) => {
-  res.send('hitting server!!!!');
-});
-
-app.post('/login', (req, res) => {
-  console.log('server post login endpoint');
-  console.log(req.body, 'rrreeeqqqq......bbbbooooddddyyyy');
-  // helpers.loginUser(req, res);
-  // helpers.createUser(req, res);
-  res.send(req.body);
-
-  // res.send('logged in');
+app.get('/login', (req, res) => {
+  const isUserInDB = helpers.loginUser(req, res);
+  res.send(isUserInDB);
 });
 
 app.post('/signUp', (req, res) => {
-  console.log('signUp user fired');
-  // console.log('user: ', user);
   console.log(req.body);
-  res.send(req.body);
+  const doesUserExist = helpers.createUser(req.body);
+  res.send(doesUserExist);
 });
 
 // Endpoint to allow a logged in user to save favorite locations or points of interest

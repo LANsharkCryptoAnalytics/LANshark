@@ -8,26 +8,34 @@ const {
 
 // finds a user - if you want to do that sort of thing
 const findUser = (userInfo) => {
-  console.log('-----------------------------');
+  console.log('------------------ inside dbHelpers findUser');
   console.log('findUser, user sought: ', userInfo);
   // searches by email since that is the unique identifier
   return User.findOne({
     where: {
       email: userInfo.email,
     },
-  }).then((user) => {
-    console.log('userFound', user);
-    return user;
-  });
+  })
+    .then((user) => {
+      console.log('userFound', user);
+      if (user.password === userInfo.password) {
+        return 'User Found';
+      }
+      return 'Password Incorrect';
+    })
+    .catch((error) => {
+      console.warn(error);
+    });
 };
 
 // TODO:function to create a new user
 // needs to be built out and tested
 const createUser = (user) => {
+  // bcrypt hashing password here
   console.log('create user fired userInfo:', user);
   User.findOrCreate({
     where: {
-      userName: user.userName,
+      username: user.username,
       email: user.email,
       password: user.password,
       favorites: user.favorites,
@@ -38,9 +46,12 @@ const createUser = (user) => {
         plain: true,
       }));
       console.log(created);
-
+      if (created === false) {
+        return 'User already exists';
+      }
+      return 'User created';
       /*
-     findOrCreate returns an array containing the object that was found or created and a boolean that will be true if a new object was created and false if not, like so:
+    findOrCreate returns an array containing the object that was found or created and a boolean that will be true if a new object was created and false if not, like so:
 
     [ {
         username: 'sdepold',
@@ -51,7 +62,7 @@ const createUser = (user) => {
       },
       true ]
 
- In the example above, the "spread" on line 39 divides the array into its 2 parts and passes them as arguments to the callback function defined beginning at line 39, which treats them as "user" and "created" in this case. (So "user" will be the object from index 0 of the returned array and "created" will equal "true".)
+  In the example above, the "spread" on line 39 divides the array into its 2 parts and passes them as arguments to the callback function defined beginning at line 39, which treats them as "user" and "created" in this case. (So "user" will be the object from index 0 of the returned array and "created" will equal "true".)
     */
     });
 };
@@ -59,7 +70,7 @@ const createUser = (user) => {
 // TODO: build out- adds an association to a particular place to a user
 const addToUserFavorites = ((user, favoritesToAdd) => {
   // not tested yet
-  console.log(`add to favorites, userName: ${user.firstName} ${user}`);
+  console.log(`add to favorites, username: ${user.username} ${user}`);
   // again untested and probably broken
   // user.favorites = user.favorites + favoritesToAdd;
 });

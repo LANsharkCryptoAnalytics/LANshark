@@ -22,7 +22,7 @@ sequelize
 
 const User = sequelize.define('user', {
 
-  userName: {
+  username: {
     type: Sequelize.STRING,
   },
   email: {
@@ -90,7 +90,7 @@ const Poi = sequelize.define('poi', {
 User.sync({
   force: true,
 }).then(() => User.create({
-  userName: 'John',
+  username: 'John',
   password: '12345',
   email: 'me@me.com',
   favorites: '123123',
@@ -104,7 +104,7 @@ User.sync({
   });
 }).then(() => {
   // add a user for testing
-  User.findOrCreate({ where: { userName: 'Josef', email: 'email@email.com' } })
+  User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
     .spread((user, created) => {
       console.log(user.get({
         plain: true,
@@ -114,7 +114,7 @@ User.sync({
 })
   .then(() => {
     // add the same user again to test function - should return false
-    User.findOrCreate({ where: { userName: 'Josef', email:'email@email.com' } })
+    User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
       .spread((user, created) => {
         console.log(user.get({
           plain: true,
