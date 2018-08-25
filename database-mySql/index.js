@@ -54,6 +54,9 @@ const Favorite = sequelize.define('favorite', {
   narrow: {
     type: Sequelize.STRING,
   },
+  foreignKey: {
+    type: Sequelize.INTEGER,
+  },
 });
 
 // force: true will drop the table if it already exists
@@ -127,7 +130,7 @@ const Vcs = sequelize.define('vcs', {
 Favorite.sync({
   force: true, // true drops database
 }).then(() => {
-  User.hasMany(Favorite, { foreignKey: 'id' });
+  // User.hasMany(Favorite, { foreignKey: 'id' });
   Favorite.belongsTo(User, { foreignKey: 'id' });
 }).then(() => Favorite.create({
   // name: 'French Market',
@@ -135,7 +138,7 @@ Favorite.sync({
   long: 90,
   wide: 'some stuff goes here!!!',
   narrow: 'Other stuff goes here',
-  userEmail: 'josefbutts',
+  foreignKey: 2,
 }));
 
 
