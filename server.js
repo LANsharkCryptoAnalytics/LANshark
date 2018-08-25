@@ -92,8 +92,8 @@ app.get('/broad', (req, res) => {
   const i = req.query.i ? req.query.i : 8;
   // 29.976169,-90.076438
   // 29.928714, -90.001709
-  let lat = '29.97616921'.slice(0, 9);
-  let long = '-90.0764381'.slice(0, 10);
+  let lat = req.query.latitude.slice(0, 9);
+  let long = req.query.longitude.slice(0, 10);
   helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
     // find the places nearby that aren't neighborhoods
     const placesNearby = helpers.formatNeighborhoodData(json).filter(place => (place.type !== 'neighborhood' && place.type !== 'unincorporated community'));

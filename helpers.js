@@ -104,8 +104,7 @@ exports.formatNeighborhoodData = ((json) => {
     let widewiki = '';
     let narrowwiki = '';
     let wikiimage = '';
-    console.log('///////////////////////////////////////////////////////////////////////////////////////////////');
-    console.log(currPlace);
+  
     // check for instance of label
     if (currPlace.instance_ofLabel !== undefined) {
       type = currPlace.instance_ofLabel.value;
@@ -137,7 +136,6 @@ exports.formatNeighborhoodData = ((json) => {
       }
     }
   });
-  console.log(places);
   return places;
 });
 /**
