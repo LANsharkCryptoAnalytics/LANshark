@@ -64,8 +64,8 @@ const addToUserFavorites = ((user, favorite) => {
   // way 2
   return Favorite.create({
     // name: favorite.name,
-    lat: favorite.lat,
-    long: favorite.long,
+    lat: favorite.latitude,
+    long: favorite.longitude,
     wide: favorite.wide,
     narrow: favorite.narrow,
     user: user.email,

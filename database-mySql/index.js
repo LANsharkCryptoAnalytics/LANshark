@@ -42,11 +42,29 @@ const Favorite = sequelize.define('favorite', {
     primaryKey: true,
     unique: true,
   },
+  name: {
+    type: Sequelize.STRING,
+  },
   lat: {
     type: Sequelize.STRING, // may need to be int
   },
   long: {
     type: Sequelize.STRING, // may need to be int
+  },
+  wikiDataLink: {
+    type: Sequelize.STRING,
+  },
+  wikipediaLink: {
+    type: Sequelize.STRING,
+  },
+  content: {
+    type: Sequelize.STRING, // TODO: make this an array, 
+  },
+  type: {
+    type: Sequelize.STRING,
+  },
+  images: {
+    type: Sequelize.STRING,
   },
   wide: {
     type: Sequelize.STRING,

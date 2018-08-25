@@ -21,6 +21,7 @@ app.get('/vcs', (req, res) => {
 
   res.send('vcs endpoint');
 });
+
 /**
  *  Endpoint for retrieving neighborhood information about the users current location
  */
