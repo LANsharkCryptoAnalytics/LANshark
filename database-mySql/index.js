@@ -66,12 +66,12 @@ const Favorite = sequelize.define('favorite', {
   images: {
     type: Sequelize.STRING,
   },
-  // wide: {
-  //   type: Sequelize.STRING,
-  // },
-  // narrow: {
-  //   type: Sequelize.STRING,
-  // },
+  wide: {
+    type: Sequelize.STRING,
+  },
+  narrow: {
+    type: Sequelize.STRING,
+  },
   foreignKey: {
     type: Sequelize.INTEGER,
   },
