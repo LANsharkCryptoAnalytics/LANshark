@@ -252,20 +252,12 @@ exports.createUser = (user, response, reject) => {
 // addToUserFavorites
 exports.addToFavorites = (favorite, user) => {
   // console.log('addToUserFavorites');
-<<<<<<< HEAD
-  db.addToUserFavorites(favorite)
-    .then(() => {
-      res.send('saved to favorites');
-    })
-    .catch((error) => {
-=======
   db.addToUserFavorites(favorite, user)
     .then(() => {
       console.log('saved');
       // res.send("saved to favorites");
     })
     .catch(() => {
->>>>>>> b5ae6bef329a9d23a1cd4fb85e557b606a07383b
       console.log('error saving');
     });
 };
