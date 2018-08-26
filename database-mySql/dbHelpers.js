@@ -20,17 +20,18 @@ const createUser = (userInfo) => {
   findUser(userInfo)
     .then((user) => {
       if (user !== null) {
-        console.log('User already exists in db');
+        console.log(`User already exists in db: ${user}`);
         return user;
       }
       console.log('USER HAS BEEN CREATED AND SAVED TO THE DB!!!!!!');
-      return User.create({
+      User.create({
         where: {
           username: userInfo.username,
           email: userInfo.email,
           password: userInfo.password,
         },
       });
+      return `Thank You for signing up ${userInfo.username}`;
     })
     .catch((error) => { throw error; });
 };

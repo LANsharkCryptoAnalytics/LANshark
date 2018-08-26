@@ -180,11 +180,11 @@ app.get('/broad', (req, res) => {
 app.post('/login', (req, res) => {
   dbHelpers.findUser(req.body)
     .then((user) => {
-      console.warn('uuuuuuuussssssseeeeeeerrrrrrrr   in  /login (server)', user);
-      res.send('success');
+      console.log('uuuuuuuussssssseeeeeeerrrrrrrr in server /login', user.dataValues);
+      // res.send('success');
     })
     .catch((error) => {
-      console.warn(error);
+      console.log(error);
     });
 
   // helpers.loginUser(req)
@@ -200,6 +200,7 @@ app.post('/login', (req, res) => {
 
 app.post('/signup', (req, res) => {
   dbHelpers.createUser(req.body);
+  res.send(`Thank You For Signing Up ${req.body.username}`);
 });
 
 // Endpoint to allow a logged in user to save favorite locations or points of interest
