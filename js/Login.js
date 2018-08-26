@@ -87,13 +87,20 @@ export default class Login extends Component {
     axios({
       method: 'post',
       url: testServer,
-      data: this.state,
+      data: {
+        username: this.state.username,
+        email: this.state.email,
+        password: this.state.password,
+      },
     })
       .then((response) => {
-        console.warn('response.data', response.data);
+        console.warn('response ????????????????????', response);
         if (response.data === 'success') {
           this.props.arView();
+        } else {
+          alert(response.data);
         }
+        // this.props.arView();
       })
       .catch((error) => {
         throw error;

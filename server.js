@@ -178,9 +178,19 @@ app.get('/broad', (req, res) => {
 // LOGIN RELATED INFORMATION
 
 app.post('/login', (req, res) => {
-  dbHelpers.findUser(req.body)
+  const userInfo = req.body
+  console.log(userInfo, '88888888888888888');
+  dbHelpers.findUser(userInfo)
     .then((user) => {
-      console.log('uuuuuuuussssssseeeeeeerrrrrrrr in server /login', user.dataValues);
+      console.log('uuuuuuuussssssseeeeeeerrrrrrrr in server /login', user);
+      if (user === null) {
+        res.send(`Sorry ${userInfo.email}, we can not find you, try signing up 😊`);
+      } else if (user.dataValues.password === userInfo.password) {
+        console.log('PASSWORDIS A MATCH!!!!!!!!');
+        res.send('success');
+      } else {
+        res.send(`Sorry ${userInfo.email}, wrong passord`);
+      }
       // res.send('success');
     })
     .catch((error) => {

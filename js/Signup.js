@@ -104,7 +104,6 @@ export default class Signup extends Component {
       },
     })
       .then((response) => {
-        console.warn('response', response);
         this.props._logIn();
       })
       .catch((error) => {
