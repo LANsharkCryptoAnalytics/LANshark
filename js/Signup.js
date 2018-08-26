@@ -104,7 +104,12 @@ export default class Signup extends Component {
       },
     })
       .then((response) => {
-        this.props._logIn();
+        console.warn(123456789, response);
+        if (response.data === 1) {
+          this.props._logIn();
+        } else {
+          alert(`Sorry ${this.state.email}, This User Email Already Exists. Please try Login. 😊`);
+        }
       })
       .catch((error) => {
         throw error;

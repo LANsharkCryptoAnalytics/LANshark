@@ -5,7 +5,7 @@ const {
 } = require('./index.js');
 
 // finds a user - if you want to do that sort of thing
-const findUser = userInfo => User.findOne({
+const findUserLogin = userInfo => User.findOne({
   where: {
     email: userInfo.email,
   },
@@ -13,15 +13,37 @@ const findUser = userInfo => User.findOne({
   .then(user => user)
   .catch((error) => { throw error; });
 
+const findUserSignup = userInfo => User.findOne({
+  where: {
+    email: userInfo.email,
+  },
+})
+  .then((user) => {
+    console.log('dbHelpers => findUserSignup => then() !!!!!!!!!!!!!!!', user);
+    if (user === null) {
+      User.create({
+        where: {
+          username: userInfo.username,
+          email: userInfo.email,
+          password: userInfo.password,
+        },
+      });
+      return '1';
+    }
+    return '2';
+  })
+  .catch((error) => { throw error; });
+
 // TODO:function to create a new user
 // needs to be built out and tested
 const createUser = (userInfo) => {
   // bcrypt hashing password here
-  findUser(userInfo)
+  findUserSignup(userInfo)
     .then((user) => {
-      if (user !== null) {
+      console.log(123456789123456789123456789, user);
+      if (user === 2) {
         console.log(`User already exists in db: ${user}`);
-        return user;
+        return 'User Already Exists, Try Login 😊 ';
       }
       console.log('USER HAS BEEN CREATED AND SAVED TO THE DB!!!!!!');
       User.create({
@@ -89,7 +111,8 @@ const createVcs = ((vcsInfo) => {
 
 module.exports = {
   createUser,
-  findUser,
+  findUserLogin,
+  findUserSignup,
   addToUserFavorites,
   createVcs,
   findUserFavorites,

@@ -178,9 +178,9 @@ app.get('/broad', (req, res) => {
 // LOGIN RELATED INFORMATION
 
 app.post('/login', (req, res) => {
-  const userInfo = req.body
+  const userInfo = req.body;
   console.log(userInfo, '88888888888888888');
-  dbHelpers.findUser(userInfo)
+  dbHelpers.findUserLogin(userInfo)
     .then((user) => {
       console.log('uuuuuuuussssssseeeeeeerrrrrrrr in server /login', user);
       if (user === null) {
@@ -209,8 +209,19 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/signup', (req, res) => {
-  dbHelpers.createUser(req.body);
-  res.send(`Thank You For Signing Up ${req.body.username}`);
+  const userObject = req.body;
+  dbHelpers.findUserSignup(userObject)
+    .then((response) => {
+      console.log('server /signup #############', response);
+      if (response === '1') {
+        res.send('1');
+      } else {
+        res.send('2');
+      }
+    })
+    .catch((error) => { throw error; });
+  // dbHelpers.createUser(req.body);
+  // res.send(`Thank You For Signing Up ${req.body.username}`);
 });
 
 // Endpoint to allow a logged in user to save favorite locations or points of interest
