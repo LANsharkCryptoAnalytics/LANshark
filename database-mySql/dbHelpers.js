@@ -65,7 +65,7 @@ const findUserFavorites = ((user) => {
   console.log(`finding user favorite for: ${user}`);
   return Favorite.findAll({
     where: {
-      user: user.email,
+      user: user.id,
     },
   });
 });
