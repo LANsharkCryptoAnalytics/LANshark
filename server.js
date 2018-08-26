@@ -199,15 +199,7 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/signup', (req, res) => {
-  console.log(req.body);
-  dbHelpers.createUser(req.body)
-    .then((data) => {
-      console.log(data, 'aaaaaaaaaaaaaaaaaaaaaaaa');
-      res.send(data);
-    })
-    .catch((error) => {
-      throw error;
-    });
+  dbHelpers.createUser(req.body);
 });
 
 // Endpoint to allow a logged in user to save favorite locations or points of interest
@@ -231,4 +223,3 @@ app.listen(8200, () => {
 // https://forums.aws.amazon.com/thread.jspa?threadID=109440
 
 // ec2 ip address: ec2-34-238-240-14.compute-1.amazonaws.com
-

@@ -5,78 +5,37 @@ const {
 } = require('./index.js');
 
 // finds a user - if you want to do that sort of thing
-const findUser = (userInfo) => {
-  console.log('------------------ inside dbHelpers findUser');
-  // console.log('findUser, user sought: ', userInfo);
-  // searches by email since that is the unique identifier
-  return User.findOne({
-    where: {
-      email: userInfo.email,
-      password: userInfo.password,
-    },
-  })
-    .then((user) => {
-      console.log('userrrrrr in db.Helpers() => findUser()');
-      console.log('uuuussssseeeeeerrrrrrrr', user.dataValues);
-      console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-      console.log('userInfoooooooooooooo', userInfo);
-      
-    })
-    .catch((error) => {
-      console.log('errrrrrroorrrrrrr', error);
-      throw error;
-    });
-};
+const findUser = userInfo => User.findOne({
+  where: {
+    email: userInfo.email,
+  },
+})
+  .then(user => user)
+  .catch((error) => { throw error; });
 
 // TODO:function to create a new user
 // needs to be built out and tested
-const createUser = (user) => {
+const createUser = (userInfo) => {
   // bcrypt hashing password here
-  console.log(`create user fired userInfo, checking to see if ${user} already exists in db:`, user);
-  const checkForUser = findUser(user)
-    .then((userFound) => {
-      console.log('User Foundddddddddddddddd', userFound);
-      return 'User already exists';
+  findUser(userInfo)
+    .then((user) => {
+      if (user !== null) {
+        console.log('User already exists in db');
+        return user;
+      }
+      console.log('USER HAS BEEN CREATED AND SAVED TO THE DB!!!!!!');
+      return User.create({
+        where: {
+          username: userInfo.username,
+          email: userInfo.email,
+          password: userInfo.password,
+        },
+      });
     })
-    .catch((error) => {
-      throw error;
-    });
-
-  if (checkForUser === 'User already exists') {
-    return 'User already exists';
-  }
-  console.log('User does not exist');
-  return User.findOrCreate({
-    where: {
-      username: user.username,
-      email: user.email,
-      password: user.password,
-    },
-  })
-    .spread((user, created) => {
-      console.log(user.get({
-        plain: true,
-      }));
-      console.log(created);
-      /*
-    findOrCreate returns an array containing the object that was found or created and a boolean that will be true if a new object was created and false if not, like so:
- 
-    [ {
-        username: 'sdepold',
-        job: 'Technical Lead JavaScript',
-        id: 1,
-        createdAt: Fri Mar 22 2013 21: 28: 34 GMT + 0100(CET),
-        updatedAt: Fri Mar 22 2013 21: 28: 34 GMT + 0100(CET)
-      },
-      true ]
- 
-  In the example above, the "spread" on line 39 divides the array into its 2 parts and passes them as arguments to the callback function defined beginning at line 39, which treats them as "user" and "created" in this case. (So "user" will be the object from index 0 of the returned array and "created" will equal "true".)
-    */
-    });
+    .catch((error) => { throw error; });
 };
 // TODO: build out- adds an association to a particular place to a user
 const addToUserFavorites = ((favorite, user) => {
-
   console.log(JSON.stringify(favorite));
   return Favorite.create({
     name: favorite.name,
