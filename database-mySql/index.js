@@ -20,8 +20,8 @@ sequelize
 
 // ///////////////////////////////////////////////////////////////////////////////
 //  Models -- to be exported to their own pages soon for modularness           //
-//                     "separation of concerns"   (Said in an imitation Godfather voice)                                                      //
-// ///////////////////////////////////////////////////////////////////////////////
+//     "separation of concerns"   (Said in an imitation Godfather voice)       //                                               //
+// //////////////////////////////////////////////////////////////////////////////
 
 
 const User = sequelize.define('user', {
@@ -50,19 +50,28 @@ const Favorite = sequelize.define('favorite', {
     type: Sequelize.STRING,
   },
   lat: {
-    type: Sequelize.STRING, // may need to be int
+    type: Sequelize.INTEGER, // may need to be int
   },
   long: {
-    type: Sequelize.STRING, // may need to be int
+    type: Sequelize.INTEGER, // may need to be int
   },
   latLong: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.STRING,
     unique: true,
   },
   wide: {
     type: Sequelize.STRING,
   },
   narrow: {
+    type: Sequelize.STRING,
+  },
+  wideWiki: {
+    type: Sequelize.STRING,
+  },
+  narrowWiki: {
+    type: Sequelize.STRING,
+  },
+  wikiImage: {
     type: Sequelize.STRING,
   },
   foreignKey: {
@@ -147,102 +156,41 @@ Favorite.sync({
   // name: 'French Market',
   lat: 30,
   long: 90,
-  latLong: 3090,
+  latLong: '3090',
   wide: 'some stuff goes here!!!',
   narrow: 'Other stuff goes here',
   foreignKey: 2,
+  wideWiki: 'www.stuff.com',
+  narrowWiki: 'otherstuff.com',
+  wikiImage: 'sdfkjhsdkjfhksjdfhkjshdf',
 }))
-// THIS IS HERE TO TEST THE ADD TO FAVIORITES FUNCTION. CURRENTLY NO USER INFO BEING
+// THIS IS HERE TO TEST THE ADD TO FAVORITES FUNCTION. CURRENTLY NO USER INFO BEING
 // PASSED FROM THE CLIENT. I HARD CODED A FAVORITE AND A USER FOR THIS PURPOSE
   .then(() => {
-    const testFavorite = { latitude: 29.9773846936982,
+    const testFavorite = {
+      latitude: 29.9773846936982,
       longitude: -90.07604716542896,
-      wideData:
-       ['Fairgrounds'],
+      latLong: '29.9773846936982-90.07604716542896',
+      wideData: ['Fairgrounds'],
       narrowData: ['Rivoli Theatre', 'movie theater'],
+      wideWiki: 'www.cantgetenough.com',
+      narrowWiki: 'www.ofthatfunkystuff.com',
+      wikiImage: 'sdfkjhsdkjfhksjdfhkjshdf',
     };
     const testUser = {
       userName: 'Satan',
       email: '666@hell.com',
       id: 13,
     };
-    
+   
     // Test addToFavorites
     console.log('test add to favorites');
     helpers.addToFavorites(testFavorite, testUser);
   });
-
-
-// User.belongsToMany(Favorite, {
-//   through: 'UserFavorites',
-// });
-
-// Favorite.belongsTo(User, { foreignKey: 'useremail', targetKey: 'email' });
-
-// Adds fk_companyname to User
 
 module.exports = {
   sequelize,
   User,
   Favorite,
   Vcs,
-  // Neighborhood,
 };
-
-
-
-// TODO: Not currently in use
-// const Neighborhood = sequelize.define('neighborHood', {
-//   id: {
-//     type: Sequelize.INTEGER,
-//     autoIncrement: true,
-//     primaryKey: true,
-//     unique: true,
-//   },
-//   name: {
-//     type: Sequelize.STRING,
-//     unique: true,
-//   },
-//   lat: {
-//     type: Sequelize.STRING, // may need to be int
-//   },
-//   long: {
-//     type: Sequelize.STRING, // may need to be int
-//   },
-//   fullPage: {
-//     type: Sequelize.STRING,
-//   },
-//   pois: {
-//     type: Sequelize.STRING,
-//   },
-
-// });
-
-// TODO: not in use yet, or maybe ever
-// Neighborhood.sync({
-//   force: true, // true drops database
-// }).then(() => Neighborhood.create({
-//   name: 'French Quarter',
-//   lat: 31,
-//   long: 91,
-//   fullPage: 'wertwuyiweurytwertweyrtiyweritwierutyiuwert',
-//   pois: '00000000',
-// })).then(() => Neighborhood.findOrCreate({
-//   where: {
-//     name: 'Lake View',
-//     long: 90,
-//     lat: 22,
-//     fullPage: 'oioioiowieoiwoet',
-//     pois: 'wewewewe',
-//   },
-// }))
-//   .then(() => {
-//     Neighborhood.findAll().then((neighborhoods) => {
-//       console.log('find all');
-//       neighborhoods.forEach((neighborhood) => {
-//         console.log(neighborhood.dataValues);
-//       });
-//       // console.log('findAll', users[0].dataValues);
-//     });
-//   });
-

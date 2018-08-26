@@ -101,9 +101,21 @@ exports.formatNeighborhoodData = ((json) => {
     // filter out results that don't have a title
     let type = '';
     let dist = '';
+    let widewiki = '';
+    let narrowwiki = '';
+    let wikiimage = '';
+  
     // check for instance of label
     if (currPlace.instance_ofLabel !== undefined) {
       type = currPlace.instance_ofLabel.value;
+      if (currPlace.instance_ofLabel.value === 'neighborhood' || currPlace.instance_ofLabel.value === 'unincorporated community') {
+        widewiki = currPlace.place.value;
+      } else {
+        narrowwiki = currPlace.place.value;
+      }
+    }
+    if (currPlace.image) {
+      wikiimage = currPlace.image.value;
     }
     // check for distance
     if (currPlace.dist !== undefined) {
@@ -117,11 +129,13 @@ exports.formatNeighborhoodData = ((json) => {
           coord: currPlace.coordinate_location.value.slice(6, -1),
           dist,
           type,
+          widewiki,
+          narrowwiki,
+          wikiimage,
         });
       }
     }
   });
-  console.log(places);
   return places;
 });
 /**
