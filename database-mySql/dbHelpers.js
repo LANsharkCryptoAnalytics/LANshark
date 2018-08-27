@@ -34,27 +34,6 @@ const findUserSignup = userInfo => User.findOne({
 
 // TODO:function to create a new user
 // needs to be built out and tested
-const createUser = (userInfo) => {
-  // bcrypt hashing password here
-  findUserSignup(userInfo)
-    .then((user) => {
-      console.log(123456789123456789123456789, user);
-      if (user === 2) {
-        console.log(`User already exists in db: ${user}`);
-        return 'User Already Exists, Try Login 😊 ';
-      }
-      console.log('USER HAS BEEN CREATED AND SAVED TO THE DB!!!!!!');
-      User.create({
-        where: {
-          username: userInfo.username,
-          email: userInfo.email,
-          password: userInfo.password,
-        },
-      });
-      return `Thank You for signing up ${userInfo.username}`;
-    })
-    .catch((error) => { throw error; });
-};
 // TODO: build out- adds an association to a particular place to a user
 const addToUserFavorites = ((favorite, user) => {
   console.log(JSON.stringify(favorite));
