@@ -76,7 +76,7 @@ ViroMaterials.createMaterials({
     // specularTexture: textIMG,
     blendMode: 'None',
     // lightingModel: 'Lambert',
-    diffuseColor: '#16ffff',
+    diffuseColor: '#f7dc13',
   },
   backMaterial: {
     // lightingModel: "Lambert",
@@ -86,7 +86,7 @@ ViroMaterials.createMaterials({
   sideMaterial: {
     // lightingModel: "Lambert",
     // shininess: 2.0,
-    // bloomThreshold: .5,
+    // bloomThreshold: 1.5,
     diffuseColor: '#333333',
   },
 });
@@ -217,6 +217,8 @@ export default class ViroSample extends Component {
   _logIn() {
     this.setState({
       isLoggedIn: true,
+      nonUser: false,
+      signupView: false,
     });
   }
 
