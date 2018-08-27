@@ -177,7 +177,27 @@ app.post('/signUp', (req, res) => {
 app.post('/addToFavorites', (req) => {
   console.log('add to user favorites');
   console.log(req.body);
-  helpers.addToFavorites(req.body);
+  helpers.addToFavorites(req.body)
+    .then(() => {
+      console.log('saved');
+      res.send('saved to favorites');
+    })
+    .catch(() => {
+      console.log('error saving');
+    });
+});
+
+app.get('/getUserFavorites', (req, res) => {
+  console.log('get all user favorites ');
+  // console.log(req.query);
+  helpers.getAllUserFavorites(req.query)
+    .then((favorites) => {
+      console.log('server.js', favorites);
+      res.send(favorites);
+    })
+    .catch((error) => {
+      console.log('error retrieving favorites', error);
+    });
 });
 // helpers.searchByTitle('Garden District, New Orleans');
 // helpers.getFullPage('Garden District, New Orleans');
