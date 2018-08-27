@@ -82,11 +82,10 @@ export default class Login extends Component {
   }
 
   _submit() {
-    // const url1 = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login';
-    const testServer = 'http://192.168.0.15:8200/login';
+    const url1 = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login';
     axios({
       method: 'post',
-      url: testServer,
+      url: url1,
       data: {
         username: this.state.username,
         email: this.state.email,
@@ -94,7 +93,7 @@ export default class Login extends Component {
       },
     })
       .then((response) => {
-        console.warn('response ????????????????????', response);
+        // console.warn('response ????????????????????', response);
         if (response.data === 'success') {
           this.props.arView();
         } else {

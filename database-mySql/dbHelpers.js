@@ -22,11 +22,9 @@ const findUserSignup = userInfo => User.findOne({
     console.log('dbHelpers => findUserSignup => then() !!!!!!!!!!!!!!!', user);
     if (user === null) {
       User.create({
-        where: {
-          username: userInfo.username,
-          email: userInfo.email,
-          password: userInfo.password,
-        },
+        username: userInfo.username,
+        email: userInfo.email,
+        password: userInfo.password,
       });
       return '1';
     }
