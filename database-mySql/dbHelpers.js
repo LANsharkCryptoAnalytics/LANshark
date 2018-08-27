@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+
 const {
   User,
   Favorite,
@@ -13,24 +15,39 @@ const findUserLogin = userInfo => User.findOne({
   .then(user => user)
   .catch((error) => { throw error; });
 
-const findUserSignup = userInfo => User.findOne({
-  where: {
-    email: userInfo.email,
-  },
-})
-  .then((user) => {
-    console.log('dbHelpers => findUserSignup => then() !!!!!!!!!!!!!!!', user);
-    if (user === null) {
-      User.create({
-        username: userInfo.username,
-        email: userInfo.email,
-        password: userInfo.password,
-      });
-      return '1';
-    }
-    return '2';
+const findUserSignup = (userInfo) => {
+  User.findOne({
+    where: {
+      email: userInfo.email,
+    },
   })
-  .catch((error) => { throw error; });
+    .then((user) => {
+      console.log('dbHelpers => findUserSignup => then() !!!!!!!!!!!!!!!', user);
+      if (user === null) {
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(userInfo.password, salt, (error, hash) => {
+            // Store hash in your password DB.
+            if (error) {
+              throw error;
+            }
+            User.create({
+              username: userInfo.username,
+              email: userInfo.email,
+              password: hash,
+            })
+              .then((response) => {
+                console.log('0000000000000000000000000', response);
+                return response;
+              })
+              .catch((errorr) => { throw errorr; });
+          });
+        });
+      } else if (user !== null) {
+        return user;
+      }
+    })
+    .catch((e) => { throw e; });
+};
 
 // TODO:function to create a new user
 // needs to be built out and tested
@@ -87,7 +104,6 @@ const createVcs = ((vcsInfo) => {
 // findUserFavorites
 
 module.exports = {
-  createUser,
   findUserLogin,
   findUserSignup,
   addToUserFavorites,

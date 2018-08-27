@@ -210,7 +210,7 @@ app.post('/login', (req, res) => {
 
 app.post('/signup', (req, res) => {
   const userObject = req.body;
-  dbHelpers.findUserSignup(userObject)
+  return dbHelpers.findUserSignup(userObject)
     .then((response) => {
       console.log('server /signup #############', response);
       if (response === '1') {
