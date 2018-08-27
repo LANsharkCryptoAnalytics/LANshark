@@ -25,7 +25,7 @@ const createUser = (user) => {
   console.log('create user fired userInfo:', user);
   User.findOrCreate({
     where: {
-      userName: user.userName,
+      username: user.username,
       email: user.email,
       password: user.password,
       favorites: user.favorites,
@@ -65,7 +65,7 @@ const findUserFavorites = ((user) => {
   console.log(`finding user favorite for: ${user}`);
   return Favorite.findAll({
     where: {
-      user: user.id,
+      foreignKey: user,
     },
   });
 });
