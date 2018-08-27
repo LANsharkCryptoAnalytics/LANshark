@@ -249,8 +249,8 @@ export default class ViroSample extends Component {
     });
   }
 
-  // Invoked when a model has loaded, we hide the loading indictator.
-  _onLoadEnd() {
+  // Invoked whefalsetator.
+  _onLoadEnd() {false
     this.setState({
       isLoading: false,
     });
@@ -494,7 +494,7 @@ export default class ViroSample extends Component {
   render() {
     return (
       <View style={localStyles.outer}>
-        {renderIf(!this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView && this.state.signupView,
+        {renderIf(!this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
           <View style={styles.login}>
             <Signup _signup={this._signup} _logIn={this._logIn} />
           </View>)}
@@ -510,7 +510,7 @@ export default class ViroSample extends Component {
               {this.state.generalData[dataCounter]}
             </Text>
           </View>)}
-        {renderIf(this.state.posComp && !this.state.posPhone && !this.state.mapView && !this.state.favMapView && !this.state.signupView,
+        {renderIf(this.state.posComp && this.state.isLoggedIn && !this.state.posPhone && !this.state.mapView && !this.state.favMapView && !this.state.signupView,
           <ViroARSceneNavigator
             style={localStyles.arView}
             apiKey={viroKey}
@@ -529,7 +529,7 @@ export default class ViroSample extends Component {
             <ActivityIndicator size="large" animating={this.state.isLoading} color="#ffffff" />
           </View>)
       }
-        {renderIf(this.state.isLoggedIn || this.state.nonUser && !this.state.mapView && !this.state.favMapView,
+        {renderIf(this.state.isLoggedIn && this.state.nonUser && !this.state.mapView && !this.state.favMapView,
           <View style={{
             position: 'absolute', left: 50, right: 0, bottom: 77, alignItems: 'center', flex: 1, flexDirection: 'row', justifyContent: 'space-between',
           }}
