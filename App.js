@@ -168,7 +168,6 @@ export default class ViroSample extends Component {
     );
 
 
-    // this._onShowObject = this._onShowObject.bind(this);
     this._logIn = this._logIn.bind(this);
     this._signup = this._signup.bind(this);
     this._onSaveLocation = this._onSaveLocation.bind(this);
@@ -180,7 +179,6 @@ export default class ViroSample extends Component {
     this._onAttemptHNOC = this._onAttemptHNOC.bind(this);
     this._showMapView = this._showMapView.bind(this);
     this._showFavMapView = this._showFavMapView.bind(this);
-    // this._renderTrackingText = this._renderTrackingText.bind(this);
     this._onTrackingInit = this._onTrackingInit.bind(this);
     this._onDisplayDialog = this._onDisplayDialog.bind(this);
     this._onLoadStart = this._onLoadStart.bind(this);
@@ -232,10 +230,6 @@ export default class ViroSample extends Component {
   _showFavMapView() {
     const currentMap = !this.state.favMapView;
     this.setState({ favMapView: currentMap });
-  }
-
-  _handleARSupported() {
-
   }
 
   _handleARNotSupported() {
@@ -468,15 +462,24 @@ export default class ViroSample extends Component {
   render() {
     return (
       <View style={localStyles.outer}>
+
         {renderIf(!this.state.mapView && this.state.signupView,
           <View style={styles.login}>
             <Signup _signup={this._signup} _logIn={this._logIn} />
           </View>)}
+
         {renderIf(this.state.mapView,
-          <Map showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
+          <Map
+            showMapView={this._showMapView}
+            lat={this.state.latitude}
+            long={this.state.longitude} />)}
 
         {renderIf(this.state.favMapView && this.state.isLoggedIn,
-          <FavoriteMap showFavMapView={this._showFavMapView} lat={this.state.latitude} long={this.state.longitude} />)}
+          <FavoriteMap
+            showFavMapView={this._showFavMapView}
+            lat={this.state.latitude}
+            long={this.state.longitude} />)}
+
         {renderIf(this.state.posPhone && this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
           <View>
             <Text>
@@ -484,6 +487,7 @@ export default class ViroSample extends Component {
               {this.state.generalData[dataCounter]}
             </Text>
           </View>)}
+          
         {renderIf(this.state.posComp && !this.state.posPhone && !this.state.mapView && !this.state.favMapView && !this.state.signupView,
           <ViroARSceneNavigator
             style={localStyles.arView}
