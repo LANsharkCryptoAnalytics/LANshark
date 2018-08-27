@@ -105,7 +105,7 @@ var starIcon = new LeafIcon({
 })
 for( let i = 0; i < favs.length; i++){
   L.marker([favs[i].lat, favs[i].long], {icon: fIcon}).addTo(map)
-.bindPopup('<a href="'+favs[i].narrowwiki+'">Link</a>' );
+.bindPopup('<a href="'+favs[i].narrowwiki+'">Link</a><br>' + '<img src="http://commons.wikimedia.org/wiki/Special:FilePath/Jazzfest07FairgroundGrandstand55.jpg" alt="Image" height="100%" width="100%">');
 }
 
     

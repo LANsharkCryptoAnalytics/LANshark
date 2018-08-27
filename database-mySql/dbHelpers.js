@@ -1,10 +1,8 @@
 const {
   User,
   Favorite,
-  Neighborhood,
   Vcs,
 } = require('./index.js');
-
 
 // finds a user - if you want to do that sort of thing
 const findUser = (userInfo) => {
@@ -38,21 +36,6 @@ const createUser = (user) => {
         plain: true,
       }));
       console.log(created);
-
-      /*
-     findOrCreate returns an array containing the object that was found or created and a boolean that will be true if a new object was created and false if not, like so:
-
-    [ {
-        username: 'sdepold',
-        job: 'Technical Lead JavaScript',
-        id: 1,
-        createdAt: Fri Mar 22 2013 21: 28: 34 GMT + 0100(CET),
-        updatedAt: Fri Mar 22 2013 21: 28: 34 GMT + 0100(CET)
-      },
-      true ]
-
- In the example above, the "spread" on line 39 divides the array into its 2 parts and passes them as arguments to the callback function defined beginning at line 39, which treats them as "user" and "created" in this case. (So "user" will be the object from index 0 of the returned array and "created" will equal "true".)
-    */
     });
 };
 
@@ -64,8 +47,12 @@ const addToUserFavorites = ((favorite, user) => {
     name: favorite.name,
     lat: favorite.latitude,
     long: favorite.longitude,
+    latLong: `${favorite.latitude}${favorite.longitude}`,
     wide: JSON.stringify(favorite.wideData),
     narrow: JSON.stringify(favorite.narrowData),
+    wideWiki: favorite.wideWiki,
+    narrowWiki: favorite.narrowWiki,
+    wikiImage: favorite.wikiImage,
     foreignKey: user.id,
   }).then(() => {
     console.log('favorite created');
@@ -80,18 +67,6 @@ const findUserFavorites = ((user) => {
     where: {
       user: user.email,
     },
-  });
-});
-
-// Creates a database entry for a given neighborhood
-const createNeighborhood = ((neighborHoodInfo) => {
-  console.log('createNeighborHood fired');
-  return Neighborhood.findOrCreate({
-    name: neighborHoodInfo.name,
-    lat: neighborHoodInfo.lat,
-    long: neighborHoodInfo.long,
-    wide: neighborHoodInfo.fullPage,
-    narrow: neighborHoodInfo.narrow,
   });
 });
 
@@ -113,7 +88,6 @@ const createVcs = ((vcsInfo) => {
   });
 });
 
-
 // TODO: build out this query after building the addToFavorites function
 // queries the database to find a given users favorites list
 // findUserFavorites
@@ -122,7 +96,6 @@ module.exports = {
   createUser,
   findUser,
   addToUserFavorites,
-  createNeighborhood,
   createVcs,
   findUserFavorites,
 };
