@@ -307,6 +307,7 @@ export default class ViroSample extends Component {
           { text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0) },
           { text: 'New Location', onPress: () => this._onRemoveText() },
           { text: 'Show Map', onPress: () => this._showMapView() },
+          { text: 'Favorites Map', onPress: () => this._showFavMapView() },
           {
             text: 'User Menu',
             onPress: () => Alert.alert(
