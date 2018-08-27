@@ -30,13 +30,15 @@ import renderIf from './js/helpers/renderIf';
 
 const InitialARScene = require('./js/ARHist');
 const textIMG = require('./js/res/cracked-wallpaper-9.jpg');
-
 const isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
 const textArray = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.');
 const textArray2 = 'cha cha changes, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.');
 let dataLength = textArray.length - 1;
 let dataCounter = 0;
 let locationProgression = 0;
+let wideWiki = '';
+let narrowWiki = '';
+let wikiImage = '';
 
 const localStyles = StyleSheet.create({
   outer: {
@@ -125,6 +127,7 @@ export default class ViroSample extends Component {
         })
           .then((res) => {
             const generalData = res.data.content;
+            wideWiki = res.data.wideWiki;
             dataLength = generalData.length - 1;
             this.setState({ generalData });
           })
@@ -148,6 +151,8 @@ export default class ViroSample extends Component {
         })
           .then((res) => {
             const narrowData = res.data.content;
+            narrowWiki = res.data.narrowWiki;
+            wikiImage = res.data.wikiImage;
             dataLength = narrowData.length - 1;
             this.setState({ narrowData });
           })
@@ -192,6 +197,7 @@ export default class ViroSample extends Component {
       narrowData: textArray2,
       dataStore: null,
       isLoggedIn: false,
+      nonUser: true,
       mapView: false,
       favMapView: false,
       signupView: false,
@@ -212,6 +218,7 @@ export default class ViroSample extends Component {
   _signup() {
     this.setState({
       signupView: true,
+      nonUser: false,
     });
   }
 
@@ -280,7 +287,7 @@ export default class ViroSample extends Component {
   }
 
   _onDisplayDialog() {
-    if (!this.state.isLoggedIn) {
+    if (this.state.nonUser) {
       Alert.alert(
         'Learn About The Area Around You',
         'Choose an Option Below',
@@ -290,6 +297,7 @@ export default class ViroSample extends Component {
           { text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0) },
           { text: 'New Location', onPress: () => this._onRemoveText() },
           { text: 'Show Map', onPress: () => this._showMapView() },
+          { text: 'Signup or Login', onPress: () => this._signup() },
         ],
       );
     } else {
@@ -361,6 +369,9 @@ export default class ViroSample extends Component {
       longitude: this.state.longitude,
       wideData: this.state.generalData,
       narrowData: this.state.narrowData,
+      wideWiki,
+      narrowWiki,
+      wikiImage,
     })
       .then(() => {
         saveMessage = isSaved;
@@ -483,13 +494,14 @@ export default class ViroSample extends Component {
   render() {
     return (
       <View style={localStyles.outer}>
-        {renderIf(!this.state.isLoggedIn && !this.state.mapView,
+        {renderIf(!this.state.mapView && this.state.signupView,
           <View style={styles.login}>
             <Signup _signup={this._signup} _logIn={this._logIn} />
           </View>)}
         {renderIf(this.state.mapView,
           <Map showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
-        {renderIf(this.state.favMapView,
+
+        {renderIf(this.state.favMapView && this.state.isLoggedIn,
           <FavoriteMap showFavMapView={this._showFavMapView} lat={this.state.latitude} long={this.state.longitude} />)}
         {renderIf(this.state.posPhone && this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
           <View>
@@ -498,7 +510,7 @@ export default class ViroSample extends Component {
               {this.state.generalData[dataCounter]}
             </Text>
           </View>)}
-        {renderIf(this.state.posComp && !this.state.posPhone && this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
+        {renderIf(this.state.posComp && !this.state.posPhone && !this.state.mapView && !this.state.favMapView && !this.state.signupView,
           <ViroARSceneNavigator
             style={localStyles.arView}
             apiKey={viroKey}
@@ -517,7 +529,7 @@ export default class ViroSample extends Component {
             <ActivityIndicator size="large" animating={this.state.isLoading} color="#ffffff" />
           </View>)
       }
-        {renderIf(this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
+        {renderIf(this.state.isLoggedIn || this.state.nonUser && !this.state.mapView && !this.state.favMapView,
           <View style={{
             position: 'absolute', left: 50, right: 0, bottom: 77, alignItems: 'center', flex: 1, flexDirection: 'row', justifyContent: 'space-between',
           }}
