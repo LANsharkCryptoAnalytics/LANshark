@@ -31,7 +31,6 @@ import renderIf from './js/helpers/renderIf';
 console.disableYellowBox = true;
 
 const InitialARScene = require('./js/ARHist');
-const textIMG = require('./js/res/cracked-wallpaper-9.jpg');
 
 const isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
 const textArray = 'A green hunting cap squeezed the top of the fleshy balloon of a head. The green earflaps, full of large ears and uncut hair and the fine bristles that grew in the ears themselves, stuck out on either side like turn signals indicating two directions at once. Full, pursed lips protruded beneath the bushy black moustache and, at their corners, sank into little folds filled with disapproval and potato chip crumbs. In the shadow under the green visor of the cap Ignatius J. Reilly’s supercilious blue and yellow eyes looked down upon the other people waiting under the clock at the D. H. Holmes department store, studying the crowd of people for signs of bad taste and dress. Several of the outfits, Ignatius noticed, were new enough and expensive enough to be properly considered offenses against taste and decency. Possession of anything new or expensive only reflected a person’s lack of theology and geometry; it could even cast doubts upon one’s soul.'.split('.');
@@ -267,7 +266,7 @@ export default class ViroSample extends Component {
 
           // {text: 'Save Location', onPress: () => this._onSaveLocation(0, dataCounter, 0 )},
           { text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0) },
-          { text: 'New Location', onPress: () => this._onRemoveText() },
+          { text: 'Next Location', onPress: () => this._onRemoveText() },
           { text: 'Show Map', onPress: () => this._showMapView() },
           { text: 'Signup or Login', onPress: () => this._signup() },
         ],
@@ -278,7 +277,7 @@ export default class ViroSample extends Component {
         'Choose an Option Below',
         [
           { text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0) },
-          { text: 'New Location', onPress: () => this._onRemoveText() },
+          { text: 'Next Location', onPress: () => this._onRemoveText() },
           { text: 'Show Map', onPress: () => this._showMapView() },
           { text: 'Favorites Map', onPress: () => this._showFavMapView() },
           {
@@ -487,7 +486,7 @@ export default class ViroSample extends Component {
               {this.state.generalData[dataCounter]}
             </Text>
           </View>)}
-          
+
         {renderIf(this.state.posComp && !this.state.posPhone && !this.state.mapView && !this.state.favMapView && !this.state.signupView,
           <ViroARSceneNavigator
             style={localStyles.arView}
