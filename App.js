@@ -190,7 +190,6 @@ export default class ViroSample extends Component {
       viroAppProps: {
         displayObject: false, objectSource: null, yOffset: 0, _onLoadEnd: this._onLoadEnd, _onLoadStart: this._onLoadStart, _onTrackingInit: this._onTrackingInit,
       },
-      trackingInitialized: false,
       isLoading: false,
       posComp: true,
       latitude: '29.97616921',
@@ -200,7 +199,6 @@ export default class ViroSample extends Component {
       generalData: textArray,
       posPhone: false,
       narrowData: textArray2,
-      dataStore: null,
       isLoggedIn: false,
       nonUser: true,
       mapView: false,
