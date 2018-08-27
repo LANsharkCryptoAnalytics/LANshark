@@ -28,9 +28,10 @@ import Map from './js/Map';
 import FavoriteMap from './js/FavoriteMap';
 import renderIf from './js/helpers/renderIf';
 
-console.disableYellowBox = true;
+// console.disableYellowBox = true;
 
 const InitialARScene = require('./js/ARHist');
+const textIMG = require('./js/res/cracked-wallpaper-9.jpg');
 
 const isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
 const textArray = 'A green hunting cap squeezed the top of the fleshy balloon of a head. The green earflaps, full of large ears and uncut hair and the fine bristles that grew in the ears themselves, stuck out on either side like turn signals indicating two directions at once. Full, pursed lips protruded beneath the bushy black moustache and, at their corners, sank into little folds filled with disapproval and potato chip crumbs. In the shadow under the green visor of the cap Ignatius J. Reilly’s supercilious blue and yellow eyes looked down upon the other people waiting under the clock at the D. H. Holmes department store, studying the crowd of people for signs of bad taste and dress. Several of the outfits, Ignatius noticed, were new enough and expensive enough to be properly considered offenses against taste and decency. Possession of anything new or expensive only reflected a person’s lack of theology and geometry; it could even cast doubts upon one’s soul.'.split('.');
@@ -167,6 +168,7 @@ export default class ViroSample extends Component {
     );
 
 
+    // this._onShowObject = this._onShowObject.bind(this);
     this._logIn = this._logIn.bind(this);
     this._signup = this._signup.bind(this);
     this._onSaveLocation = this._onSaveLocation.bind(this);
@@ -178,6 +180,7 @@ export default class ViroSample extends Component {
     this._onAttemptHNOC = this._onAttemptHNOC.bind(this);
     this._showMapView = this._showMapView.bind(this);
     this._showFavMapView = this._showFavMapView.bind(this);
+    // this._renderTrackingText = this._renderTrackingText.bind(this);
     this._onTrackingInit = this._onTrackingInit.bind(this);
     this._onDisplayDialog = this._onDisplayDialog.bind(this);
     this._onLoadStart = this._onLoadStart.bind(this);
@@ -187,6 +190,7 @@ export default class ViroSample extends Component {
       viroAppProps: {
         displayObject: false, objectSource: null, yOffset: 0, _onLoadEnd: this._onLoadEnd, _onLoadStart: this._onLoadStart, _onTrackingInit: this._onTrackingInit,
       },
+      trackingInitialized: false,
       isLoading: false,
       posComp: true,
       latitude: '29.97616921',
@@ -196,6 +200,7 @@ export default class ViroSample extends Component {
       generalData: textArray,
       posPhone: false,
       narrowData: textArray2,
+      dataStore: null,
       isLoggedIn: false,
       nonUser: true,
       mapView: false,
@@ -231,6 +236,10 @@ export default class ViroSample extends Component {
     this.setState({ favMapView: currentMap });
   }
 
+  _handleARSupported() {
+
+  }
+
   _handleARNotSupported() {
     this.setState({
       posPhone: true,
@@ -251,6 +260,7 @@ export default class ViroSample extends Component {
     });
   }
 
+
   _onTrackingInit() {
     this.setState({
       trackingInitialized: true,
@@ -266,7 +276,7 @@ export default class ViroSample extends Component {
 
           // {text: 'Save Location', onPress: () => this._onSaveLocation(0, dataCounter, 0 )},
           { text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0) },
-          { text: 'Next Location', onPress: () => this._onRemoveText() },
+          { text: 'New Location', onPress: () => this._onRemoveText() },
           { text: 'Show Map', onPress: () => this._showMapView() },
           { text: 'Signup or Login', onPress: () => this._signup() },
         ],
@@ -277,7 +287,7 @@ export default class ViroSample extends Component {
         'Choose an Option Below',
         [
           { text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0) },
-          { text: 'Next Location', onPress: () => this._onRemoveText() },
+          { text: 'New Location', onPress: () => this._onRemoveText() },
           { text: 'Show Map', onPress: () => this._showMapView() },
           { text: 'Favorites Map', onPress: () => this._showFavMapView() },
           {
@@ -307,7 +317,13 @@ export default class ViroSample extends Component {
     );
   }
 
-
+  // _onShowObject(objIndex, objUniqueName, yOffset) {
+  //   this.setState({
+  //       // displayText: true,
+  //       // text: 'hello'
+  //       viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:objArray[objIndex]},
+  //   });
+  // }
   _onShowText(objIndex, objUniqueName, yOffset) {
     dataCounter = 0;
     const currentProps = { ...this.state.viroAppProps };
@@ -461,24 +477,15 @@ export default class ViroSample extends Component {
   render() {
     return (
       <View style={localStyles.outer}>
-
         {renderIf(!this.state.mapView && this.state.signupView,
           <View style={styles.login}>
             <Signup _signup={this._signup} _logIn={this._logIn} />
           </View>)}
-
         {renderIf(this.state.mapView,
-          <Map
-            showMapView={this._showMapView}
-            lat={this.state.latitude}
-            long={this.state.longitude} />)}
+          <Map showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
 
         {renderIf(this.state.favMapView && this.state.isLoggedIn,
-          <FavoriteMap
-            showFavMapView={this._showFavMapView}
-            lat={this.state.latitude}
-            long={this.state.longitude} />)}
-
+          <FavoriteMap showFavMapView={this._showFavMapView} lat={this.state.latitude} long={this.state.longitude} />)}
         {renderIf(this.state.posPhone && this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
           <View>
             <Text>
@@ -486,7 +493,6 @@ export default class ViroSample extends Component {
               {this.state.generalData[dataCounter]}
             </Text>
           </View>)}
-
         {renderIf(this.state.posComp && !this.state.posPhone && !this.state.mapView && !this.state.favMapView && !this.state.signupView,
           <ViroARSceneNavigator
             style={localStyles.arView}
