@@ -61,7 +61,17 @@ export default class FavoriteMap extends Component {
 
 <script>
 	var map = L.map('map').setView([${String(this.props.lat).slice(0, 9)}, ${String(this.props.long).slice(0, 10)}], 16);
-  let favs = [{
+  let favs = [
+    {title:'Fair Grounds Race Course',
+    long:-90.0811,
+    lat: 29.9838,
+    dist:'0.96',
+    type:'sports venue',
+    widewiki: '',
+    narrowwiki:'http://www.wikidata.org/entity/Q5429810',
+    wikiimage:'http://commons.wikimedia.org/wiki/Special:FilePath/Jazzfest07FairgroundGrandstand55.jpg',
+  },    
+    {
     title: 'Rivoli Theatre',
        long: -90.075462,
        lat: 29.975514,
@@ -95,7 +105,7 @@ var starIcon = new LeafIcon({
 })
 for( let i = 0; i < favs.length; i++){
   L.marker([favs[i].lat, favs[i].long], {icon: fIcon}).addTo(map)
-.bindPopup(favs[i].title, favs[i].lat, favs[i].long );
+.bindPopup('<a href="'+favs[i].narrowwiki+'">Link</a>' );
 }
 
     

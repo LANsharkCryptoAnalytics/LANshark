@@ -193,7 +193,7 @@ export default class ViroSample extends Component {
       dataStore: null,
       isLoggedIn: false,
       mapView: false,
-      favMapView: false,
+      favMapView: true,
       signupView: false,
     };
   }
@@ -483,7 +483,7 @@ export default class ViroSample extends Component {
   render() {
     return (
       <View style={localStyles.outer}>
-        {renderIf(!this.state.isLoggedIn && !this.state.mapView,
+        {renderIf(!this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
           <View style={styles.login}>
             <Signup _signup={this._signup} _logIn={this._logIn} />
           </View>)}
