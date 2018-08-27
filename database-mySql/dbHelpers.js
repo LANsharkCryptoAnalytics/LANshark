@@ -15,39 +15,66 @@ const findUserLogin = userInfo => User.findOne({
   .then(user => user)
   .catch((error) => { throw error; });
 
-const findUserSignup = (userInfo) => {
-  User.findOne({
-    where: {
-      email: userInfo.email,
-    },
+const findUserSignup = userInfo => User.findOne({
+  where: {
+    email: userInfo.email,
+  },
+})
+  .then((user) => {
+    if (user === null) {
+      return '1';
+    }
+    return 'false';
   })
-    .then((user) => {
-      console.log('dbHelpers => findUserSignup => then() !!!!!!!!!!!!!!!', user);
-      if (user === null) {
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(userInfo.password, salt, (error, hash) => {
-            // Store hash in your password DB.
-            if (error) {
-              throw error;
-            }
-            User.create({
-              username: userInfo.username,
-              email: userInfo.email,
-              password: hash,
-            })
-              .then((response) => {
-                console.log('0000000000000000000000000', response);
-                return response;
-              })
-              .catch((errorr) => { throw errorr; });
-          });
-        });
-      } else if (user !== null) {
-        return user;
+  .catch((err) => { throw err; });
+
+const hashPassword = (userInfo) => {
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(userInfo.password, salt, (error, hash) => {
+      // Store hash in your password DB.
+      if (error) {
+        throw error;
       }
-    })
-    .catch((e) => { throw e; });
+      User.create({
+        username: userInfo.username,
+        email: userInfo.email,
+        password: hash,
+      })
+        .then((response) => {
+          console.log('dbHelpers - 0000000000000000000000000', response);
+          return response.dataValues;
+        })
+        .catch((errorr) => { throw errorr; });
+    });
+  });
 };
+
+// .then((user) => {
+//   console.log('dbHelpers => findUserSignup => then() !!!!!!!!!!!!!!!', user);
+//   if (user === null) {
+//     bcrypt.genSalt(10, (err, salt) => {
+//       bcrypt.hash(userInfo.password, salt, (error, hash) => {
+//         // Store hash in your password DB.
+//         if (error) {
+//           throw error;
+//         }
+//         User.create({
+//           username: userInfo.username,
+//           email: userInfo.email,
+//           password: hash,
+//         })
+//           .then((response) => {
+//             console.log('0000000000000000000000000', response);
+//             return user;
+//           })
+//           .catch((errorr) => { throw errorr; });
+//       });
+//     });
+//   } else {
+//     return user;
+//   }
+// })
+// .catch((e) => { throw e; });
 
 // TODO:function to create a new user
 // needs to be built out and tested
@@ -104,6 +131,7 @@ const createVcs = ((vcsInfo) => {
 // findUserFavorites
 
 module.exports = {
+  hashPassword,
   findUserLogin,
   findUserSignup,
   addToUserFavorites,

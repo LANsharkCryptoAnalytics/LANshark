@@ -81,7 +81,7 @@ const Favorite = sequelize.define('favorite', {
 
 // force: true will drop the table if it already exists
 User.sync({
-  force: true,
+  force: false,
 }).then(() => User.create({
   username: 'John',
   password: '12345',
@@ -148,7 +148,7 @@ const Vcs = sequelize.define('vcs', {
 });
 
 Favorite.sync({
-  force: true, // true drops database
+  force: false, // true drops database
 }).then(() => {
   // User.hasMany(Favorite, { foreignKey: 'id' });
   Favorite.belongsTo(User, { foreignKey: 'id' });

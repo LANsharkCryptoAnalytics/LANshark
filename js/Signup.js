@@ -93,7 +93,7 @@ export default class Signup extends Component {
 
   _submit() {
     // const url1 = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/signup';
-    const testServer = 'http://192.168.0.15:8200/signup';
+    const testServer = 'http://172.24.6.45:8200/signup';
     axios({
       method: 'post',
       url: testServer,
@@ -104,12 +104,17 @@ export default class Signup extends Component {
       },
     })
       .then((response) => {
-        console.warn(123456789, response);
-        if (response.data === 1) {
-          this.props._logIn();
+        console.warn(response);
+        if (response.data === false) {
+          alert(`Sorry ${this.state.email}, this email is Already registered. Try login.`);
         } else {
-          alert(`Sorry ${this.state.email}, This User Email Already Exists. Please try Login. 😊`);
+          this.props._logIn();
         }
+        // if (response.data === 1) {
+        //   this.props._logIn();
+        // } else {
+        //   alert(`Sorry ${this.state.email}, This User Email Already Exists. Please try Login. 😊`);
+        // }
       })
       .catch((error) => {
         throw error;

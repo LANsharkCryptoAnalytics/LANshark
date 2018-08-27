@@ -1,5 +1,5 @@
-var passport = require('passport')
-  , LocalStrategy = require('passport-local').Strategy;
+let passport = require('passport'),
+   LocalStrategy = require('passport-local').Strategy;
 const express = require('express');
 const bodyParser = require('body-parser');
 const hnocSearch = require('./hnocSearch.js');
@@ -7,6 +7,7 @@ const helpers = require('./helpers.js');
 const dbHelpers = require('./database-mySql/dbHelpers');
 const db = require('./database-mySql/index.js');
 require('dotenv').config();
+
 const app = express();
 app.use(passport.initialize());
 app.use(passport.session());
@@ -210,16 +211,26 @@ app.post('/login', (req, res) => {
 
 app.post('/signup', (req, res) => {
   const userObject = req.body;
-  return dbHelpers.findUserSignup(userObject)
+  dbHelpers.findUserSignup(userObject)
     .then((response) => {
-      console.log('server /signup #############', response);
+      console.log(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;', response);
       if (response === '1') {
-        res.send('1');
-      } else {
-        res.send('2');
+        dbHelpers.hashPassword(userObject);
+        res.send('true');
       }
+      res.send('false');
     })
     .catch((error) => { throw error; });
+
+  // .then((response) => {
+  //   console.log('server /signup #############', response);
+  //   if (response === '1') {
+  //     res.send('1');
+  //   } else {
+  //     res.send('2');
+  //   }
+  // })
+  // .catch((error) => { throw error; });
   // dbHelpers.createUser(req.body);
   // res.send(`Thank You For Signing Up ${req.body.username}`);
 });
