@@ -17,8 +17,6 @@ const findUserLogin = userInfo => User.findOne({
 
 const comparePassword = (password, hash, callback) => {
   bcrypt.compare(password, hash, (err, isMatch) => {
-    console.log('hashhhhhhhhhhhhhhhhhhhhhhhhhhh', hash);
-    console.log('isMatcccccccccccccccccccccccccchhhhh', isMatch);
     if (err) throw err;
     callback(null, isMatch);
   });
@@ -31,7 +29,7 @@ const findUserSignup = userInfo => User.findOne({
 })
   .then((user) => {
     if (user === null) {
-      return '1';
+      return user;
     }
     return 'false';
   })
@@ -57,33 +55,6 @@ const hashPassword = (userInfo) => {
     });
   });
 };
-
-// .then((user) => {
-//   console.log('dbHelpers => findUserSignup => then() !!!!!!!!!!!!!!!', user);
-//   if (user === null) {
-//     bcrypt.genSalt(10, (err, salt) => {
-//       bcrypt.hash(userInfo.password, salt, (error, hash) => {
-//         // Store hash in your password DB.
-//         if (error) {
-//           throw error;
-//         }
-//         User.create({
-//           username: userInfo.username,
-//           email: userInfo.email,
-//           password: hash,
-//         })
-//           .then((response) => {
-//             console.log('0000000000000000000000000', response);
-//             return user;
-//           })
-//           .catch((errorr) => { throw errorr; });
-//       });
-//     });
-//   } else {
-//     return user;
-//   }
-// })
-// .catch((e) => { throw e; });
 
 // TODO:function to create a new user
 // needs to be built out and tested

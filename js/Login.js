@@ -68,6 +68,7 @@ export default class Login extends Component {
       password: '',
       loginPage: true,
       signupPage: false,
+      userId: null,
     };
 
     this._signup = this._signup.bind(this);
@@ -93,12 +94,12 @@ export default class Login extends Component {
       },
     })
       .then((response) => {
-        if (response.data === 'Password works') {
-          return this.props.arView();
+        if (response.data === true) {
+          this.props.arView();
         } else if (response.data === 'Password is incorrect') {
-          return alert(`Sorry ${this.state.email}, The Password You Entered Is Incorrect.`);
+          alert(`Sorry ${this.state.email}, The Password You Entered Is Incorrect.`);
         } else {
-          return alert(`Sorry, ${this.state.email} Is An Incorrect Email`);
+          alert(`Sorry, ${this.state.email} Is An Incorrect Email`);
         }
       })
       .catch((error) => {

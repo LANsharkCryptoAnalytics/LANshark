@@ -69,6 +69,7 @@ export default class Signup extends Component {
       password: '',
       loginPage: false,
       signupPage: true,
+      userId: null,
     };
 
     this._loginPage = this._loginPage.bind(this);
@@ -135,7 +136,7 @@ export default class Signup extends Component {
         </View>,)}
         {renderIf(!this.state.signupPage && this.state.loginPage,
           <View>
-          <Login arView={this.props._logIn} signup={this.props._signup} />
+          <Login arView={this.props._logIn} signup={this.props._signup} userId={this.props.userId} />
         </View>)}
       </View>
     );

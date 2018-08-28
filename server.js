@@ -158,18 +158,15 @@ app.get('/broad', (req, res) => {
 app.post('/login', (req, res) => {
   const userInfo = req.body;
   const password = req.body.password;
-  console.log(userInfo, '88888888888888888');
   dbHelpers.findUserLogin(userInfo)
     .then((user) => {
       if (user !== null) {
-        console.log('uuuuuuuuussssssssseeeeeeeerrrrrrrrrr', user);
         dbHelpers.comparePassword(password, user.password, (err, isMatch) => {
           if (err) {
             throw err;
           }
           if (isMatch) {
-            console.log('isMatchhhhhhhhhhhhhhhhhhhhhhhh', isMatch);
-            res.send('Password works');
+            res.send('true');
             // const token = jwt.sign(tokenData, process.env.LOCALSECRET);
             // res.json(`JWT ${token}`);
           } else {
@@ -181,7 +178,7 @@ app.post('/login', (req, res) => {
       }
     })
     .catch((error) => {
-      console.log(error);
+      console.error(error);
     });
 });
 
@@ -189,8 +186,7 @@ app.post('/signup', (req, res) => {
   const userObject = req.body;
   dbHelpers.findUserSignup(userObject)
     .then((response) => {
-      console.log(';;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;', response);
-      if (response === '1') {
+      if (response !== 'false') {
         dbHelpers.hashPassword(userObject);
         res.send('true');
       } else {
