@@ -28,7 +28,7 @@ import Map from './js/Map';
 import FavoriteMap from './js/FavoriteMap';
 import renderIf from './js/helpers/renderIf';
 
-console.disableYellowBox = true;
+// console.disableYellowBox = true;
 
 const InitialARScene = require('./js/ARHist');
 
@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
 export default class ViroSample extends Component {
   constructor(props) {
     super(props);
+
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -485,7 +486,7 @@ export default class ViroSample extends Component {
             <Signup _signup={this._signup} _logIn={this._logIn} user={user} />
           </View>)}
         {renderIf(this.state.mapView,
-          <Map showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
+          <Map user={user} showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
 
         {renderIf(this.state.favMapView && this.state.isLoggedIn,
           <FavoriteMap showFavMapView={this._showFavMapView} lat={this.state.latitude} long={this.state.longitude} />)}

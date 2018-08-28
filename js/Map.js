@@ -26,9 +26,11 @@ const styles = StyleSheet.create({
 
 
 export default class Map extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+  constructor(props) {
+    super(props);
+  console.warn(this.props.user);
+
+  }
 
   render() {
     return (
