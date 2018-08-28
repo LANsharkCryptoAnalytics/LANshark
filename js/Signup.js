@@ -136,7 +136,7 @@ export default class Signup extends Component {
         </View>,)}
         {renderIf(!this.state.signupPage && this.state.loginPage,
           <View>
-          <Login arView={this.props._logIn} signup={this.props._signup} userId={this.props.userId} />
+          <Login arView={this.props._logIn} signup={this.props._signup} userId={this.props.userId} user={this.props.user}/>
         </View>)}
       </View>
     );

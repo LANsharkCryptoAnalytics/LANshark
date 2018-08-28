@@ -158,6 +158,7 @@ app.get('/broad', (req, res) => {
 app.post('/login', (req, res) => {
   const userInfo = req.body;
   const password = req.body.password;
+  const success = 'true';
   dbHelpers.findUserLogin(userInfo)
     .then((user) => {
       if (user !== null) {
@@ -166,7 +167,7 @@ app.post('/login', (req, res) => {
             throw err;
           }
           if (isMatch) {
-            res.send('true');
+            res.send({ user, success });
             // const token = jwt.sign(tokenData, process.env.LOCALSECRET);
             // res.json(`JWT ${token}`);
           } else {
