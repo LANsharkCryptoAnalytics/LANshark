@@ -9,21 +9,38 @@ import {
 import axios from 'axios';
 
 
+var styles = StyleSheet.create({
+
+  button: {
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#59cbbd',
+  },
+  btntext: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
+
+
 export default class FavoriteMap extends Component {
   constructor(props) {
     super(props);
   }
-componentDidMount(){
-  axios.get('http://ec2-54-166-82-246.compute-1.amazonaws.com/getUserFavorites', {
-    params: {
-      user: this.props.user,
-    }).then(favorite)=>{
 
+  componentDidMount() {
+    axios.get('http://ec2-54-166-82-246.compute-1.amazonaws.com/getUserFavorites', {
+      params: {
+        user: this.props.user,
+      },
     })
-    .catch(error)=> { throw error; });
-
+      .then((favorite) => {
+        console.warn(favorite);
+      })
+      .catch((error) => { throw error; });
   }
-}
   // Open URL in a browser
 
   //   loggingIn = () => {
@@ -31,16 +48,16 @@ componentDidMount(){
   //     .then((data) => alert(data))
   //     .catch((e) => alert(e))
   //   }
-//   let fav = 
-//   {name:'Fair Grounds 1',
-//   latitude: 29.9838,
-//   longitude: -90.0811,
-//   wide: "stuff about neighborhood",
-//   narrow: "stuff about stuff",
-//   wideWiki: '',
-//   narrowWiki:'http://www.wikidata.org/entity/Q5429810',
-//   wikiImage:'http://commons.wikimedia.org/wiki/Special:FilePath/Jazzfest07FairgroundGrandstand55.jpg',
-// };
+  //   let fav =
+  //   {name:'Fair Grounds 1',
+  //   latitude: 29.9838,
+  //   longitude: -90.0811,
+  //   wide: "stuff about neighborhood",
+  //   narrow: "stuff about stuff",
+  //   wideWiki: '',
+  //   narrowWiki:'http://www.wikidata.org/entity/Q5429810',
+  //   wikiImage:'http://commons.wikimedia.org/wiki/Special:FilePath/Jazzfest07FairgroundGrandstand55.jpg',
+  // };
 
   render() {
     return (
@@ -160,18 +177,3 @@ for( let i = 0; i < favs.length; i++){
     );
   }
 }
-
-var styles = StyleSheet.create({
-
-  button: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#59cbbd',
-  },
-  btntext: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-});
