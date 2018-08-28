@@ -10,6 +10,7 @@ import {
   View,
   StyleSheet,
   TouchableHighlight,
+  TouchableOpacity,
   Image,
   Alert,
 } from 'react-native';
@@ -53,6 +54,17 @@ const localStyles = StyleSheet.create({
   },
   container: {
     flex: 1,
+  },
+  button: {
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#59cbbd',
+  },
+  btntext: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   buttons: {
     height: 80,
@@ -543,6 +555,13 @@ export default class ViroSample extends Component {
               <Image source={require('./js/res/right-gold-arrow.png')} />
             </TouchableHighlight>
           </View>)}
+          <View>
+          <TouchableOpacity style={localStyles.button} onPress={() => { this.props.showMapView(); }}>
+            <Text style={localStyles.btntext}>AR View</Text>
+          </TouchableOpacity>
+            </View>
+
+          
       </View>
     );
   }
