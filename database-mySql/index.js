@@ -89,11 +89,18 @@ const Favorite = sequelize.define('favorite', {
 // force: true will drop the table if it already exists
 User.sync({
   force: false,
-}).then(() => User.create({
-  username: 'John',
-  password: '12345',
-  email: 'me@me.com',
-}));
+})
+  .then(() => {
+    console.log('User synced');
+  })
+  .catch((error) => {
+    throw error;
+  });
+// .then(() => User.create({
+//   username: 'John',
+//   password: '12345',
+//   email: 'me@me.com',
+// }));
 // .then(() => {
 // add a user for testing
 //   User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
@@ -150,60 +157,64 @@ const Vcs = sequelize.define('vcs', {
 Favorite.sync({
   force: false, // true drops database
 }).then(() => {
-  // User.hasMany(Favorite, { foreignKey: 'id' });
+  // Asscoiate the users id as a foreign key with the favorite
   Favorite.belongsTo(User, { foreignKey: 'id' });
-}).then(() => Favorite.create({
-  name: 'French Market',
-  lat: 30,
-  long: 90,
-  latLong: '3090',
-  wide: 'some stuff goes here!!!',
-  narrow: 'Other stuff goes here',
-  foreignKey: 2,
-  wideWiki: 'www.stuff.com',
-  narrowWiki: 'otherstuff.com',
-  wikiImage: 'sdfkjhsdkjfhksjdfhkjshdf',
-}))
-// THIS IS HERE TO TEST THE ADD TO FAVORITES FUNCTION. CURRENTLY NO USER INFO BEING
-// PASSED FROM THE CLIENT. I HARD CODED A FAVORITE AND A USER FOR THIS PURPOSE
-  .then(() => {
-    const testFavorite = {
-      name: 'a place you want to save',
-      latitude: 29.9773846936982,
-      longitude: -90.07604716542896,
-      latLong: '29.9773846936982-90.07604716542896',
-      wideData: ['Fairgrounds'],
-      narrowData: ['Rivoli Theatre', 'movie theater'],
-      wideWiki: 'www.cantgetenough.com',
-      narrowWiki: 'www.ofthatfunkystuff.com',
-      wikiImage: 'sdfkjhsdkjfhksjdfhkjshdf',
-    };
-    const testFavorite2 = {
-      name: 'the zoo',
-      latitude: 29.9773846936982,
-      longitude: -90.07604716542896,
-      latLong: '29.9773846936982-90.07604716542896',
-      wideData: ['snake and tigers'],
-      narrowData: ['tortoises'],
-      wideWiki: 'www.zoo.com',
-      narrowWiki: 'www.zoo2.com',
-      wikiImage: 'stuff ',
-    };
-    // const testUser = {
-    //   username: 'Satan',
-    //   email: '666@hell.com',
-    //   id: 13,
-    // };
-    const testUser2 = {
-      username: 'John',
-      email: 'me@me.com',
-      id: 2,
-    };
-    // Test addToFavorites
-    // console.log('test add to favorites');
-    // helpers.addToFavorites(testFavorite, testUser2);
-    helpers.addToFavorites(testFavorite2, testUser2);
+})
+  .catch((error) => {
+    throw (error);
   });
+// .then(() => Favorite.create({
+//   name: 'French Market',
+//   lat: 30,
+//   long: 90,
+//   latLong: '3090',
+//   wide: 'some stuff goes here!!!',
+//   narrow: 'Other stuff goes here',
+//   foreignKey: 2,
+//   wideWiki: 'www.stuff.com',
+//   narrowWiki: 'otherstuff.com',
+//   wikiImage: 'sdfkjhsdkjfhksjdfhkjshdf',
+// }))
+// // THIS IS HERE TO TEST THE ADD TO FAVORITES FUNCTION. CURRENTLY NO USER INFO BEING
+// // PASSED FROM THE CLIENT. I HARD CODED A FAVORITE AND A USER FOR THIS PURPOSE
+//   .then(() => {
+//     const testFavorite = {
+//       name: 'a place you want to save',
+//       latitude: 29.9773846936982,
+//       longitude: -90.07604716542896,
+//       latLong: '29.9773846936982-90.07604716542896',
+//       wideData: ['Fairgrounds'],
+//       narrowData: ['Rivoli Theatre', 'movie theater'],
+//       wideWiki: 'www.cantgetenough.com',
+//       narrowWiki: 'www.ofthatfunkystuff.com',
+//       wikiImage: 'sdfkjhsdkjfhksjdfhkjshdf',
+//     };
+//     const testFavorite2 = {
+//       name: 'the zoo',
+//       latitude: 29.9773846936982,
+//       longitude: -90.07604716542896,
+//       latLong: '29.9773846936982-90.07604716542896',
+//       wideData: ['snake and tigers'],
+//       narrowData: ['tortoises'],
+//       wideWiki: 'www.zoo.com',
+//       narrowWiki: 'www.zoo2.com',
+//       wikiImage: 'stuff ',
+//     };
+//     // const testUser = {
+//     //   username: 'Satan',
+//     //   email: '666@hell.com',
+//     //   id: 13,
+//     // };
+//     const testUser2 = {
+//       username: 'John',
+//       email: 'me@me.com',
+//       id: 2,
+//     };
+//     // Test addToFavorites
+//     // console.log('test add to favorites');
+//     // helpers.addToFavorites(testFavorite, testUser2);
+//     helpers.addToFavorites(testFavorite2, testUser2);
+//   });
 
 module.exports = {
   sequelize,

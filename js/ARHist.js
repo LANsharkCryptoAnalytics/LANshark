@@ -22,6 +22,47 @@ import {
 // import TimerMixin from 'react-timer-mixin';
 // import PropTypes from 'prop-types';
 
+ViroAnimations.registerAnimations({
+  animateImage: {
+    properties: {
+      scaleX: 2, scaleY: 2, scaleZ: 2, opacity: 1,
+    },
+    easing: 'Linear',
+    duration: 2400,
+  },
+});
+
+ViroMaterials.createMaterials({
+  frontMaterial: {
+    shininess: 2.0,
+    lightingModel: 'Lambert',
+    diffuseColor: '#FFFFFF',
+  },
+  backMaterial: {
+    shininess: 2.0,
+    lightingModel: 'Lambert',
+    bloomThreshold: 1,
+    diffuseColor: '#FFFFFF',
+  },
+  sideMaterial: {
+    shininess: 2.0,
+    lightingModel: 'Lambert',
+    diffuseColor: '#FFFFFF',
+  },
+});
+
+const styles = StyleSheet.create({
+  helloWorldTextStyle: {
+    fontFamily: 'Roboto',
+    // fontStyle: 'italic',
+    fontSize: 9.5,
+    fontWeight: '700',
+    // color: '#ffffff',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+  },
+});
+
 const createReactClass = require('create-react-class');
 
 const ARHist = createReactClass({
@@ -136,47 +177,6 @@ const ARHist = createReactClass({
     );
   },
 
-});
-
-ViroAnimations.registerAnimations({
-  animateImage: {
-    properties: {
-      scaleX: 2, scaleY: 2, scaleZ: 2, opacity: 1,
-    },
-    easing: 'Linear',
-    duration: 2400,
-  },
-});
-
-ViroMaterials.createMaterials({
-  frontMaterial: {
-    shininess: 2.0,
-    lightingModel: 'Lambert',
-    diffuseColor: '#FFFFFF',
-  },
-  backMaterial: {
-    shininess: 2.0,
-    lightingModel: 'Lambert',
-    bloomThreshold: 1,
-    diffuseColor: '#FFFFFF',
-  },
-  sideMaterial: {
-    shininess: 2.0,
-    lightingModel: 'Lambert',
-    diffuseColor: '#FFFFFF',
-  },
-});
-
-const styles = StyleSheet.create({
-  helloWorldTextStyle: {
-    fontFamily: 'Roboto',
-    // fontStyle: 'italic',
-    fontSize: 9.5,
-    fontWeight: '700',
-    // color: '#ffffff',
-    textAlignVertical: 'center',
-    textAlign: 'center',
-  },
 });
 
 module.exports = ARHist;

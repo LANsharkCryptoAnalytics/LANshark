@@ -28,7 +28,7 @@ import Map from './js/Map';
 import FavoriteMap from './js/FavoriteMap';
 import renderIf from './js/helpers/renderIf';
 
-console.disableYellowBox = true;
+// console.disableYellowBox = true;
 
 const InitialARScene = require('./js/ARHist');
 
@@ -37,6 +37,7 @@ const isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
 const textArray = 'A green hunting cap squeezed the top of the fleshy balloon of a head. The green earflaps, full of large ears and uncut hair and the fine bristles that grew in the ears themselves, stuck out on either side like turn signals indicating two directions at once. Full, pursed lips protruded beneath the bushy black moustache and, at their corners, sank into little folds filled with disapproval and potato chip crumbs. In the shadow under the green visor of the cap Ignatius J. Reilly’s supercilious blue and yellow eyes looked down upon the other people waiting under the clock at the D. H. Holmes department store, studying the crowd of people for signs of bad taste and dress. Several of the outfits, Ignatius noticed, were new enough and expensive enough to be properly considered offenses against taste and decency. Possession of anything new or expensive only reflected a person’s lack of theology and geometry; it could even cast doubts upon one’s soul.'.split('.');
 const textArray2 = 'cha cha changes, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.');
 let dataLength = textArray.length - 1;
+const user = { id: null, email: null };
 let dataCounter = 0;
 let locationProgression = 1;
 let wideWiki = '';
@@ -114,6 +115,7 @@ const styles = StyleSheet.create({
 export default class ViroSample extends Component {
   constructor(props) {
     super(props);
+
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -481,10 +483,10 @@ export default class ViroSample extends Component {
       <View style={localStyles.outer}>
         {renderIf(!this.state.mapView && this.state.signupView,
           <View style={styles.login}>
-            <Signup _signup={this._signup} _logIn={this._logIn} />
+            <Signup _signup={this._signup} _logIn={this._logIn} user={user} />
           </View>)}
         {renderIf(this.state.mapView,
-          <Map showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
+          <Map user={user} showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
 
         {renderIf(this.state.favMapView && this.state.isLoggedIn,
           <FavoriteMap showFavMapView={this._showFavMapView} lat={this.state.latitude} long={this.state.longitude} />)}
