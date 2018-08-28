@@ -209,7 +209,19 @@ app.post('/addToFavorites', (req) => {
       console.log('error saving');
     });
 });
-helpers.addToFavorites()
+let fav = 
+  {name:'Fair Grounds 1',
+  lat: 29.9838,
+  long: -90.0811,
+  latLong: '29.9838-90.0811',
+  wide: "stuff about neighborhood",
+  narrow: "stuff about stuff",
+  wideWiki: '',
+  narrowWiki:'http://www.wikidata.org/entity/Q5429810',
+  wikiImage:'http://commons.wikimedia.org/wiki/Special:FilePath/Jazzfest07FairgroundGrandstand55.jpg',
+};
+
+dbHelpers.addToUserFavorites(fav, { id: 1 });
 
 app.get('/getUserFavorites', (req, res) => {
   console.log('get all user favorites ');
