@@ -52,11 +52,11 @@ const Favorite = sequelize.define('favorite', {
     type: Sequelize.STRING,
   },
   lat: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
     allowNull: false,
   },
   long: {
-    type: Sequelize.INTEGER,
+    type: Sequelize.FLOAT,
     allowNull: false,
   },
   latLong: {
