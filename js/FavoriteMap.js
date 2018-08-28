@@ -32,15 +32,12 @@ export default class FavoriteMap extends Component {
 
   componentDidMount() {
     axios.get('http://ec2-54-166-82-246.compute-1.amazonaws.com/getUserFavorites', {
-      params: {
-        user: this.props.user,
-      },
+    }).then((favorites) => {
+      this.setState({ favorites });
     })
-      .then((favorite) => {
-        console.warn(favorite);
-      })
       .catch((error) => { throw error; });
   }
+
   // Open URL in a browser
 
   //   loggingIn = () => {

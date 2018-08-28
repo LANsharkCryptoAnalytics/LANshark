@@ -162,6 +162,7 @@ app.post('/login', (req, res) => {
   const success = 'true';
   dbHelpers.findUserLogin(userInfo)
     .then((user) => {
+      console.log('@#$%^&*()(*&^%$#@!!@#$%^&*()(*&^%$#@!     ', user);
       if (user !== null) {
         dbHelpers.comparePassword(password, user.password, (err, isMatch) => {
           if (err) {

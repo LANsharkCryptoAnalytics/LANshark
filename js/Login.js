@@ -97,8 +97,8 @@ export default class Login extends Component {
         console.warn(response.data)
         if (response.data.success === 'true') {
           this.props.user.id = response.data.user.id;
-          console.warn(this.props.user.id)
-          this.props.login();
+          console.warn(this.props.user.id);
+          this.props.arView();
         } else if (response.data === 'Password is incorrect') {
           alert(`Sorry ${this.state.email}, The Password You Entered Is Incorrect.`);
         } else {
