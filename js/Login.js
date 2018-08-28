@@ -68,7 +68,6 @@ export default class Login extends Component {
       password: '',
       loginPage: true,
       signupPage: false,
-      userId: null,
     };
 
     this._signup = this._signup.bind(this);
@@ -83,10 +82,11 @@ export default class Login extends Component {
   }
 
   _submit() {
-    const deployedServer = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login';
+    // const deployedServer = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login';
+    const testServer = 'http://172.24.6.45:8200/login';
     axios({
       method: 'post',
-      url: deployedServer,
+      url: testServer,
       data: {
         username: this.state.username,
         email: this.state.email,
@@ -97,7 +97,7 @@ export default class Login extends Component {
         // console.warn(response.data)
         if (response.data.success === 'true') {
           this.props.user.id = response.data.user.id;
-          console.warn(this.props.user.id)
+          // console.warn(this.props.user.id)
           this.props.arView();
         } else if (response.data === 'Password is incorrect') {
           alert(`Sorry ${this.state.email}, The Password You Entered Is Incorrect.`);

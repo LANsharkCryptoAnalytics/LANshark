@@ -64,7 +64,6 @@ export default class Signup extends Component {
     super(props);
 
     this.state = {
-      username: '',
       email: '',
       password: '',
       loginPage: false,
@@ -74,7 +73,8 @@ export default class Signup extends Component {
 
     this._loginPage = this._loginPage.bind(this);
     this._signup = this._signup.bind(this);
-    this._submit = this._submit.bind(this);
+    this._signin = this._signin.bind(this);
+    this._login = this._login.bind(this);
   }
 
 
@@ -92,20 +92,52 @@ export default class Signup extends Component {
     });
   }
 
-  _submit() {
-    const deployedServer = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/signup';
+  _login() {
+    // const deployedServer = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login';
+    const testServer = 'http://172.24.6.45:8200/login';
     axios({
       method: 'post',
-      url: deployedServer,
+      url: testServer,
       data: {
-        username: this.state.username,
         email: this.state.email,
         password: this.state.password,
       },
     })
       .then((response) => {
-        if (response.data === true) {
+        console.warn('loginnnnnnnnnnnnnnnnnnnnnnn', response.data);
+        if (response.data.success === 'true') {
+          this.props.user.id = response.data.user.id;
+          console.warn(this.props.user.id);
           this.props._logIn();
+        } else if (response.data === 'Password is incorrect') {
+          alert(`Sorry ${this.state.email}, The Password You Entered Is Incorrect.`);
+        } else {
+          alert(`Sorry, ${this.state.email} Is An Incorrect Email`);
+        }
+      })
+      .catch((error) => {
+        throw error;
+      });
+  }
+
+
+  _signin() {
+    // const deployedServer = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/signup';
+    const testServer = 'http://172.24.6.45:8200/signup';
+
+    axios({
+      method: 'post',
+      url: testServer,
+      data: {
+        email: this.state.email,
+        password: this.state.password,
+      },
+    })
+      .then((response) => {
+        console.warn(response.data);
+        // this.props._logIn();
+        if (response.data === true) {
+          this._login();
         } else {
           alert(`Sorry ${this.state.email}, this email is Already registered. Try login.`);
         }
@@ -122,13 +154,11 @@ export default class Signup extends Component {
         <View>
         <Text style={styles.header}>Welcome to AR History Tour</Text>
 
-        <TextInput style={styles.textinput} placeholder="   Username" onChangeText={(text) => this.setState({username: text})} />
-
         <TextInput style={styles.textinput} placeholder="   Email" onChangeText={(text) => this.setState({email: text})}/>
 
         <TextInput style={styles.textinput} placeholder="   Password" secureTextEntry={true} onChangeText={(text) => this.setState({password: text})} />
 
-        <TouchableOpacity style={styles.signupbutton} onPress={() => { this._submit() }}>
+        <TouchableOpacity style={styles.signupbutton} onPress={() => { this._signin() }}>
           <Text style={styles.btntext}>Sign Up</Text>
         </TouchableOpacity>
 
@@ -136,7 +166,7 @@ export default class Signup extends Component {
         </View>,)}
         {renderIf(!this.state.signupPage && this.state.loginPage,
           <View>
-          <Login arView={this.props._logIn} signup={this.props._signup} userId={this.props.userId} user={this.props.user}/>
+          <Login arView={this.props._logIn} signup={this.props._signup} user={this.props.user}/>
         </View>)}
       </View>
     );
