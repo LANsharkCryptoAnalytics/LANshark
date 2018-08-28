@@ -94,7 +94,7 @@ export default class Login extends Component {
       },
     })
       .then((response) => {
-        if (response.data === true) {
+        if (response.data.success === true) {
           this.props.arView();
         } else if (response.data === 'Password is incorrect') {
           alert(`Sorry ${this.state.email}, The Password You Entered Is Incorrect.`);
