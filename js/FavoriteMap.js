@@ -31,7 +31,7 @@ export default class FavoriteMap extends Component {
   }
 
   componentDidMount() {
-    axios.get('http://ec2-54-166-82-246.compute-1.amazonaws.com/getUserFavorites', {
+    axios.get('http://ec2-54-152-18-28.compute-1.amazonaws.com/getUserFavorites', {
     }).then((favorites) => {
       this.setState({ favorites });
     })

@@ -92,11 +92,10 @@ export default class Signup extends Component {
   }
 
   _login() {
-    // const deployedServer = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login';
-    const testServer = 'http://172.24.6.45:8200/login';
+    const deployedServer = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login';
     axios({
       method: 'post',
-      url: testServer,
+      url: deployedServer,
       data: {
         email: this.state.email,
         password: this.state.password,

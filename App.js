@@ -10,6 +10,7 @@ import {
   View,
   StyleSheet,
   TouchableHighlight,
+  TouchableOpacity,
   Image,
   Alert,
 } from 'react-native';
@@ -53,6 +54,20 @@ const localStyles = StyleSheet.create({
   },
   container: {
     flex: 1,
+  },
+  button: {
+    // alignSelf: 'stretch',
+    alignItems: 'stretch',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ffffff00',
+    padding: 20,
+    backgroundColor: '#59cbbd',
+  },
+  btntext: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
   buttons: {
     height: 80,
@@ -124,7 +139,7 @@ export default class ViroSample extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        axios.get('http://ec2-54-166-82-246.compute-1.amazonaws.com/neighborhood', {
+        axios.get('http://ec2-54-152-18-28.compute-1.amazonaws.com/neighborhood', {
           params: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -148,7 +163,7 @@ export default class ViroSample extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        axios.get('http://ec2-54-166-82-246.compute-1.amazonaws.com/broad', {
+        axios.get('http://ec2-54-152-18-28.compute-1.amazonaws.com/broad', {
           params: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -350,7 +365,7 @@ export default class ViroSample extends Component {
     const notSaved = 'Sorry, We could\'nt Save the Information';
     let saveMessage;
 
-    axios.post('http://ec2-54-166-82-246.compute-1.amazonaws.com/addToFavorites', {
+    axios.post('http://ec2-54-152-18-28.compute-1.amazonaws.com/addToFavorites', {
       id: user.id,
       latitude: this.state.latitude,
       longitude: this.state.longitude,
@@ -389,7 +404,7 @@ export default class ViroSample extends Component {
   }
 
   _onAttemptHNOC() {
-    axios.post('http://ec2-54-166-82-246.compute-1.amazonaws.com/', {
+    axios.post('http://ec2-54-152-18-28.compute-1.amazonaws.com/', {
       latitude: this.state.latitude,
       longitude: this.state.longitude,
     })
@@ -449,7 +464,7 @@ export default class ViroSample extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        axios.get('http://ec2-54-166-82-246.compute-1.amazonaws.com/broad', {
+        axios.get('http://ec2-54-152-18-28.compute-1.amazonaws.com/broad', {
           params: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -544,6 +559,23 @@ export default class ViroSample extends Component {
               <Image source={require('./js/res/right-gold-arrow.png')} />
             </TouchableHighlight>
           </View>)}
+        <View style={{flexDirection: "row"}}>
+          <TouchableOpacity style={localStyles.button} >
+              <Text style={localStyles.btntext}>AR View</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity style={localStyles.button} >
+              <Text style={localStyles.btntext}>AR View</Text>
+          </TouchableOpacity>
+
+           <TouchableOpacity style={localStyles.button} >
+              <Text style={localStyles.btntext}>AR View</Text>
+          </TouchableOpacity>
+
+        </View>
+
+
+
       </View>
     );
   }
