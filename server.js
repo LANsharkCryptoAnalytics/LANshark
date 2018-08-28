@@ -221,7 +221,7 @@ let fav =
   wikiImage:'http://commons.wikimedia.org/wiki/Special:FilePath/Jazzfest07FairgroundGrandstand55.jpg',
 };
 
-dbHelpers.addToUserFavorites(fav, { id: 1 });
+// dbHelpers.addToUserFavorites(fav, { id: 1 });
 
 app.get('/getUserFavorites', (req, res) => {
   console.log('get all user favorites ');
