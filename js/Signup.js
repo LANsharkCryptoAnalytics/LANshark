@@ -105,16 +105,11 @@ export default class Signup extends Component {
     })
       .then((response) => {
         console.warn(response);
-        if (response.data === false) {
-          alert(`Sorry ${this.state.email}, this email is Already registered. Try login.`);
-        } else {
+        if (response.data === true) {
           this.props._logIn();
+        } else {
+          alert(`Sorry ${this.state.email}, this email is Already registered. Try login.`);
         }
-        // if (response.data === 1) {
-        //   this.props._logIn();
-        // } else {
-        //   alert(`Sorry ${this.state.email}, This User Email Already Exists. Please try Login. 😊`);
-        // }
       })
       .catch((error) => {
         throw error;

@@ -180,33 +180,32 @@ app.get('/broad', (req, res) => {
 
 app.post('/login', (req, res) => {
   const userInfo = req.body;
+  const password = req.body.password;
   console.log(userInfo, '88888888888888888');
   dbHelpers.findUserLogin(userInfo)
     .then((user) => {
-      console.log('uuuuuuuussssssseeeeeeerrrrrrrr in server /login', user);
-      if (user === null) {
-        res.send(`Sorry ${userInfo.email}, we can not find you, try signing up 😊`);
-      } else if (user.dataValues.password === userInfo.password) {
-        console.log('PASSWORDIS A MATCH!!!!!!!!');
-        res.send('success');
+      if (user !== null) {
+        console.log('uuuuuuuuussssssssseeeeeeeerrrrrrrrrr', user);
+        dbHelpers.comparePassword(password, user.password, (err, isMatch) => {
+          if (err) {
+            throw err;
+          }
+          if (isMatch) {
+            console.log('isMatchhhhhhhhhhhhhhhhhhhhhhhh', isMatch);
+            res.send('Password works');
+            // const token = jwt.sign(tokenData, process.env.LOCALSECRET);
+            // res.json(`JWT ${token}`);
+          } else {
+            res.send('Password is incorrect');
+          }
+        });
       } else {
-        res.send(`Sorry ${userInfo.email}, wrong passord`);
+        res.send('false');
       }
-      // res.send('success');
     })
     .catch((error) => {
       console.log(error);
     });
-
-  // helpers.loginUser(req)
-  //   .then((user) => {
-  //     console.log('userFound', user);
-  //     console.warn('user found');
-  //     res.send('User Found');
-  //   })
-  //   .catch((error) => {
-  //     console.warn(error);
-  //   });
 });
 
 app.post('/signup', (req, res) => {
@@ -217,22 +216,11 @@ app.post('/signup', (req, res) => {
       if (response === '1') {
         dbHelpers.hashPassword(userObject);
         res.send('true');
+      } else {
+        res.send('false');
       }
-      res.send('false');
     })
     .catch((error) => { throw error; });
-
-  // .then((response) => {
-  //   console.log('server /signup #############', response);
-  //   if (response === '1') {
-  //     res.send('1');
-  //   } else {
-  //     res.send('2');
-  //   }
-  // })
-  // .catch((error) => { throw error; });
-  // dbHelpers.createUser(req.body);
-  // res.send(`Thank You For Signing Up ${req.body.username}`);
 });
 
 // Endpoint to allow a logged in user to save favorite locations or points of interest

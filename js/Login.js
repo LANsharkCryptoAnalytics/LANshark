@@ -94,13 +94,14 @@ export default class Login extends Component {
       },
     })
       .then((response) => {
-        // console.warn('response ????????????????????', response);
-        if (response.data === 'success') {
-          this.props.arView();
+        console.warn('response ????????????????????', response);
+        if (response.data === 'Password works') {
+          return this.props.arView();
+        } else if (response.data === 'Password is incorrect') {
+          return alert(`Sorry ${this.state.email}, The Password You Entered Is Incorrect.`);
         } else {
-          alert(response.data);
+          return alert(`Sorry, ${this.state.email} Is An Incorrect Email`);
         }
-        // this.props.arView();
       })
       .catch((error) => {
         throw error;
