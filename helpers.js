@@ -227,26 +227,20 @@ exports.searchByTitle = (titleInput) => {
 
 // ///////////////////////////////////////////
 //   USER RELATED FUNCTIONS                //
-// ///////////////////////////////////////////
+// //////////////////////////////////////////
 
 exports.loginUser = (user) => {
   console.log('login user helper fired');
-  // TODO:PUT YOUR LOGIN STUFF HERE SENAI
+
+  // the below works but this isn't really the proper place for it
+  // possible shift to findAndUPdate or something similar
+  return db.findUser(user.body);
 };
 
 // Create a new user
 exports.createUser = (user, response, reject) => {
-  console.log('create user helper fired');
-
-  db.createUser = (userInfo) => {
-    (userInfo.body).then((userData) => {
-      console.log(`response ${userData}`);
-      console.log('do whatever we need to do here to log them in');
-      // res.end();
-    }).catch((err) => {
-      console.log(err);
-    });
-  };
+  console.log('create user helper fired', user);
+  return db.createUser(user, sequelize);
 };
 
 // addToUserFavorites

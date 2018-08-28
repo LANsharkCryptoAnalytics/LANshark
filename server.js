@@ -1,11 +1,16 @@
+let passport = require('passport'),
+   LocalStrategy = require('passport-local').Strategy;
 const express = require('express');
 const bodyParser = require('body-parser');
 const hnocSearch = require('./hnocSearch.js');
 const helpers = require('./helpers.js');
+const dbHelpers = require('./database-mySql/dbHelpers');
 const db = require('./database-mySql/index.js');
 require('dotenv').config();
 
 const app = express();
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false,
@@ -15,10 +20,8 @@ app.get('/', (req, res) => {
   res.send('LANSHARK');
 });
 
-
 app.get('/vcs', (req, res) => {
   console.log('vcs endpoint hit');
-
   res.send('vcs endpoint');
 });
 
@@ -152,25 +155,45 @@ app.get('/broad', (req, res) => {
 
 // LOGIN RELATED INFORMATION
 
-app.get('/isLoggedIn', (req, res) => {
-  res.send('hitting server!!!!');
-});
-
 app.post('/login', (req, res) => {
-  // TODO: Senai do some stuff here
-  console.log('server post login endpoint');
-  console.log(req.body, 'rrreeeqqqq......bbbbooooddddyyyy');
-  // helpers.loginUser(req, res);
-  // helpers.createUser(req, res);
-  res.send(req.body);
-  // res.send('logged in');
+  const userInfo = req.body;
+  const password = req.body.password;
+  dbHelpers.findUserLogin(userInfo)
+    .then((user) => {
+      if (user !== null) {
+        dbHelpers.comparePassword(password, user.password, (err, isMatch) => {
+          if (err) {
+            throw err;
+          }
+          if (isMatch) {
+            res.send('true');
+            // const token = jwt.sign(tokenData, process.env.LOCALSECRET);
+            // res.json(`JWT ${token}`);
+          } else {
+            res.send('Password is incorrect');
+          }
+        });
+      } else {
+        res.send('false');
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 });
 
-app.post('/signUp', (req, res) => {
-  console.log('signUp user fired');
-  // console.log('user: ', user);
-  console.log(req.body);
-  res.send(req.body);
+app.post('/signup', (req, res) => {
+  const userObject = req.body;
+  dbHelpers.findUserSignup(userObject)
+    .then((response) => {
+      if (response !== 'false') {
+        dbHelpers.hashPassword(userObject);
+        res.send('true');
+      } else {
+        res.send('false');
+      }
+    })
+    .catch((error) => { throw error; });
 });
 
 // Endpoint to allow a logged in user to save favorite locations or points of interest
@@ -214,4 +237,3 @@ app.listen(8200, () => {
 // https://forums.aws.amazon.com/thread.jspa?threadID=109440
 
 // ec2 ip address: ec2-34-238-240-14.compute-1.amazonaws.com
-
