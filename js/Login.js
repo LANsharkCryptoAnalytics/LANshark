@@ -83,7 +83,7 @@ export default class Login extends Component {
   }
 
   _submit() {
-    const deployedServer = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login';
+    const deployedServer = 'http://ec2-54-166-82-246.compute-1.amazonaws.com/login';
     axios({
       method: 'post',
       url: deployedServer,
@@ -97,7 +97,6 @@ export default class Login extends Component {
         // console.warn(response.data)
         if (response.data.success === 'true') {
           this.props.user.id = response.data.user.id;
-          console.warn(this.props.user.id)
           this.props.arView();
         } else if (response.data === 'Password is incorrect') {
           alert(`Sorry ${this.state.email}, The Password You Entered Is Incorrect.`);
