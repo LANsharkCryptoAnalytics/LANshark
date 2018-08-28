@@ -14,7 +14,7 @@ export default class FavoriteMap extends Component {
     super(props);
   }
 componentDidMount(){
-  axios.get('http://ec2-34-238-240-14.compute-1.amazonaws.com/getUserFavorites', {
+  axios.get('http://ec2-54-166-82-246.compute-1.amazonaws.com/getUserFavorites', {
     params: {
       user: this.props.user,
     }).then(favorite)=>{

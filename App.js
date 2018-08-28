@@ -124,7 +124,7 @@ export default class ViroSample extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        axios.get('http://ec2-34-238-240-14.compute-1.amazonaws.com/neighborhood', {
+        axios.get('http://ec2-54-166-82-246.compute-1.amazonaws.com/neighborhood', {
           params: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -148,7 +148,7 @@ export default class ViroSample extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        axios.get('http://ec2-34-238-240-14.compute-1.amazonaws.com/broad', {
+        axios.get('http://ec2-54-166-82-246.compute-1.amazonaws.com/broad', {
           params: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -350,7 +350,7 @@ export default class ViroSample extends Component {
     const notSaved = 'Sorry, We could\'nt Save the Information';
     let saveMessage;
 
-    axios.post('http://ec2-34-238-240-14.compute-1.amazonaws.com/addToFavorites', {
+    axios.post('http://ec2-54-166-82-246.compute-1.amazonaws.com/addToFavorites', {
       id: user.id,
       latitude: this.state.latitude,
       longitude: this.state.longitude,
@@ -389,7 +389,7 @@ export default class ViroSample extends Component {
   }
 
   _onAttemptHNOC() {
-    axios.post('http://ec2-34-238-240-14.compute-1.amazonaws.com/', {
+    axios.post('http://ec2-54-166-82-246.compute-1.amazonaws.com/', {
       latitude: this.state.latitude,
       longitude: this.state.longitude,
     })
@@ -449,7 +449,7 @@ export default class ViroSample extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        axios.get('http://ec2-34-238-240-14.compute-1.amazonaws.com/broad', {
+        axios.get('http://ec2-54-166-82-246.compute-1.amazonaws.com/broad', {
           params: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
