@@ -93,7 +93,7 @@ export default class Signup extends Component {
   }
 
   _submit() {
-    const deployedServer = 'http://ec2-54-166-82-246.compute-1.amazonaws.com/signup';
+    const deployedServer = 'http://ec2-54-152-18-28.compute-1.amazonaws.com/signup';
     axios({
       method: 'post',
       url: deployedServer,
