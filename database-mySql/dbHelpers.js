@@ -74,8 +74,8 @@ const addToUserFavorites = ((favorite, user) => {
     foreignKey: user.id,
   }).then(() => {
     console.log('favorite created');
-  }).catch(() => {
-    console.log('error in addToUserFavorites');
+  }).catch((error) => {
+    throw error;
   });
 });
 
