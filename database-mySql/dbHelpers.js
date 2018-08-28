@@ -61,11 +61,11 @@ const addToUserFavorites = ((favorite, user) => {
   });
 });
 
-const findUserFavorites = ((user) => {
-  console.log(`finding user favorite for: ${user}`);
+const findUserFavorites = ((userId) => {
+  console.log(`finding user favorite for: ${userId}`);
   return Favorite.findAll({
     where: {
-      foreignKey: user,
+      foreignKey: userId,
     },
   });
 });
