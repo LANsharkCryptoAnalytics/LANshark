@@ -58,10 +58,9 @@ const localStyles = StyleSheet.create({
   button: {
     // alignSelf: 'stretch',
     alignItems: 'stretch',
-    borderRadius: 10,
     borderWidth: 1,
     borderColor: '#ffffff00',
-    padding: 20,
+    padding: 30,
     backgroundColor: '#59cbbd',
   },
   btntext: {
@@ -559,7 +558,7 @@ export default class ViroSample extends Component {
               <Image source={require('./js/res/right-gold-arrow.png')} />
             </TouchableHighlight>
           </View>)}
-        <View style={{flexDirection: "row"}}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <TouchableOpacity style={localStyles.button} >
               <Text style={localStyles.btntext}>AR View</Text>
           </TouchableOpacity>
