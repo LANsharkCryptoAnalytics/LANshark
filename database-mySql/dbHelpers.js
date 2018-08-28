@@ -15,21 +15,6 @@ const findUserLogin = userInfo => User.findOne({
   .then(user => user)
   .catch((error) => { throw error; });
 
-// const comparePassword = (user, hash, callback) => {
-//   console.log('112221112221111222211111222111', user);
-//   const password = user.dataValues.password;
-//   bcrypt.compare(password, hash, (err, res) => {
-//     console.log('hash     mnbvcxzzxcvbnmmnbvcxzzxcvbnm', hash);
-//     console.log('res      123456789poiuytrewqasdfghjkl', res);
-//     if (err) {
-//       console.error(err);
-//     } else {
-//       console.log(res);
-//       return callback(err, res);
-//     }
-//   });
-// };
-
 const comparePassword = (password, hash, callback) => {
   bcrypt.compare(password, hash, (err, isMatch) => {
     console.log('hashhhhhhhhhhhhhhhhhhhhhhhhhhh', hash);

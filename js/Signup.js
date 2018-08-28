@@ -92,11 +92,10 @@ export default class Signup extends Component {
   }
 
   _submit() {
-    // const url1 = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/signup';
-    const testServer = 'http://172.24.6.45:8200/signup';
+    const deployedServer = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/signup';
     axios({
       method: 'post',
-      url: testServer,
+      url: deployedServer,
       data: {
         username: this.state.username,
         email: this.state.email,
@@ -104,7 +103,6 @@ export default class Signup extends Component {
       },
     })
       .then((response) => {
-        console.warn(response);
         if (response.data === true) {
           this.props._logIn();
         } else {
