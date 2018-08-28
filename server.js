@@ -158,7 +158,7 @@ app.get('/broad', (req, res) => {
 app.post('/login', (req, res) => {
   const userInfo = req.body;
   const password = req.body.password;
-  const success = true;
+  const success = 'true';
   dbHelpers.findUserLogin(userInfo)
     .then((user) => {
       if (user !== null) {
