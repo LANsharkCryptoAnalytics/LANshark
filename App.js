@@ -203,10 +203,10 @@ export default class ViroSample extends Component {
       posPhone: false,
       narrowData: textArray2,
       dataStore: null,
-      isLoggedIn: true,
+      isLoggedIn: false,
       nonUser: true,
       mapView: false,
-      favMapView: true,
+      favMapView: false,
       signupView: false,
     };
   }
@@ -490,7 +490,7 @@ export default class ViroSample extends Component {
           <Map user={user} showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
 
         {renderIf(this.state.favMapView && this.state.isLoggedIn,
-          <FavoriteMap showFavMapView={this._showFavMapView} lat={this.state.latitude} long={this.state.longitude} />)}
+          <FavoriteMap user={user} showFavMapView={this._showFavMapView} lat={this.state.latitude} long={this.state.longitude} />)}
         {renderIf(this.state.posPhone && this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
           <View>
             <Text>

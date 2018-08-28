@@ -1,5 +1,5 @@
 let passport = require('passport'),
-   LocalStrategy = require('passport-local').Strategy;
+LocalStrategy = require('passport-local').Strategy;
 const express = require('express');
 const bodyParser = require('body-parser');
 const hnocSearch = require('./hnocSearch.js');
@@ -210,23 +210,13 @@ app.post('/addToFavorites', (req) => {
       console.log('error saving');
     });
 });
-let fav = 
-  {name:'Fair Grounds 1',
-  latitude: 29.9838,
-  longitude: -90.0811,
-  wide: "stuff about neighborhood",
-  narrow: "stuff about stuff",
-  wideWiki: '',
-  narrowWiki:'http://www.wikidata.org/entity/Q5429810',
-  wikiImage:'http://commons.wikimedia.org/wiki/Special:FilePath/Jazzfest07FairgroundGrandstand55.jpg',
-};
 
-dbHelpers.addToUserFavorites(fav, { id: 1 });
+
 
 app.get('/getUserFavorites', (req, res) => {
   console.log('get all user favorites ');
   // console.log(req.query);
-  helpers.getAllUserFavorites(req.query)
+  helpers.getAllUserFavorites(req.query.user)
     .then((favorites) => {
       console.log('server.js', favorites);
       res.send(favorites);
