@@ -560,15 +560,15 @@ export default class ViroSample extends Component {
             </TouchableHighlight>
           </View>)}
         <View style={{flexDirection: "row"}}>
-          <TouchableOpacity style={localStyles.button} onPress={() => { this.props.showMapView(); }}>
+          <TouchableOpacity style={localStyles.button} >
               <Text style={localStyles.btntext}>AR View</Text>
           </TouchableOpacity>
           
-          <TouchableOpacity style={localStyles.button} onPress={() => { this.props.showMapView(); }}>
+          <TouchableOpacity style={localStyles.button} >
               <Text style={localStyles.btntext}>AR View</Text>
           </TouchableOpacity>
 
-           <TouchableOpacity style={localStyles.button} onPress={() => { this.props.showMapView(); }}>
+           <TouchableOpacity style={localStyles.button} >
               <Text style={localStyles.btntext}>AR View</Text>
           </TouchableOpacity>
 
