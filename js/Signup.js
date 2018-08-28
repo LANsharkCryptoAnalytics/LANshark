@@ -64,11 +64,12 @@ export default class Signup extends Component {
     super(props);
 
     this.state = {
-      name: '',
+      username: '',
       email: '',
       password: '',
       loginPage: false,
       signupPage: true,
+      userId: null,
     };
 
     this._loginPage = this._loginPage.bind(this);
@@ -92,15 +93,22 @@ export default class Signup extends Component {
   }
 
   _submit() {
-    // console.warn(this.props, 'props');
+    const deployedServer = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/signup';
     axios({
       method: 'post',
-      url: 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login',
-      data: this.state,
+      url: deployedServer,
+      data: {
+        username: this.state.username,
+        email: this.state.email,
+        password: this.state.password,
+      },
     })
       .then((response) => {
-        // console.warn('response', response);
-        this.props._logIn();
+        if (response.data === true) {
+          this.props._logIn();
+        } else {
+          alert(`Sorry ${this.state.email}, this email is Already registered. Try login.`);
+        }
       })
       .catch((error) => {
         throw error;
@@ -112,11 +120,15 @@ export default class Signup extends Component {
       <View style={styles.login}>
         {renderIf(this.state.signupPage && !this.state.loginPage,
         <View>
-          <Text style={styles.header}>Welcome to AR History Tour</Text>
-          <TextInput style={styles.textinput} placeholder="   Name" onChangeText={text => this.setState({ name: text })} />
-          <TextInput style={styles.textinput} placeholder="   Email" onChangeText={text => this.setState({ email: text })} />
-          <TextInput style={styles.textinput} placeholder="   Password" secureTextEntry onChangeText={text => this.setState({ password: text })} />
-          <TouchableOpacity style={styles.signupbutton} onPress={() => { this._submit(); }}>
+        <Text style={styles.header}>Welcome to AR History Tour</Text>
+
+        <TextInput style={styles.textinput} placeholder="   Username" onChangeText={(text) => this.setState({username: text})} />
+
+        <TextInput style={styles.textinput} placeholder="   Email" onChangeText={(text) => this.setState({email: text})}/>
+
+        <TextInput style={styles.textinput} placeholder="   Password" secureTextEntry={true} onChangeText={(text) => this.setState({password: text})} />
+
+        <TouchableOpacity style={styles.signupbutton} onPress={() => { this._submit() }}>
           <Text style={styles.btntext}>Sign Up</Text>
         </TouchableOpacity>
 
@@ -124,7 +136,7 @@ export default class Signup extends Component {
         </View>,)}
         {renderIf(!this.state.signupPage && this.state.loginPage,
           <View>
-          <Login arView={this.props._logIn} signup={this.props._signup} />
+          <Login arView={this.props._logIn} signup={this.props._signup} userId={this.props.userId} />
         </View>)}
       </View>
     );

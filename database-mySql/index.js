@@ -8,6 +8,7 @@ require('dotenv').config();
 
 const sequelize = new Sequelize(`mysql://${process.env.DBUSER}:${process.env.DBPASSWORD}@${process.env.DBHOST}/ARHISTORY`);
 
+
 sequelize
   .authenticate()
   .then(() => {
@@ -87,33 +88,33 @@ const Favorite = sequelize.define('favorite', {
 
 // force: true will drop the table if it already exists
 User.sync({
-  force: true,
+  force: false,
 }).then(() => User.create({
   username: 'John',
   password: '12345',
   email: 'me@me.com',
 }));
-  // .then(() => {
-  // add a user for testing
-  //   User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
-  //     .spread((user, created) => {
-  //     // console.log(user.get({
-  //     //   plain: true,
-  //     // }));
-  //     // console.log(created);
-  //     });
-  // })
-  // .then(() => {
-  //   // add the same user again to test function - should return false
-  //   User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
-  //     .spread((user, created) => {
-  //       // console.log(user.get({
-  //       //   plain: true,
-  //       // }));
-  //       // console.log(created);
-  //     });
-  // })
-  // .catch();
+// .then(() => {
+// add a user for testing
+//   User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
+//     .spread((user, created) => {
+//     // console.log(user.get({
+//     //   plain: true,
+//     // }));
+//     // console.log(created);
+//     });
+// })
+// .then(() => {
+//   // add the same user again to test function - should return false
+//   User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
+//     .spread((user, created) => {
+//       // console.log(user.get({
+//       //   plain: true,
+//       // }));
+//       // console.log(created);
+//     });
+// })
+// .catch();
 
 const Vcs = sequelize.define('vcs', {
   id: {
@@ -147,7 +148,7 @@ const Vcs = sequelize.define('vcs', {
 });
 
 Favorite.sync({
-  force: true, // true drops database
+  force: false, // true drops database
 }).then(() => {
   // User.hasMany(Favorite, { foreignKey: 'id' });
   Favorite.belongsTo(User, { foreignKey: 'id' });
