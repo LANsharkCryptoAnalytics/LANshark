@@ -186,6 +186,7 @@ app.post('/addToFavorites', (req) => {
       console.log('error saving');
     });
 });
+helpers.addToFavorites()
 
 app.get('/getUserFavorites', (req, res) => {
   console.log('get all user favorites ');
