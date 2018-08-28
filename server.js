@@ -1,5 +1,5 @@
 let passport = require('passport'),
-   LocalStrategy = require('passport-local').Strategy;
+LocalStrategy = require('passport-local').Strategy;
 const express = require('express');
 const bodyParser = require('body-parser');
 const hnocSearch = require('./hnocSearch.js');
@@ -211,10 +211,12 @@ app.post('/addToFavorites', (req) => {
     });
 });
 
+
+
 app.get('/getUserFavorites', (req, res) => {
   console.log('get all user favorites ');
   // console.log(req.query);
-  helpers.getAllUserFavorites(req.query)
+  helpers.getAllUserFavorites(req.query.user)
     .then((favorites) => {
       console.log('server.js', favorites);
       res.send(favorites);
