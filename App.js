@@ -60,12 +60,12 @@ const localStyles = StyleSheet.create({
     alignItems: 'stretch',
     borderWidth: 1,
     borderColor: '#ffffff00',
-    padding: 30,
+    padding: 25,
     backgroundColor: '#59cbbd',
   },
   btntext: {
     color: '#fff',
-    fontSize: 20,
+    fontSize: 12,
     fontWeight: 'bold',
   },
   buttons: {
@@ -545,7 +545,7 @@ export default class ViroSample extends Component {
             </TouchableHighlight>
             <TouchableHighlight
               style={localStyles.buttons}
-              onPress={this._onDisplayDialog}
+              onPress={() => this._onShowText(0, dataCounter, 0)}
               underlayColor="#00000000"
             >
               <Image source={require('./js/res/MainBTTN.png')} />
@@ -559,22 +559,42 @@ export default class ViroSample extends Component {
             </TouchableHighlight>
           </View>)}
         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          
+          <TouchableOpacity
+            style={localStyles.button} 
+            onPress={() => this._showMapView()}
+          >
+            <Text style={localStyles.btntext}>Map View</Text>
+          </TouchableOpacity>
+
           <TouchableOpacity style={localStyles.button} >
-              <Text style={localStyles.btntext}>AR View</Text>
+            <Text 
+              style={localStyles.btntext}
+              onPress={() => this._onRemoveText()}
+            >
+               Next Location
+            </Text>
           </TouchableOpacity>
           
-          <TouchableOpacity style={localStyles.button} >
-              <Text style={localStyles.btntext}>AR View</Text>
-          </TouchableOpacity>
 
-           <TouchableOpacity style={localStyles.button} >
-              <Text style={localStyles.btntext}>AR View</Text>
-          </TouchableOpacity>
+          {renderIf(!this.state.isLoggedIn,
+            <TouchableOpacity style={localStyles.button} >
+              <Text
+                style={localStyles.btntext}
+                onPress={() => this._signup()}
+              >
+              Signup / Login
+              </Text>
+            </TouchableOpacity>)}
 
+          {renderIf(this.state.isLoggedIn,
+            <TouchableOpacity
+              style={localStyles.button}
+              onPress={() => this._onSaveLocation(0, dataCounter, 0)}
+            >
+              <Text style={localStyles.btntext}>Save Location</Text>
+            </TouchableOpacity>)}
         </View>
-
-
-
       </View>
     );
   }
