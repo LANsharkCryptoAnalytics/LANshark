@@ -351,6 +351,7 @@ export default class ViroSample extends Component {
     let saveMessage;
 
     axios.post('http://ec2-34-238-240-14.compute-1.amazonaws.com/addToFavorites', {
+      id: user.id,
       latitude: this.state.latitude,
       longitude: this.state.longitude,
       wideData: this.state.generalData,
