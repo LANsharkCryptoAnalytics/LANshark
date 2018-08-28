@@ -74,16 +74,16 @@ const addToUserFavorites = ((favorite, user) => {
     foreignKey: user.id,
   }).then(() => {
     console.log('favorite created');
-  }).catch(() => {
-    console.log('error in addToUserFavorites');
+  }).catch((error) => {
+    throw error;
   });
 });
 
-const findUserFavorites = ((user) => {
-  console.log(`finding user favorite for: ${user}`);
+const findUserFavorites = ((userId) => {
+  console.log(`finding user favorite for: ${userId}`);
   return Favorite.findAll({
     where: {
-      foreignKey: user,
+      foreignKey: userId,
     },
   });
 });

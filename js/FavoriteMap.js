@@ -6,12 +6,24 @@ import {
   View,
   WebView,
 } from 'react-native';
+import axios from 'axios';
+
 
 export default class FavoriteMap extends Component {
   constructor(props) {
     super(props);
   }
+componentDidMount(){
+  axios.get('http://ec2-54-166-82-246.compute-1.amazonaws.com/getUserFavorites', {
+    params: {
+      user: this.props.user,
+    }).then(favorite)=>{
 
+    })
+    .catch(error)=> { throw error; });
+
+  }
+}
   // Open URL in a browser
 
   //   loggingIn = () => {
@@ -19,7 +31,16 @@ export default class FavoriteMap extends Component {
   //     .then((data) => alert(data))
   //     .catch((e) => alert(e))
   //   }
-
+//   let fav = 
+//   {name:'Fair Grounds 1',
+//   latitude: 29.9838,
+//   longitude: -90.0811,
+//   wide: "stuff about neighborhood",
+//   narrow: "stuff about stuff",
+//   wideWiki: '',
+//   narrowWiki:'http://www.wikidata.org/entity/Q5429810',
+//   wikiImage:'http://commons.wikimedia.org/wiki/Special:FilePath/Jazzfest07FairgroundGrandstand55.jpg',
+// };
 
   render() {
     return (
@@ -60,8 +81,20 @@ export default class FavoriteMap extends Component {
 <div id='map'></div>
 
 <script>
-	var map = L.map('map').setView([${String(this.props.lat).slice(0, 9)}, ${String(this.props.long).slice(0, 10)}], 16);
-  let favs = [{
+  var map = L.map('map').setView([${String(this.props.lat).slice(0, 9)}, ${String(this.props.long).slice(0, 10)}], 16);
+  let mapLink = "https://query.wikidata.org/embed.html#%23defaultView%3AMap%7B%22layer%22%3A%22%3Finstance_ofLabel%22%7D%0ASELECT%20%3Fplace%20%3FplaceLabel%20%3Fimage%20%3Fcoordinate_location%20%3Fdist%20%3Finstance_of%20%3Finstance_ofLabel%20WHERE%20%7B%0A%20%20SERVICE%20wikibase%3Aaround%20%7B%0A%20%20%20%20%3Fplace%20wdt%3AP625%20%3Fcoordinate_location.%0A%20%20%20%20bd%3AserviceParam%20wikibase%3Acenter%20%22Point%28-90.0811%20%29%22%5E%5Egeo%3AwktLiteral.%0A%20%20%20%20bd%3AserviceParam%20wikibase%3Aradius%20%221%22.%0A%20%20%20%20bd%3AserviceParam%20wikibase%3Adistance%20%3Fdist.%0A%20%20%7D%0A%20%20SERVICE%20wikibase%3Alabel%20%7B%20bd%3AserviceParam%20wikibase%3Alanguage%20%22%5BAUTO_LANGUAGE%5D%2Cen%22.%20%7D%0A%20%20OPTIONAL%20%7B%20%3Fplace%20wdt%3AP18%20%3Fimage.%20%7D%0A%20%20OPTIONAL%20%7B%20%3Fplace%20wdt%3AP31%20%3Finstance_of.%20%7D%0A%7D";
+ 
+  let favs = [
+    {title:'Fair Grounds Race Course',
+    long:-90.0811,
+    lat: 29.9838,
+    dist:'0.96',
+    type:'sports venue',
+    widewiki: '',
+    narrowwiki:'http://www.wikidata.org/entity/Q5429810',
+    wikiimage:'http://commons.wikimedia.org/wiki/Special:FilePath/Jazzfest07FairgroundGrandstand55.jpg',
+  },    
+    {
     title: 'Rivoli Theatre',
        long: -90.075462,
        lat: 29.975514,
@@ -77,7 +110,7 @@ export default class FavoriteMap extends Component {
 	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
 		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-			'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'<a href="https://creativecommons.org/licenses/by-sa/2.0/"></a>, ' +
 			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 		id: 'mapbox.streets'
   }).addTo(map);
@@ -95,7 +128,9 @@ var starIcon = new LeafIcon({
 })
 for( let i = 0; i < favs.length; i++){
   L.marker([favs[i].lat, favs[i].long], {icon: fIcon}).addTo(map)
-.bindPopup(favs[i].title, favs[i].lat, favs[i].long );
+.bindPopup('<div><b>'+favs[i].title+'</b></div><br>'+'<a href="'+favs[i].narrowwiki+'">Link</a><br>' + '<img src="http://commons.wikimedia.org/wiki/Special:FilePath/Jazzfest07FairgroundGrandstand55.jpg" alt="Image" height="100%" width="100%">'
+
+);
 }
 
     
