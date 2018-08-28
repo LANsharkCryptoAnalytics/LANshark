@@ -6,12 +6,24 @@ import {
   View,
   WebView,
 } from 'react-native';
+import axios from 'axios';
+
 
 export default class FavoriteMap extends Component {
   constructor(props) {
     super(props);
   }
+componentDidMount(){
+  axios.get('http://ec2-34-238-240-14.compute-1.amazonaws.com/getUserFavorites', {
+    params: {
+      user: this.props.user,
+    }).then(favorite)=>{
 
+    })
+    .catch(error)=> { throw error; });
+
+  }
+}
   // Open URL in a browser
 
   //   loggingIn = () => {
@@ -19,7 +31,16 @@ export default class FavoriteMap extends Component {
   //     .then((data) => alert(data))
   //     .catch((e) => alert(e))
   //   }
-
+//   let fav = 
+//   {name:'Fair Grounds 1',
+//   latitude: 29.9838,
+//   longitude: -90.0811,
+//   wide: "stuff about neighborhood",
+//   narrow: "stuff about stuff",
+//   wideWiki: '',
+//   narrowWiki:'http://www.wikidata.org/entity/Q5429810',
+//   wikiImage:'http://commons.wikimedia.org/wiki/Special:FilePath/Jazzfest07FairgroundGrandstand55.jpg',
+// };
 
   render() {
     return (
