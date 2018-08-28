@@ -246,14 +246,19 @@ exports.createUser = (user, response, reject) => {
 // addToUserFavorites
 exports.addToFavorites = (favorite, user) => {
   // console.log('addToUserFavorites');
-  db.addToUserFavorites(favorite, user)
-    .then(() => {
-      console.log('saved');
-      // res.send("saved to favorites");
-    })
-    .catch(() => {
-      console.log('error saving');
-    });
+  db.addToUserFavorites(favorite, user);
+    // .then(() => {
+    //   console.log('saved');
+    //   // res.send('saved to favorites');
+    // })
+    // .catch(() => {
+    //   console.log('error saving');
+  // });
+};
+
+exports.getAllUserFavorites = (user) => {
+  console.log('helpers get all user favorites');
+  return db.findUserFavorites(user.id);
 };
 
 // ///////////////////////////////////////////////////////
@@ -261,18 +266,17 @@ exports.addToFavorites = (favorite, user) => {
 // ///////////////////////////////////////////////////////
 
 // Create data helpers
-exports.neighborhoodCreate = (neighborhood, res, reject) => {
+exports.neighborhoodCreate = (neighborhood) => {
   console.log('neighborhoodCreate');
   db.createNeighborhood(neighborhood);
 };
 
-exports.poiCreate = (poi, response, reject) => {
+exports.poiCreate = (poi) => {
   console.log('poiCreate');
   db.createPoi(poi);
 };
 
-exports.vcsCreate = (vcsInfo, res, reject) => {
+exports.vcsCreate = (vcsInfo) => {
   console.log('vieux carre address entry create fired');
   db.createVcs(vcsInfo);
 };
-

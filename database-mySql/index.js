@@ -28,16 +28,18 @@ const User = sequelize.define('user', {
 
   username: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
   email: {
     type: Sequelize.STRING,
     unique: true,
+    allowNull: false,
   },
   password: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
 });
-
 
 const Favorite = sequelize.define('favorite', {
   id: {
@@ -50,14 +52,17 @@ const Favorite = sequelize.define('favorite', {
     type: Sequelize.STRING,
   },
   lat: {
-    type: Sequelize.INTEGER, // may need to be int
+    type: Sequelize.INTEGER,
+    allowNull: false,
   },
   long: {
-    type: Sequelize.INTEGER, // may need to be int
+    type: Sequelize.INTEGER,
+    allowNull: false,
   },
   latLong: {
     type: Sequelize.STRING,
     unique: true,
+    allowNull: false,
   },
   wide: {
     type: Sequelize.STRING,
@@ -76,6 +81,8 @@ const Favorite = sequelize.define('favorite', {
   },
   foreignKey: {
     type: Sequelize.INTEGER,
+    allowNull: false,
+
   },
 });
 
@@ -86,35 +93,28 @@ User.sync({
   username: 'John',
   password: '12345',
   email: 'me@me.com',
-  // favorites: '123123',
-})).then(() => {
-  User.findAll().then((users) => {
-    // console.log('find all');
-    // users.forEach((user) => {
-    //   console.log(user.dataValues);
-    // });
-    // console.log('findAll', users[0].dataValues);
-  });
-}).then(() => {
-  // add a user for testing
-  User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
-    .spread((user, created) => {
-      // console.log(user.get({
-      //   plain: true,
-      // }));
-      // console.log(created);
-    });
-})
-  .then(() => {
-    // add the same user again to test function - should return false
-    User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
-      .spread((user, created) => {
-        // console.log(user.get({
-        //   plain: true,
-        // }));
-        // console.log(created);
-      });
-  });
+}));
+// .then(() => {
+// add a user for testing
+//   User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
+//     .spread((user, created) => {
+//     // console.log(user.get({
+//     //   plain: true,
+//     // }));
+//     // console.log(created);
+//     });
+// })
+// .then(() => {
+//   // add the same user again to test function - should return false
+//   User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
+//     .spread((user, created) => {
+//       // console.log(user.get({
+//       //   plain: true,
+//       // }));
+//       // console.log(created);
+//     });
+// })
+// .catch();
 
 const Vcs = sequelize.define('vcs', {
   id: {
@@ -153,7 +153,7 @@ Favorite.sync({
   // User.hasMany(Favorite, { foreignKey: 'id' });
   Favorite.belongsTo(User, { foreignKey: 'id' });
 }).then(() => Favorite.create({
-  // name: 'French Market',
+  name: 'French Market',
   lat: 30,
   long: 90,
   latLong: '3090',
@@ -168,6 +168,7 @@ Favorite.sync({
 // PASSED FROM THE CLIENT. I HARD CODED A FAVORITE AND A USER FOR THIS PURPOSE
   .then(() => {
     const testFavorite = {
+      name: 'a place you want to save',
       latitude: 29.9773846936982,
       longitude: -90.07604716542896,
       latLong: '29.9773846936982-90.07604716542896',
@@ -177,15 +178,31 @@ Favorite.sync({
       narrowWiki: 'www.ofthatfunkystuff.com',
       wikiImage: 'sdfkjhsdkjfhksjdfhkjshdf',
     };
-    const testUser = {
-      userName: 'Satan',
-      email: '666@hell.com',
-      id: 13,
+    const testFavorite2 = {
+      name: 'the zoo',
+      latitude: 29.9773846936982,
+      longitude: -90.07604716542896,
+      latLong: '29.9773846936982-90.07604716542896',
+      wideData: ['snake and tigers'],
+      narrowData: ['tortoises'],
+      wideWiki: 'www.zoo.com',
+      narrowWiki: 'www.zoo2.com',
+      wikiImage: 'stuff ',
     };
-   
+    // const testUser = {
+    //   username: 'Satan',
+    //   email: '666@hell.com',
+    //   id: 13,
+    // };
+    const testUser2 = {
+      username: 'John',
+      email: 'me@me.com',
+      id: 2,
+    };
     // Test addToFavorites
-    console.log('test add to favorites');
-    helpers.addToFavorites(testFavorite, testUser);
+    // console.log('test add to favorites');
+    // helpers.addToFavorites(testFavorite, testUser2);
+    helpers.addToFavorites(testFavorite2, testUser2);
   });
 
 module.exports = {
