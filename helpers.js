@@ -247,7 +247,7 @@ exports.createUser = (user, response, reject) => {
 exports.addToFavorites = (favorite) => {
   // console.log('addToUserFavorites');
   // const favorite = favorite
-  db.addToUserFavorites(favorite);
+  return db.addToUserFavorites(favorite);
 };
 
 exports.getAllUserFavorites = (user) => {
