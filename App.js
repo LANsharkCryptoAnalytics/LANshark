@@ -37,12 +37,17 @@ const isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
 const textArray = 'A green hunting cap squeezed the top of the fleshy balloon of a head. The green earflaps, full of large ears and uncut hair and the fine bristles that grew in the ears themselves, stuck out on either side like turn signals indicating two directions at once. Full, pursed lips protruded beneath the bushy black moustache and, at their corners, sank into little folds filled with disapproval and potato chip crumbs. In the shadow under the green visor of the cap Ignatius J. Reilly’s supercilious blue and yellow eyes looked down upon the other people waiting under the clock at the D. H. Holmes department store, studying the crowd of people for signs of bad taste and dress. Several of the outfits, Ignatius noticed, were new enough and expensive enough to be properly considered offenses against taste and decency. Possession of anything new or expensive only reflected a person’s lack of theology and geometry; it could even cast doubts upon one’s soul.'.split('.');
 const textArray2 = 'cha cha changes, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.');
 let dataLength = textArray.length - 1;
-const user = { id: null, email: null };
+const user = { id: 3, email: null };
 let dataCounter = 0;
 let locationProgression = 1;
 let wideWiki = '';
 let narrowWiki = '';
 let wikiImage = '';
+//fixing a bug with asynch function calls
+if (typeof global.self === "undefined") {
+  global.self = global;
+}
+
 
 const localStyles = StyleSheet.create({
   outer: {
@@ -195,18 +200,18 @@ export default class ViroSample extends Component {
       trackingInitialized: false,
       isLoading: false,
       posComp: true,
-      latitude: '29.97616921',
-      longitude: '-90.0764381',
+      latitude: 29.97616921,
+      longitude: -90.0764381,
       success: null,
       error: null,
       generalData: textArray,
       posPhone: false,
       narrowData: textArray2,
       dataStore: null,
-      isLoggedIn: false,
+      isLoggedIn: true,
       nonUser: true,
       mapView: false,
-      favMapView: false,
+      favMapView: true,
       signupView: false,
     };
   }
