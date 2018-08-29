@@ -198,20 +198,18 @@ app.post('/signup', (req, res) => {
 });
 
 // Endpoint to allow a logged in user to save favorite locations or points of interest
-app.post('/addToFavorites', (req) => {
+app.post('/addToFavorites', (req, res) => {
   console.log('add to user favorites');
   console.log(req.body);
   helpers.addToFavorites(req.body)
     .then(() => {
       console.log('saved');
-      res.send('saved to favorites');
+      res.send('Location Information Saved!');
     })
     .catch(() => {
       console.log('error saving');
     });
 });
-
-
 
 app.get('/getUserFavorites', (req, res) => {
   console.log('get all user favorites ');
