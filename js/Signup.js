@@ -73,7 +73,7 @@ export default class Signup extends Component {
     this._loginPage = this._loginPage.bind(this);
     this._signup = this._signup.bind(this);
     this._signin = this._signin.bind(this);
-    this._login = this._login.bind(this);
+    // this._login = this._login.bind(this);
   }
 
 
@@ -92,7 +92,8 @@ export default class Signup extends Component {
   }
 
   _login() {
-    const deployedServer = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login';
+    const testServer = 'http://172.24.6.45:8200/login';
+    const deployedServer = 'http://ec2-54-152-18-28.compute-1.amazonaws.com/login';
     axios({
       method: 'post',
       url: deployedServer,
@@ -102,11 +103,11 @@ export default class Signup extends Component {
       },
     })
       .then((response) => {
-        console.warn('loginnnnnnnnnnnnnnnnnnnnnnn', response.data);
+        console.warn(response.data);
         if (response.data.success === 'true') {
           this.props.user.id = response.data.user.id;
           console.warn(this.props.user.id);
-          this.props._logIn();
+          this.props.arView();
         } else if (response.data === 'Password is incorrect') {
           alert(`Sorry ${this.state.email}, The Password You Entered Is Incorrect.`);
         } else {
@@ -132,9 +133,9 @@ export default class Signup extends Component {
       },
     })
       .then((response) => {
-        console.warn(response.data);
-        // this.props._logIn();
+        console.warn('this.signup()  ', response.data);
         if (response.data === true) {
+          console.warn('inside of true if block of _signup');
           this._login();
         } else {
           alert(`Sorry ${this.state.email}, this email is Already registered. Try login.`);
@@ -164,7 +165,7 @@ export default class Signup extends Component {
         </View>,)}
         {renderIf(!this.state.signupPage && this.state.loginPage,
           <View>
-            <Login arView={this.props._logIn} login={this._login} signup={this.props._signup} user={this.props.user}/>
+            <Login arView={this.props._arView} signup={this.props._signup} user={this.props.user}/>
         </View>)}
       </View>
     );

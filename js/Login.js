@@ -87,13 +87,12 @@ export default class Login extends Component {
       method: 'post',
       url: deployedServer,
       data: {
-        username: this.state.username,
         email: this.state.email,
         password: this.state.password,
       },
     })
       .then((response) => {
-        console.warn(response.data)
+        console.warn(response.data);
         if (response.data.success === 'true') {
           this.props.user.id = response.data.user.id;
           console.warn(this.props.user.id);
