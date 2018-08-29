@@ -1,7 +1,7 @@
 const axios = require('axios');
 const fetch = require('node-fetch');
 const scrapeIt = require('scrape-it');
-const db = require('./database-mySql/dbHelpers.js');
+const db = require('./database-mySql/dbHelpers.js').default;
 /**
  * format and parse the string from html
  * @param {String} text the string to format
