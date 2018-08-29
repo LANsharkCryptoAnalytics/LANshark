@@ -59,8 +59,8 @@ const localStyles = StyleSheet.create({
     // alignSelf: 'stretch',
     alignItems: 'stretch',
     borderWidth: 1,
-    borderColor: '#ffffff00',
-    padding: 25,
+    borderColor: '#333333',
+    padding: 32,
     backgroundColor: '#59cbbd',
   },
   btntext: {
@@ -558,6 +558,8 @@ export default class ViroSample extends Component {
               <Image source={require('./js/res/right-gold-arrow.png')} />
             </TouchableHighlight>
           </View>)}
+          
+          {renderIf(!this.state.mapView && !this.state.favMapView,
         <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           
           <TouchableOpacity
@@ -595,6 +597,7 @@ export default class ViroSample extends Component {
               <Text style={localStyles.btntext}>Save Location</Text>
             </TouchableOpacity>)}
         </View>
+          )}
       </View>
     );
   }
