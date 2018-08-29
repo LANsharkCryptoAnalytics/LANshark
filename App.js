@@ -374,8 +374,8 @@ export default class ViroSample extends Component {
       narrowWiki,
       wikiImage,
     })
-      .then(() => {
-        saveMessage = isSaved;
+      .then((res) => {
+        saveMessage = res.data;
         const currentProps = { ...this.state.viroAppProps };
         this.setState({
           viroAppProps: {
