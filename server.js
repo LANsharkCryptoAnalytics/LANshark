@@ -238,5 +238,10 @@ app.listen(8200, () => {
 // from 8200 to 80. Works until we update the env file on the server or some
 // other solution: something similar to this:
 // https://forums.aws.amazon.com/thread.jspa?threadID=109440
+// AWS port redirect schem below
+// iptables -A INPUT -i eth0 -p tcp --dport 80 -j ACCEPT
+// iptables -A INPUT -i eth0 -p tcp --dport 8200 -j ACCEPT
+// sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8200
+// sudo iptables -t nat -A OUTPUT -p tcp --dport 80 -j REDIRECT --to-ports 8200
 
 // ec2 ip address: ec2-34-238-240-14.compute-1.amazonaws.com

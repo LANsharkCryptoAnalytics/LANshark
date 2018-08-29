@@ -71,7 +71,7 @@ const addToUserFavorites = ((favorite, user) => {
     wideWiki: favorite.wideWiki,
     narrowWiki: favorite.narrowWiki,
     wikiImage: favorite.wikiImage,
-    foreignKey: user.id,
+    foreignKey: user,
   }).then(() => {
     console.log('favorite created');
   }).catch((error) => {
