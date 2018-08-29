@@ -1,11 +1,25 @@
 jest.useFakeTimers();
-import db from '../../database-mysql/dbHelpers';
+const db = require('../database-mySql/dbHelpers');
 // const server = require('../server');
 
-test(`findUserLogin`, () => {
-  const spy = jest.spyOn(db.helpers, 'findUserLogin');
-  db.helpers.findUserLogin();
+// Test to see if findUserLogin is called
+test('findUserLogin', () => {
+  const user = {
+    email: 'me@me.com',
+  };
+  const spy = jest.spyOn(db, 'findUserLogin');
+  db.findUserLogin(user);
+  let user = db.findUserLogin
   expect(db.findUserLogin).toHaveBeenCalled();
+});
+// Test to see if findUserLogin is accurate
+test('findUserLogin', () => {
+  const user = {
+    email: 'me@me.com',
+  };
+  const spy = jest.spyOn(db, 'findUserLogin');
+  db.findUserLogin(user);
+  expect(db.findUserLogin.email).toMatch(/me@me.com/);
 });
 
 // strings tested with regex 
@@ -29,3 +43,4 @@ test(`findUserLogin`, () => {
 // test('the shopping list has beer on it', () => {
 //   expect(shoppingList).toContain('beer');
 // });
+
