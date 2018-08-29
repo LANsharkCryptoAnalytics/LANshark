@@ -29,7 +29,7 @@ import Map from './js/Map';
 import FavoriteMap from './js/FavoriteMap';
 import renderIf from './js/helpers/renderIf';
 
-// console.disableYellowBox = true;
+console.disableYellowBox = true;
 
 const InitialARScene = require('./js/ARHist');
 
@@ -58,14 +58,14 @@ const localStyles = StyleSheet.create({
   button: {
     // alignSelf: 'stretch',
     alignItems: 'stretch',
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: '#333333',
-    padding: 32,
-    backgroundColor: '#59cbbd',
+    padding: 33,
+    backgroundColor: '#ffee99',
   },
   btntext: {
-    color: '#fff',
-    fontSize: 12,
+    color: '#333333',
+    fontSize: 16,
     fontWeight: 'bold',
   },
   buttons: {
@@ -559,44 +559,39 @@ export default class ViroSample extends Component {
             </TouchableHighlight>
           </View>)}
           
-          {renderIf(!this.state.mapView && !this.state.favMapView,
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        {renderIf(!this.state.mapView && !this.state.favMapView,
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           
-          <TouchableOpacity
-            style={localStyles.button} 
-            onPress={() => this._showMapView()}
-          >
-            <Text style={localStyles.btntext}>Map View</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={localStyles.button} >
-            <Text 
-              style={localStyles.btntext}
-              onPress={() => this._onRemoveText()}
-            >
-               Next Location
-            </Text>
-          </TouchableOpacity>
-          
-
-          {renderIf(!this.state.isLoggedIn,
-            <TouchableOpacity style={localStyles.button} >
-              <Text
-                style={localStyles.btntext}
-                onPress={() => this._signup()}
-              >
-              Signup / Login
-              </Text>
-            </TouchableOpacity>)}
-
-          {renderIf(this.state.isLoggedIn,
             <TouchableOpacity
-              style={localStyles.button}
-              onPress={() => this._onSaveLocation(0, dataCounter, 0)}
+              style={localStyles.button} 
+              onPress={() => this._showMapView()}
             >
-              <Text style={localStyles.btntext}>Save Location</Text>
-            </TouchableOpacity>)}
-        </View>
+              <Text style={localStyles.btntext}>Map View</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={localStyles.button} onPress={() => this._onRemoveText()} >
+              <Text style={localStyles.btntext}>Next Location</Text>
+            </TouchableOpacity>
+          
+
+            {renderIf(!this.state.isLoggedIn,
+              <TouchableOpacity style={localStyles.button} >
+                <Text
+                  style={localStyles.btntext}
+                  onPress={() => this._signup()}
+                >
+                Login
+                  </Text>
+              </TouchableOpacity>)}
+
+            {renderIf(this.state.isLoggedIn,
+              <TouchableOpacity
+                style={localStyles.button}
+                onPress={() => this._onSaveLocation(0, dataCounter, 0)}
+              >
+                <Text style={localStyles.btntext}>Save Location</Text>
+              </TouchableOpacity>)}
+          </View>
           )}
       </View>
     );
