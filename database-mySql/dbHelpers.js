@@ -59,10 +59,10 @@ const hashPassword = (userInfo) => {
 // TODO:function to create a new user
 // needs to be built out and tested
 // TODO: build out- adds an association to a particular place to a user
-const addToUserFavorites = ((favorite, user) => {
+const addToUserFavorites = ((favorite) => {
   console.log(JSON.stringify(favorite));
   return Favorite.create({
-    name: favorite.name,
+    // name: favorite.name,
     lat: favorite.latitude,
     long: favorite.longitude,
     latLong: `${favorite.latitude}${favorite.longitude}`,
@@ -71,7 +71,7 @@ const addToUserFavorites = ((favorite, user) => {
     wideWiki: favorite.wideWiki,
     narrowWiki: favorite.narrowWiki,
     wikiImage: favorite.wikiImage,
-    foreignKey: user.id,
+    foreignKey: favorite.id,
   }).then(() => {
     console.log('favorite created');
   }).catch((error) => {

@@ -244,16 +244,10 @@ exports.createUser = (user, response, reject) => {
 };
 
 // addToUserFavorites
-exports.addToFavorites = (favorite, user) => {
+exports.addToFavorites = (favorite) => {
   // console.log('addToUserFavorites');
-  db.addToUserFavorites(favorite, user);
-    // .then(() => {
-    //   console.log('saved');
-    //   // res.send('saved to favorites');
-    // })
-    // .catch(() => {
-    //   console.log('error saving');
-  // });
+  // const favorite = favorite
+  db.addToUserFavorites(favorite);
 };
 
 exports.getAllUserFavorites = (user) => {
