@@ -568,7 +568,14 @@ export default class ViroSample extends Component {
           && !this.state.favMapView
           && !this.state.signupView,
           <View style={{
-            position: 'absolute', left: 50, right: 0, bottom: 77, alignItems: 'center', flex: 1, flexDirection: 'row', justifyContent: 'space-between',
+            position: 'absolute',
+            left: 50,
+            right: 0,
+            bottom: 77,
+            alignItems: 'center',
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
           }}
           >
             <TouchableHighlight

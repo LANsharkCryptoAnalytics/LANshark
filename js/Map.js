@@ -49,20 +49,25 @@ export default class Map extends Component {
           />
         </View>
         <View style={{flexDirection: 'row', justifyContent: 'space-between' }}>
-          <TouchableOpacity style={styles.button} onPress={() => { this.props.showMapView(); }}>
+          <TouchableOpacity
+            style={styles.button} 
+            onPress={() => { this.props.showMapView(); }}
+          >
             <Text style={styles.btntext}>AR View</Text>
           </TouchableOpacity>
           {renderIf(this.props.user.id !== null,
             <TouchableOpacity
               style={styles.button}
-              onPress={() => { this.props.showFavMapView(); }}>
+              onPress={() => { this.props.showFavMapView(); }}
+            >
               <Text style={styles.btntext}>Fav Map</Text>
             </TouchableOpacity>)}
 
           {renderIf(this.props.user.id === null,
             <TouchableOpacity
               style={styles.button}
-              onPress={() => { this.props._signup(); }}>
+              onPress={() => { this.props._signup(); }}
+            >
               <Text style={styles.btntext}>Login</Text>
             </TouchableOpacity>)}
 

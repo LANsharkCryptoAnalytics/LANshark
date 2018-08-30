@@ -1,3 +1,6 @@
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable no-underscore-dangle */
+
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -105,8 +108,7 @@ export default class Signup extends Component {
           this.props._arView();
         } else if (response.data === 'User not created') {
           alert(`Sorry ${this.state.email}, something went wrong. Please try again.`);
-        }
-        else {
+        } else {
           alert(`Sorry ${this.state.email}, this email is Already registered. Try login.`);
         }
       })
@@ -119,23 +121,33 @@ export default class Signup extends Component {
     return (
       <View style={styles.login}>
         {renderIf(this.state.signupPage && !this.state.loginPage,
-        <View>
-        <Text style={styles.header}>Welcome to AR History Tour</Text>
+          <View>
+            <Text style={styles.header}>Welcome to AR History Tour</Text>
 
-        <TextInput style={styles.textinput} placeholder="   Email" onChangeText={(text) => this.setState({email: text})}/>
+            <TextInput
+              style={styles.textinput}
+              placeholder="   Email"
+              onChangeText={text => this.setState({ email: text })}
+            />
+            <TextInput style={styles.textinput} placeholder="   Password" secureTextEntry onChangeText={text => this.setState({ password: text })} />
 
-        <TextInput style={styles.textinput} placeholder="   Password" secureTextEntry={true} onChangeText={(text) => this.setState({password: text})} />
+            <TouchableOpacity
+              style={styles.signupbutton}
+              onPress={() => { this._signin(); }}
+            >
+              <Text style={styles.btntext}>Sign Up</Text>
+            </TouchableOpacity>
 
-        <TouchableOpacity style={styles.signupbutton} onPress={() => { this._signin() }}>
-          <Text style={styles.btntext}>Sign Up</Text>
-        </TouchableOpacity>
-
-          <Text style={styles.logintext} onPress={() => { this._loginPage(); }}>Login Here</Text>
-        </View>,)}
+            <Text style={styles.logintext} onPress={() => { this._loginPage(); }}>Login Here</Text>
+          </View>)}
         {renderIf(!this.state.signupPage && this.state.loginPage,
           <View>
-            <Login arView={this.props._arView} signup={this.props._signup} user={this.props.user}/>
-        </View>)}
+            <Login
+              arView={this.props._arView}
+              signup={this.props._signup}
+              user={this.props.user}
+            />
+          </View>)}
       </View>
     );
   }
