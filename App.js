@@ -253,7 +253,6 @@ export default class ViroSample extends Component {
   }
 
   _handleARSupported() {
-
   }
 
   _handleARNotSupported() {
@@ -337,7 +336,9 @@ export default class ViroSample extends Component {
   //   this.setState({
   //       // displayText: true,
   //       // text: 'hello'
-  //       viroAppProps:{...this.state.viroAppProps, displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName, objectSource:objArray[objIndex]},
+  //       viroAppProps:{...this.state.viroAppProps,
+  //  displayObject: true, yOffset: yOffset, displayObjectName: objUniqueName,
+  //  objectSource:objArray[objIndex]},
   //   });
   // }
   _onShowText(objIndex, objUniqueName, yOffset) {
@@ -358,7 +359,6 @@ export default class ViroSample extends Component {
   }
 
   _onSaveLocation(objIndex, objUniqueName, yOffset) {
-    const isSaved = 'Location Information Saved!';
     const notSaved = 'Sorry, We could\'nt Save the Information';
     let saveMessage;
 
@@ -388,13 +388,16 @@ export default class ViroSample extends Component {
           // objectSource:String(this.state.latitude) + String(this.state.longitude)},
         });
       })
-      .catch((error) => {
-        this.setState({ error });
+      .catch(() => {
         saveMessage = notSaved;
         const currentProps = { ...this.state.viroAppProps };
         this.setState({
           viroAppProps: {
-            ...currentProps, displayObject: true, yOffset, displayObjectName: objUniqueName, objectSource: saveMessage,
+            ...currentProps,
+            displayObject: true,
+            yOffset,
+            displayObjectName: objUniqueName,
+            objectSource: saveMessage,
           },
         });
       });
@@ -459,7 +462,6 @@ export default class ViroSample extends Component {
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-          error: null,
         });
         axios.get('http://ec2-54-152-18-28.compute-1.amazonaws.com/broad', {
           params: {
@@ -476,9 +478,9 @@ export default class ViroSample extends Component {
             }
             this.setState({ narrowData });
           })
-          .catch((error) => { this.setState({ error }); });
+          .catch((error) => { throw error; });
       },
-      error => this.setState({ error: error.message }),
+      (error) => { throw error; },
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
 
@@ -499,11 +501,23 @@ export default class ViroSample extends Component {
             <Signup _signup={this._signup} _logIn={this._logIn} user={user} />
           </View>)}
         {renderIf(this.state.mapView,
-          <Map user={user} showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
+          <Map
+            user={user} 
+            showMapView={this._showMapView}
+            lat={this.state.latitude}
+            long={this.state.longitude} />)}
 
         {renderIf(this.state.favMapView && this.state.isLoggedIn,
-          <FavoriteMap user={user} showFavMapView={this._showFavMapView} lat={this.state.latitude} long={this.state.longitude} />)}
-        {renderIf(this.state.posPhone && this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
+          <FavoriteMap
+            user={user}
+            showFavMapView={this._showFavMapView}
+            lat={this.state.latitude}
+            long={this.state.longitude} />)}
+        {renderIf(
+          this.state.posPhone
+          && this.state.isLoggedIn
+          && !this.state.mapView
+          && !this.state.favMapView,
           <View>
             <Text>
               Sorry your phone sucks! heres some data for you anyway
