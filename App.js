@@ -505,6 +505,7 @@ export default class ViroSample extends Component {
           <Map
             user={user}
             showMapView={this._showMapView}
+            showFavMapView={this._showFavMapView}
             lat={this.state.latitude}
             long={this.state.longitude}
           />)}
