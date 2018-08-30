@@ -503,6 +503,7 @@ export default class ViroSample extends Component {
           </View>)}
         {renderIf(this.state.mapView,
           <Map
+            _signup={this._signup}
             user={user}
             showMapView={this._showMapView}
             showFavMapView={this._showFavMapView}
