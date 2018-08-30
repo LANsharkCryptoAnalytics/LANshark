@@ -15,10 +15,10 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#59cbbd',
+    backgroundColor: '#ffee99',
   },
   btntext: {
-    color: '#fff',
+    color: '#333333',
     fontSize: 20,
     fontWeight: 'bold',
   },
@@ -46,10 +46,15 @@ export default class Map extends Component {
             geolocationEnabled
           />
         </View>
-        <View>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between' }}>
           <TouchableOpacity style={styles.button} onPress={() => { this.props.showMapView(); }}>
             <Text style={styles.btntext}>AR View</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={() => { this.props.showMapView(); }}>
+            <Text style={styles.btntext}>Fav Map</Text>
+          </TouchableOpacity>
+
         </View>
       </View>
     );

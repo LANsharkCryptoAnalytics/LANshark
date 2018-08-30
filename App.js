@@ -29,7 +29,7 @@ import Map from './js/Map';
 import FavoriteMap from './js/FavoriteMap';
 import renderIf from './js/helpers/renderIf';
 
-// console.disableYellowBox = true;
+console.disableYellowBox = true;
 
 const InitialARScene = require('./js/ARHist');
 
@@ -58,15 +58,14 @@ const localStyles = StyleSheet.create({
   button: {
     // alignSelf: 'stretch',
     alignItems: 'stretch',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#ffffff00',
-    padding: 20,
-    backgroundColor: '#59cbbd',
+    // borderWidth: 1,
+    borderColor: '#333333',
+    padding: 33,
+    backgroundColor: '#ffee99',
   },
   btntext: {
-    color: '#fff',
-    fontSize: 20,
+    color: '#333333',
+    fontSize: 16,
     fontWeight: 'bold',
   },
   buttons: {
@@ -375,8 +374,8 @@ export default class ViroSample extends Component {
       narrowWiki,
       wikiImage,
     })
-      .then(() => {
-        saveMessage = isSaved;
+      .then((res) => {
+        saveMessage = res.data;
         const currentProps = { ...this.state.viroAppProps };
         this.setState({
           viroAppProps: {
@@ -546,7 +545,7 @@ export default class ViroSample extends Component {
             </TouchableHighlight>
             <TouchableHighlight
               style={localStyles.buttons}
-              onPress={this._onDisplayDialog}
+              onPress={() => this._onShowText(0, dataCounter, 0)}
               underlayColor="#00000000"
             >
               <Image source={require('./js/res/MainBTTN.png')} />
@@ -559,23 +558,39 @@ export default class ViroSample extends Component {
               <Image source={require('./js/res/right-gold-arrow.png')} />
             </TouchableHighlight>
           </View>)}
-        <View style={{flexDirection: "row"}}>
-          <TouchableOpacity style={localStyles.button} >
-              <Text style={localStyles.btntext}>AR View</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={localStyles.button} >
-              <Text style={localStyles.btntext}>AR View</Text>
-          </TouchableOpacity>
 
-           <TouchableOpacity style={localStyles.button} >
-              <Text style={localStyles.btntext}>AR View</Text>
-          </TouchableOpacity>
+        {renderIf(!this.state.mapView && !this.state.favMapView,
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
 
-        </View>
+            <TouchableOpacity
+              style={localStyles.button} 
+              onPress={() => this._showMapView()}
+            >
+              <Text style={localStyles.btntext}>Map View</Text>
+            </TouchableOpacity>
 
+            <TouchableOpacity style={localStyles.button} onPress={() => this._onRemoveText()} >
+              <Text style={localStyles.btntext}>Next Location</Text>
+            </TouchableOpacity>
 
+            {renderIf(!this.state.isLoggedIn,
+              <TouchableOpacity style={localStyles.button} >
+                <Text
+                  style={localStyles.btntext}
+                  onPress={() => this._signup()}
+                >
+                Login
+                  </Text>
+              </TouchableOpacity>)}
 
+            {renderIf(this.state.isLoggedIn,
+              <TouchableOpacity
+                style={localStyles.button}
+                onPress={() => this._onSaveLocation(0, dataCounter, 0)}
+              >
+                <Text style={localStyles.btntext}>Save Location</Text>
+              </TouchableOpacity>)}
+          </View>)}
       </View>
     );
   }
