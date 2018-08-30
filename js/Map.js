@@ -1,4 +1,7 @@
 /* eslint-disable react/jsx-filename-extension */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/prop-types */
 
 import React, { Component } from 'react';
 import {
@@ -48,9 +51,9 @@ export default class Map extends Component {
             geolocationEnabled
           />
         </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <TouchableOpacity
-            style={styles.button} 
+            style={styles.button}
             onPress={() => { this.props.showMapView(); }}
           >
             <Text style={styles.btntext}>AR View</Text>
