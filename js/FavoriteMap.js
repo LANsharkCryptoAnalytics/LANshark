@@ -1,4 +1,4 @@
-//http://ec2-54-152-18-28.compute-1.amazonaws.com/getUserFavorites?id=${this.props.user.id}
+// http://ec2-54-152-18-28.compute-1.amazonaws.com/getUserFavorites?id=${this.props.user.id}
 
 import React, { Component } from 'react';
 import {
@@ -9,7 +9,8 @@ import {
   WebView,
 } from 'react-native';
 import axios from 'axios';
-var favs2 = '';
+
+let favs2 = '';
 export default class FavoriteMap extends Component {
   constructor(props) {
     super(props);
@@ -17,15 +18,14 @@ export default class FavoriteMap extends Component {
       favs: '',
 
     };
-    
   }
 
   componentDidMount() {
     axios.get(`http://ec2-54-152-18-28.compute-1.amazonaws.com/getUserFavorites?id=${this.props.user.id}`, {
 
     }).then((favorites) => {
-    favs2 = JSON.stringify(favorites.data);
-      this.setState(prevState => ({
+      favs2 = JSON.stringify(favorites.data);
+      this.setState(({
         favs: favorites.data,
       }));
     })
@@ -48,15 +48,13 @@ export default class FavoriteMap extends Component {
   // };
 
   render() {
-      
-    
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
           {this.state.favs !== '' ? (
-<WebView
-            source={{
-              html: `
+            <WebView
+              source={{
+                html: `
               <!DOCTYPE html>
 <html>
 <head>
@@ -105,16 +103,29 @@ var starIcon = new LeafIcon({
 })
 for( let i = 0; i < favs.length; i++){
   let imgSrc = '';
+  let name = '';
+  let wideLink = '';
+  let narrowLink = '';
+  let wideData = '';
+  let narrowData = '';
   if(favs[i].wikiImage){ 
   imgSrc = '<img src="'+favs[i].wikiImage+'" alt="Image" height="100%" width="100%">';
   }
-  let name = '';
-  if(favs[i].wide){
+  if(favs[i].wide){ 
   name = favs[i].wide.split(',');
+  name = name[0].slice(1).replace(/("|')/g, "");
+  wideData = '<div>'+favs[i].wide.slice(1).replace(/("|')/g, "").split(',').join(' ') +'</div>';
   }
-  name = name[0];
+  name = "Fav #"+ (i + 1) + " " + name;
+  if(favs[i].wideWiki){ 
+    wideLink = '<a href="'+favs[i].wideWiki+'">Neighborhood Info</a><br>'
+  }
+  if(favs[i].narrowWiki){ 
+    narrowLink = '<a href="'+favs[i].narrowWiki+'">POI Info</a><br>'
+  }
+  
   L.marker([favs[i].lat, favs[i].long], {icon: fIcon}).addTo(map)
-.bindPopup('<div><b>'+name+'</b></div><br>'+'<a href="'+favs[i].wideWiki+'">Link</a><br>' + imgSrc
+.bindPopup('<div><b>'+name+'</b></div><br>'+ wideLink+ imgSrc + narrowLink + wideData
 
 );
 
@@ -126,18 +137,18 @@ for( let i = 0; i < favs.length; i++){
 	map.on('click', onMapClick);
 </script>
 </body>`,
-            }}
-            style={{ flex: 1 }}
-            scalesPageToFit
-            onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest} // for iOS
-            onNavigationStateChange={this.onShouldStartLoadWithRequest}
-            domStorageEnabled
-          />
-)
-          :(
-            <View>
-              <Text>Loading</Text>
-            </View>
+              }}
+              style={{ flex: 1 }}
+              scalesPageToFit
+              onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest} // for iOS
+              onNavigationStateChange={this.onShouldStartLoadWithRequest}
+              domStorageEnabled
+            />
+          )
+            : (
+              <View>
+                <Text>Loading</Text>
+              </View>
             )}
         </View>
         <View>
