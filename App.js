@@ -33,7 +33,6 @@ console.disableYellowBox = true;
 
 const InitialARScene = require('./js/ARHist');
 
-
 const isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
 const textArray = 'A green hunting cap squeezed the top of the fleshy balloon of a head. The green earflaps, full of large ears and uncut hair and the fine bristles that grew in the ears themselves, stuck out on either side like turn signals indicating two directions at once. Full, pursed lips protruded beneath the bushy black moustache and, at their corners, sank into little folds filled with disapproval and potato chip crumbs. In the shadow under the green visor of the cap Ignatius J. Reilly’s supercilious blue and yellow eyes looked down upon the other people waiting under the clock at the D. H. Holmes department store, studying the crowd of people for signs of bad taste and dress. Several of the outfits, Ignatius noticed, were new enough and expensive enough to be properly considered offenses against taste and decency. Possession of anything new or expensive only reflected a person’s lack of theology and geometry; it could even cast doubts upon one’s soul.'.split('.');
 const textArray2 = 'cha cha changes, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.');
@@ -136,7 +135,6 @@ export default class ViroSample extends Component {
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-          error: null,
         });
         axios.get('http://ec2-54-152-18-28.compute-1.amazonaws.com/neighborhood', {
           params: {
@@ -150,7 +148,7 @@ export default class ViroSample extends Component {
             dataLength = generalData.length - 1;
             this.setState({ generalData });
           })
-          .catch(error => this.setState({ error }));
+          .catch((error) => { throw error; });
       },
       error => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
@@ -160,7 +158,6 @@ export default class ViroSample extends Component {
         this.setState({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
-          error: null,
         });
         axios.get('http://ec2-54-152-18-28.compute-1.amazonaws.com/broad', {
           params: {
@@ -177,9 +174,9 @@ export default class ViroSample extends Component {
             }
             this.setState({ narrowData });
           })
-          .catch((error) => { this.setState({ error }); });
+          .catch((error) => { throw error; });
       },
-      error => this.setState({ error: error.message }),
+      (error) => { throw error; },
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
 
@@ -206,55 +203,13 @@ export default class ViroSample extends Component {
       viroAppProps: {
         displayObject: false, objectSource: null, yOffset: 0, _onLoadEnd: this._onLoadEnd, _onLoadStart: this._onLoadStart, _onTrackingInit: this._onTrackingInit,
       },
-      trackingInitialized: false,
       isLoading: false,
       posComp: true,
       latitude: '29.97616921',
       longitude: '-90.0764381',
-      success: null,
-      error: null,
       generalData: textArray,
-<<<<<<< HEAD
-      phonePos: false,
-    }
-  }
-
-  render() {
-    return (
-      <View style={localStyles.outer} >
-      {renderIf(this.state.phonePos,
-        <View>
-        <Text>Sorry your phone sucks! heres some data for you anyway{this.state.generalData[dataCounter]}</Text>
-      </View>
-      )}
-       {renderIf(this.state.posComp && !this.state.phonePos,
-        <ViroARSceneNavigator style={localStyles.arView} apiKey={viroKey}
-          initialScene={{scene:InitialARScene, passProps:{displayObject:this.state.displayObject}}} ref="scene" viroAppProps={this.state.viroAppProps}
-        />
-       )}
-
-        {this._renderTrackingText()}
-
-        {renderIf(this.state.isLoading,
-          <View style={{position:'absolute', left:0, right:0, top:0, bottom:0,  justifyContent:'center'}}>
-            <ActivityIndicator size='large' animating={this.state.isLoading} color='#ffffff'/>
-          </View>)
-        }
-
-        <View style={{position: 'absolute',  left: 0, right: 0, bottom: 77, alignItems: 'center', justifyContent: 'space-between',}}>
-          <TouchableHighlight style={localStyles.buttons}
-            onPress={this._onDisplayDialog}
-            underlayColor={'#00000000'} >
-            <Image source={require("./js/res/MainBTTN.png")} />
-          </TouchableHighlight>
-        </View>
-      </View>
-    );
-  }
-=======
       posPhone: false,
       narrowData: textArray2,
-      dataStore: null,
       isLoggedIn: false,
       nonUser: true,
       mapView: false,
@@ -264,7 +219,6 @@ export default class ViroSample extends Component {
   }
 
 
->>>>>>> 4fc54c2e149f843e2c2980c37058bf08280315de
   componentDidMount() {
     isARSupportedOnDevice(this._handleARNotSupported, this._handleARSupported);
   }
@@ -299,13 +253,8 @@ export default class ViroSample extends Component {
 
   _handleARNotSupported() {
     this.setState({
-<<<<<<< HEAD
-      phonePos: true
-    })
-=======
       posPhone: true,
     });
->>>>>>> 4fc54c2e149f843e2c2980c37058bf08280315de
   }
 
   // Invoked when a model has started to load, we show a loading indictator.
