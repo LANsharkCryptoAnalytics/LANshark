@@ -51,7 +51,7 @@ export default class Map extends Component {
             <Text style={styles.btntext}>AR View</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.button} onPress={() => { this.props.showFavMapView(); }}>
+          <TouchableOpacity style={styles.button} onPress={() => { this.props.showMapView(); }}>
             <Text style={styles.btntext}>Fav Map</Text>
           </TouchableOpacity>
 
