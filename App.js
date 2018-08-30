@@ -615,10 +615,9 @@ export default class ViroSample extends Component {
             </TouchableOpacity>
 
             {renderIf(!this.state.isLoggedIn,
-              <TouchableOpacity style={localStyles.button}>
+              <TouchableOpacity style={localStyles.button} onPress={() => this._signup()}> 
                 <Text
                   style={localStyles.btntext}
-                  onPress={() => this._signup()}
                 >
                 Login
                 </Text>
