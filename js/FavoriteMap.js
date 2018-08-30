@@ -9,6 +9,22 @@ import {
 import axios from 'axios';
 
 
+var styles = StyleSheet.create({
+
+  button: {
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#59cbbd',
+  },
+  btntext: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
+
+
 export default class FavoriteMap extends Component {
   constructor(props) {
     super(props);
@@ -158,18 +174,3 @@ for( let i = 0; i < favs.length; i++){
     );
   }
 }
-
-var styles = StyleSheet.create({
-
-  button: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#59cbbd',
-  },
-  btntext: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-});
