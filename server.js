@@ -4,7 +4,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const hnocSearch = require('./hnocSearch.js');
 const helpers = require('./helpers.js');
-const dbHelpers = require('./database-mySql/dbHelpers').default;
+const dbHelpers = require('./database-mySql/dbHelpers');
 const db = require('./database-mySql/index.js');
 require('dotenv').config();
 
