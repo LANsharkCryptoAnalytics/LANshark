@@ -217,11 +217,11 @@ app.post('/addToFavorites', (req, res) => {
 });
 
 app.get('/getUserFavorites', (req, res) => {
+
   console.log('get all user favorites ');
   // console.log(req.query);
-  helpers.getAllUserFavorites(req.query.user)
+  helpers.getAllUserFavorites(req.query)
     .then((favorites) => {
-      console.log('server.js', favorites);
       res.send(favorites);
     })
     .catch((error) => {
