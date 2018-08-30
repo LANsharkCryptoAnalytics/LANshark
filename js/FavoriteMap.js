@@ -25,10 +25,8 @@ export default class FavoriteMap extends Component {
 
     }).then((favorites) => {
     favs2 = JSON.stringify(favorites.data);
-      console.warn(favorites.data);
       this.setState(prevState => ({
         favs: favorites.data,
-        
       }));
     })
       .catch((error) => { throw error; });
@@ -50,7 +48,7 @@ export default class FavoriteMap extends Component {
   // };
 
   render() {
-
+      
     
     return (
       <View style={{ flex: 1 }}>
@@ -106,8 +104,17 @@ var starIcon = new LeafIcon({
   iconUrl: 'https://www.shareicon.net/download/2017/05/09/885829_star_512x512.png',
 })
 for( let i = 0; i < favs.length; i++){
+  let imgSrc = '';
+  if(favs[i].wikiImage){ 
+  imgSrc = '<img src="'+favs[i].wikiImage+'" alt="Image" height="100%" width="100%">';
+  }
+  let name = '';
+  if(favs[i].wide){
+  name = favs[i].wide.split(',');
+  }
+  name = name[0];
   L.marker([favs[i].lat, favs[i].long], {icon: fIcon}).addTo(map)
-.bindPopup('<div><b>'+favs[i].title+'</b></div><br>'+'<a href="'+favs[i].narrowwiki+'">Link</a><br>' + '<img src="http://commons.wikimedia.org/wiki/Special:FilePath/Jazzfest07FairgroundGrandstand55.jpg" alt="Image" height="100%" width="100%">'
+.bindPopup('<div><b>'+name+'</b></div><br>'+'<a href="'+favs[i].wideWiki+'">Link</a><br>' + imgSrc
 
 );
 
