@@ -39,7 +39,7 @@
     "react-native": "0.55.1",
     "react-native-elements": "^0.19.1",
     "react-native-vector-icons": "^5.0.0",
-    "react-viro": "2.9.0",
+    "react-viro": "2.10.0",
     "scrape": "^0.2.3",
     "scrape-it": "^5.0.5",
     "sequelize": "^4.38.0"
