@@ -9,7 +9,6 @@ test('findUserLogin', () => {
   };
   const spy = jest.spyOn(db, 'findUserLogin');
   db.findUserLogin(user);
-  let user = db.findUserLogin
   expect(db.findUserLogin).toHaveBeenCalled();
 });
 // Test to see if findUserLogin is accurate
@@ -19,7 +18,7 @@ test('findUserLogin', () => {
   };
   const spy = jest.spyOn(db, 'findUserLogin');
   db.findUserLogin(user);
-  expect(db.findUserLogin.email).toMatch(/me@me.com/);
+  expect(retrievedUser.email).toMatch(/me@me.com/);
 });
 
 // strings tested with regex 
