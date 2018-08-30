@@ -27,12 +27,10 @@ const styles = StyleSheet.create({
   },
   textinput: {
     backgroundColor: 'white',
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: 'black',
+    fontSize: 22,
     alignSelf: 'stretch',
-    height: 60,
-    marginBottom: 0,
+    height: 53,
+    marginBottom: 20,
     borderBottomColor: '#f8f8f8',
     borderBottomWidth: 1,
   },
@@ -123,7 +121,7 @@ export default class Login extends Component {
             <Text style={styles.btntext}>Login</Text>
           </TouchableOpacity>
 
-          <Text style={styles.signuptext} onPress={() => { this._signup() }}>Sign Up</Text>
+          <Text style={styles.signuptext} onPress={() => { this._signup() }}>Sign Up Here</Text>
         </View>)}
 
         {renderIf(this.state.signupPage,

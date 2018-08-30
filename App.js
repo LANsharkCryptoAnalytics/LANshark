@@ -499,7 +499,7 @@ export default class ViroSample extends Component {
       <View style={localStyles.outer}>
         {renderIf(!this.state.mapView && this.state.signupView,
           <View style={styles.login}>
-            <Signup _signup={this._signup} arView={this._arView} user={user} />
+            <Signup _signup={this._signup} _arView={this._arView} user={user} />
           </View>)}
         {renderIf(this.state.mapView,
           <Map user={user} showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}

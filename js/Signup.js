@@ -27,11 +27,9 @@ const styles = StyleSheet.create({
   },
   textinput: {
     backgroundColor: 'white',
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: 'black',
+    fontSize: 22,
     alignSelf: 'stretch',
-    height: 50,
+    height: 53,
     marginBottom: 20,
     borderBottomColor: '#f8f8f8',
     borderBottomWidth: 1,
@@ -73,7 +71,6 @@ export default class Signup extends Component {
     this._loginPage = this._loginPage.bind(this);
     this._signup = this._signup.bind(this);
     this._signin = this._signin.bind(this);
-    // this._login = this._login.bind(this);
   }
 
 
@@ -91,9 +88,9 @@ export default class Signup extends Component {
     });
   }
 
-  _login() {
-    const testServer = 'http://172.24.6.45:8200/login';
-    const deployedServer = 'http://ec2-54-152-18-28.compute-1.amazonaws.com/login';
+  _signin() {
+    const deployedServer = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/signup';
+
     axios({
       method: 'post',
       url: deployedServer,
@@ -103,41 +100,13 @@ export default class Signup extends Component {
       },
     })
       .then((response) => {
-        console.warn(response.data);
-        if (response.data.success === 'true') {
-          this.props.user.id = response.data.user.id;
-          console.warn(this.props.user.id);
-          this.props.arView();
-        } else if (response.data === 'Password is incorrect') {
-          alert(`Sorry ${this.state.email}, The Password You Entered Is Incorrect.`);
-        } else {
-          alert(`Sorry, ${this.state.email} Is An Incorrect Email`);
+        if (typeof response.data === 'object') {
+          this.props.user.id = response.data.id;
+          this.props._arView();
+        } else if (response.data === 'User not created') {
+          alert(`Sorry ${this.state.email}, something went wrong. Please try again.`);
         }
-      })
-      .catch((error) => {
-        throw error;
-      });
-  }
-
-
-  _signin() {
-    // const deployedServer = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/signup';
-    const testServer = 'http://172.24.6.45:8200/signup';
-
-    axios({
-      method: 'post',
-      url: testServer,
-      data: {
-        email: this.state.email,
-        password: this.state.password,
-      },
-    })
-      .then((response) => {
-        console.warn('this.signup()  ', response.data);
-        if (response.data === true) {
-          console.warn('inside of true if block of _signup');
-          this._login();
-        } else {
+        else {
           alert(`Sorry ${this.state.email}, this email is Already registered. Try login.`);
         }
       })

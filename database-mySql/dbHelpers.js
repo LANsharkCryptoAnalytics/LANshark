@@ -22,36 +22,36 @@ const comparePassword = (password, hash, callback) => {
   });
 };
 
-const findUserSignup = userInfo => User.findOne({
+const canUserSignup = userInfo => User.findOne({
   where: {
     email: userInfo.email,
   },
 })
   .then((user) => {
     if (user === null) {
-      return user;
+      return 'true';
     }
     return 'false';
   })
   .catch((err) => { throw err; });
 
-const hashPassword = (userInfo) => {
+const hashPassword = (userInfo, callback) => {
   bcrypt.genSalt(10, (err, salt) => {
     bcrypt.hash(userInfo.password, salt, (error, hash) => {
       // Store hash in your password DB.
       if (error) {
         throw error;
       }
-      User.create({
+      return User.create({
         username: userInfo.username,
         email: userInfo.email,
         password: hash,
       })
-        .then((response) => {
-          console.log('dbHelpers - 0000000000000000000000000', response);
-          return response.dataValues;
+        .then((user) => {
+          console.log('dbHelpers - 0000000000000000000000000', user);
+          callback(null, user);
         })
-        .catch((errorr) => { throw errorr; });
+        .catch((errorr) => { callback(errorr); });
     });
   });
 };
@@ -114,7 +114,7 @@ module.exports = {
   comparePassword,
   hashPassword,
   findUserLogin,
-  findUserSignup,
+  canUserSignup,
   addToUserFavorites,
   createVcs,
   findUserFavorites,
