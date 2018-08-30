@@ -1,4 +1,4 @@
-//http://ec2-54-152-18-28.compute-1.amazonaws.com/getUserFavorites=${this.props.user.id}
+//http://ec2-54-152-18-28.compute-1.amazonaws.com/getUserFavorites?id=${this.props.user.id}
 
 import React, { Component } from 'react';
 import {
@@ -17,21 +17,21 @@ export default class FavoriteMap extends Component {
       favs: '',
 
     };
-    axios.get(`http://192.168.0.12:8200/getUserFavorites=${this.props.user.id}`, {
+    
+  }
+
+  componentDidMount() {
+    axios.get(`http://172.24.7.173:8200/getUserFavorites?id=${this.props.user.id}`, {
 
     }).then((favorites) => {
     favs2 = JSON.stringify(favorites.data);
-
+      console.warn(favorites.data);
       this.setState(prevState => ({
         favs: favorites.data,
         
       }));
     })
       .catch((error) => { throw error; });
-  }
-
-  componentDidMount() {
-    
   }
 
 
@@ -110,7 +110,7 @@ for( let i = 0; i < favs.length; i++){
 .bindPopup('<div><b>'+favs[i].title+'</b></div><br>'+'<a href="'+favs[i].narrowwiki+'">Link</a><br>' + '<img src="http://commons.wikimedia.org/wiki/Special:FilePath/Jazzfest07FairgroundGrandstand55.jpg" alt="Image" height="100%" width="100%">'
 
 );
-}
+
 }
     
 	L.marker([${String(this.props.lat).slice(0, 9)}, ${String(this.props.long).slice(0, 10)}], {icon: starIcon}).addTo(map)
