@@ -8,6 +8,8 @@ import {
   View,
   WebView,
 } from 'react-native';
+import renderIf from './helpers/renderIf';
+
 
 const styles = StyleSheet.create({
 
@@ -50,10 +52,19 @@ export default class Map extends Component {
           <TouchableOpacity style={styles.button} onPress={() => { this.props.showMapView(); }}>
             <Text style={styles.btntext}>AR View</Text>
           </TouchableOpacity>
+          {renderIf(this.props.user.id !== null,
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => { this.props.showFavMapView(); }}>
+              <Text style={styles.btntext}>Fav Map</Text>
+            </TouchableOpacity>)}
 
-          <TouchableOpacity style={styles.button} onPress={() => { this.props.showFavMapView(); }}>
-            <Text style={styles.btntext}>Fav Map</Text>
-          </TouchableOpacity>
+          {renderIf(this.props.user.id === null,
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => { this.props._signup(); }}>
+              <Text style={styles.btntext}>Login</Text>
+            </TouchableOpacity>)}
 
         </View>
       </View>
