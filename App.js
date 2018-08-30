@@ -150,7 +150,7 @@ export default class ViroSample extends Component {
           })
           .catch((error) => { throw error; });
       },
-      error => this.setState({ error: error.message }),
+      (error) => { throw error; },
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
     );
     navigator.geolocation.getCurrentPosition(
@@ -201,7 +201,12 @@ export default class ViroSample extends Component {
 
     this.state = {
       viroAppProps: {
-        displayObject: false, objectSource: null, yOffset: 0, _onLoadEnd: this._onLoadEnd, _onLoadStart: this._onLoadStart, _onTrackingInit: this._onTrackingInit,
+        displayObject: false,
+        objectSource: null,
+        yOffset: 0,
+        _onLoadEnd: this._onLoadEnd,
+        _onLoadStart: this._onLoadStart,
+        _onTrackingInit: this._onTrackingInit,
       },
       isLoading: false,
       posComp: true,
@@ -553,27 +558,27 @@ export default class ViroSample extends Component {
           </View>)}
 
         {renderIf(!this.state.mapView && !this.state.favMapView,
-          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
 
             <TouchableOpacity
-              style={localStyles.button} 
+              style={localStyles.button}
               onPress={() => this._showMapView()}
             >
               <Text style={localStyles.btntext}>Map View</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={localStyles.button} onPress={() => this._onRemoveText()} >
+            <TouchableOpacity style={localStyles.button} onPress={() => this._onRemoveText()}>
               <Text style={localStyles.btntext}>Next Location</Text>
             </TouchableOpacity>
 
             {renderIf(!this.state.isLoggedIn,
-              <TouchableOpacity style={localStyles.button} >
+              <TouchableOpacity style={localStyles.button}>
                 <Text
                   style={localStyles.btntext}
                   onPress={() => this._signup()}
                 >
                 Login
-                  </Text>
+                </Text>
               </TouchableOpacity>)}
 
             {renderIf(this.state.isLoggedIn,
