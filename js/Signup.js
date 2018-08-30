@@ -1,5 +1,7 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable no-underscore-dangle */
+/* eslint-disable import/no-cycle */
+/* eslint-disable no-alert */
+/* eslint-disable no-undef */
+
 
 import React, { Component } from 'react';
 import {
