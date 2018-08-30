@@ -1,10 +1,5 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable react/destructuring-assignment */
 /* eslint-disable prefer-destructuring */
-/* eslint-disable global-require */
 /* eslint-disable react/no-string-refs */
-/* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
 
 
