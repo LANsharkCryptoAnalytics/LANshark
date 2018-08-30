@@ -1,9 +1,3 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable react/destructuring-assignment */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react/prop-types */
-
-
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -13,6 +7,8 @@ import {
   WebView,
 } from 'react-native';
 import axios from 'axios';
+
+let favs2 = '';
 
 const styles = StyleSheet.create({
   button: {
@@ -28,18 +24,22 @@ const styles = StyleSheet.create({
   },
 });
 
-let favs2 = '';
-
 export default class FavoriteMap extends Component {
-  // constructor(props) {
-  //   super(props);
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      favs: '',
+    };
+  }
 
   componentDidMount() {
     axios.get(`http://ec2-54-152-18-28.compute-1.amazonaws.com/getUserFavorites?id=${this.props.user.id}`, {
 
     }).then((favorites) => {
       favs2 = JSON.stringify(favorites.data);
+      this.setState(({
+        favs: favorites.data,
+      }));
     })
       .catch((error) => { throw error; });
   }
@@ -63,7 +63,7 @@ export default class FavoriteMap extends Component {
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          {favs2 !== '' ? (
+          {this.state.favs !== '' ? (
             <WebView
               source={{
                 html: `
@@ -114,8 +114,33 @@ var starIcon = new LeafIcon({
   iconUrl: 'https://www.shareicon.net/download/2017/05/09/885829_star_512x512.png',
 })
 for( let i = 0; i < favs.length; i++){
+  let imgSrc = '';
+  let name = '';
+  let narrowName = '';
+  let wideLink = '';
+  let narrowLink = '';
+  let wideData = '';
+  let narrowData = '';
+  if(favs[i].wikiImage){ 
+  imgSrc = '<img src="'+favs[i].wikiImage+'" alt="Image" height="100%" width="100%">';
+  }if(favs[i].wide){ 
+  name = favs[i].wide.split(',');
+  name = name[0].slice(1).replace(/("|')/g, "");
+  wideData = favs[i].wide.slice(1, -1).replace(/("|')/g, "").split(',').slice(1).join(' ') +'<br>';
+  }if(favs[i].narrow){ 
+    narrowName = favs[i].narrow.split(',');
+    narrowName = '<b>'+narrowName[0].slice(1).replace(/("|')/g, "")+'</b>';
+    narrowData = '<div>'+favs[i].narrow.slice(1, -1).replace(/("|')/g, "").split(',').slice(1).join(' ') +'</div>';
+    } if(wideData === narrowData) { narrowData = ''; }
+  name = "Fav #"+ (i + 1) + " " + name;
+  if(favs[i].wideWiki){ 
+    wideLink = '<a href="'+favs[i].wideWiki+'">Neighborhood Info</a><br>'
+  }if(favs[i].narrowWiki){ 
+    narrowLink = '<a href="'+favs[i].narrowWiki+'">POI Info</a><br>'
+  }
+  
   L.marker([favs[i].lat, favs[i].long], {icon: fIcon}).addTo(map)
-.bindPopup('<div><b>'+favs[i].title+'</b></div><br>'+'<a href="'+favs[i].narrowwiki+'">Link</a><br>' + '<img src="http://commons.wikimedia.org/wiki/Special:FilePath/Jazzfest07FairgroundGrandstand55.jpg" alt="Image" height="100%" width="100%">'
+.bindPopup('<b>'+name+'</b><br>'+ wideData + wideLink+ imgSrc + narrowName+narrowData + narrowLink
 
 );
 
