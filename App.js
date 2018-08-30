@@ -4,6 +4,9 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable global-require */
 /* eslint-disable react/no-string-refs */
+/* eslint-disable react/prop-types */
+/* eslint-disable no-undef */
+
 
 import React, { Component } from 'react';
 import {

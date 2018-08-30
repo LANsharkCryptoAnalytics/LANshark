@@ -1,3 +1,15 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-disable react/destructuring-assignment */
+/* eslint-disable prefer-destructuring */
+/* eslint-disable global-require */
+/* eslint-disable react/no-string-refs */
+/* eslint-disable react/prop-types */
+/* eslint-disable import/no-cycle */
+/* eslint-disable no-alert */
+/* eslint-disable no-undef */
+
+
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -109,19 +121,19 @@ export default class Login extends Component {
     return (
       <View style={styles.login}>
         {renderIf(this.state.loginPage,
-        <View>
-          <Text style={styles.header}>Welcome to AR History Tour</Text>
+          <View>
+            <Text style={styles.header}>Welcome to AR History Tour</Text>
 
-          <TextInput style={styles.textinput} placeholder="   Email" onChangeText={(text) => this.setState({email: text})}/>
+            <TextInput style={styles.textinput} placeholder="   Email" onChangeText={text => this.setState({ email: text })} />
 
-          <TextInput style={styles.textinput} secureTextEntry={true} placeholder="   Password" onChangeText={(text) => this.setState({password: text})} />
+            <TextInput style={styles.textinput} secureTextEntry placeholder="   Password" onChangeText={text => this.setState({ password: text })} />
 
-          <TouchableOpacity style={styles.button} onPress={() => { this._submit() }}>
-            <Text style={styles.btntext}>Login</Text>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => { this._submit(); }}>
+              <Text style={styles.btntext}>Login</Text>
+            </TouchableOpacity>
 
-          <Text style={styles.signuptext} onPress={() => { this._signup() }}>Sign Up Here</Text>
-        </View>)}
+            <Text style={styles.signuptext} onPress={() => { this._signup(); }}>Sign Up Here</Text>
+          </View>)}
 
         {renderIf(this.state.signupPage,
           <View>
@@ -129,6 +141,6 @@ export default class Login extends Component {
           </View>)}
 
       </View>
-    )
+    );
   }
 }
