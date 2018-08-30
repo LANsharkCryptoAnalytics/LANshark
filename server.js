@@ -1,13 +1,16 @@
+let passport = require('passport'),
+LocalStrategy = require('passport-local').Strategy;
 const express = require('express');
-// TODO: axios isn't used on this page
-const axios = require('axios');
 const bodyParser = require('body-parser');
 const hnocSearch = require('./hnocSearch.js');
 const helpers = require('./helpers.js');
+const dbHelpers = require('./database-mySql/dbHelpers');
 const db = require('./database-mySql/index.js');
 require('dotenv').config();
 
-const app = express(); // (2)
+const app = express();
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false,
@@ -17,160 +20,207 @@ app.get('/', (req, res) => {
   res.send('LANSHARK');
 });
 
-
 app.get('/vcs', (req, res) => {
-  console.log('vcs endoint hit');
-
+  console.log('vcs endpoint hit');
   res.send('vcs endpoint');
 });
 
+/**
+ *  Endpoint for retrieving neighborhood information about the users current location
+ */
 app.get('/neighborhood', (req, res) => {
-  // 29.975651,-90.076858
-  // 29.9666281,-90.0914401
+  // '29.975651''-90.076858'
+  // '29.966628','-90.091440'
   // 40.747214,-74.007082
   // 29.928714, -90.001709
   // 29.976169,-90.076438
-  // req.query.latitude.slice(0,9), req.query.longitude.slice(0,10), req.query.i
-  
-  // the current index in the neighborhoods array
-  let i = req.query.i ? req.query.i : 0;
-  const lat = req.query.latitude.slice(0, 9);
-  const long = req.query.longitude.slice(0, 10);
-
-  helpers.getNeighborhood(lat, long)
-    .then(body => body.json())
-    .then((json) => {
-      const neighborhoods = helpers.formatNeighborhoodData(json).filter((n) => n.type === 'neighborhood');
-
-      if (i > neighborhoods.length) {
-        i -= neighborhoods.length;
-      }
-      if (neighborhoods.length) {
-        // TODO: these variables aren't used anywhere
-        if (neighborhoods[i].coord) {
-          const long = neighborhoods[i].coord.split(' ')[0];
-          const lat = neighborhoods[i].coord.split(' ')[1];
-        }
-        // get the full page for the current neighborhood
-        helpers.getFullPage(`${neighborhoods[i].title},_New_Orleans`)
-          .then(({ data, response }) => {
-            const results = helpers.formatResults(data.paragraph);
-
-            if (data.paragraph.length > 100) {
-              res.send(results);
-            } else {
-              helpers.getFullPage(neighborhoods[i].title)
-                .then(({ data }) => {
-                  const results = helpers.formatResults(data.paragraph);
-                  if (data.paragraph.length < 100) {
-                    helpers.getPOINarrow(lat, long)
-                      .then((stuff) => {
-                        const results = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ''));
-                        res.send(results);
-                      }).catch((error) => { console.log(error); });
-                  } else {
-                    res.send(results);
-                  }
-                }).catch((error) => { console.log(error); });
-            }
-          }).catch((error) => { console.log(error); });
-      } else {
-        res.send(helpers.formatNeighborhoodData(json)[i].title);
-      }
-    })
-    .catch((error) => { console.log(error); });
-});
-
-// Endpoint for retrieving broad based information about the users current location
-app.get('/broad', (req, res) => {
-  // TODO: please add addittional comments for readability and to facilitate testing
-  // and so that we can all understand the algorithm
-  // req.query.i represents what?
-  let i = req.query.i ? req.query.i : 0;
-  const lat = req.query.latitude.slice(0, 9);
-  const long = req.query.longitude.slice(0, 10);
-
+  // req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)
+  const i = 0;
+  let lat = req.query.latitude.slice(0, 9);
+  let long = req.query.longitude.slice(0, 10);
   helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
-    let neighborhoods = helpers.formatNeighborhoodData(json);
-    // filter out the neighborhood results?
-    if (i > 0) {
-      // what does this function do, produce a list of neighborhoods as json?
-      // or return a list of non neighborhoods?
-      neighborhoods = helpers.formatNeighborhoodData(json).filter((n) => n.type !== 'neighborhood');
-    }
-    // TODO: What is i?
-    if (i > neighborhoods.length) {
-      i -= neighborhoods.length;
-    }
-    // if neighborhoods have length ?
-    if (neighborhoods.length) {
+    // find the neighborhoods
+    const neighborhoods = helpers.formatNeighborhoodData(json).filter(placeNearby => placeNearby.type === 'neighborhood');
+    if (!neighborhoods) { res.send({ content: 'sorry there are no results in your area' }); }
+    if (neighborhoods) {
       if (neighborhoods[i].coord) {
-        // TODO: I don't believe these variable are being used anywhere
-        const long = neighborhoods[i].coord.split(' ')[0];
-        const lat = neighborhoods[i].coord.split(' ')[1];
+        long = neighborhoods[i].coord.split(' ')[0];
+        lat = neighborhoods[i].coord.split(' ')[1];
       }
-      // get the full page for the current neighborhood
-      helpers.getFullPage(`${neighborhoods[i].title},_New_Orleans`)
+      // set the city
+      const city = '_New_Orleans';
+      // filter out empty types
+      const descs = neighborhoods[i].type === '' ? [neighborhoods[i].title] : [neighborhoods[i].title, neighborhoods[i].type];
+      const city2 = city.replace(/_/g, ' ').trim();
+      // get the full page for the current neighborhood in current city
+      helpers.getFullPage(`${neighborhoods[i].title},${city}`)
         .then(({ data }) => {
-          // Format the results using formatREsults function
-          const results = helpers.formatResults(data.paragraph);
-          // if paragraph is greater than 100 chars send results?
-          if (data.paragraph.length > 100) {
-            res.send(results);
-          } else {
-            // else get full page data for ?neighborhoods i?
+          const resultsNO = helpers.formatResults(data.paragraph);
+          // check for short results and only results in current city
+          if (resultsNO.join().length > 50 && resultsNO.join().includes(city2)) {
+            neighborhoods[i].content = descs.concat(resultsNO);
+            res.send(neighborhoods[i]);
+          } else { // search for the wikipedia article with the name without appended city
             helpers.getFullPage(neighborhoods[i].title)
               .then(({ data }) => {
                 const results = helpers.formatResults(data.paragraph);
-                // if paragraph is less than 100 chars get narrow info???
-                if (data.paragraph.length < 100) {
+                // check for short results and only results in current city
+                if (results.join().length > 50 && results.join().includes(city2)) {
+                  neighborhoods[i].content = descs.concat(results);
+                  res.send(neighborhoods[i]);
+                } else {
+                  // search for wikipedia article using generator search
                   helpers.getPOINarrow(lat, long)
                     .then((stuff) => {
-                      const results = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ''));
-                      res.send(results);
-                    }).catch((error) => { console.log(error); });
-                } else { res.send(results); }
-              }).catch((error) => { console.log(error); });
+                      const resultsPOI = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ''));
+                      if (resultsPOI.includes(neighborhoods[i].title)) {
+                        neighborhoods[i].content = descs.concat(resultsPOI);
+                      } else { neighborhoods[i].content = descs; }
+                      res.send(neighborhoods[i]);
+                    }).catch((error) => { throw error; });
+                }
+              });
           }
-        }).catch((error) => { console.log(error); });
-    } else {
-      res.send(helpers.formatNeighborhoodData(json)[i].title);
+        }).catch((error) => { throw error; });
     }
-  }).catch((error) => { console.log(error); });
+  }).catch((error) => { throw error; });
+});
+
+/**
+ *  Endpoint for retrieving broad information about the users current location
+ */
+app.get('/broad', (req, res) => {
+  // req.query.i the current index passed from the client
+  // req.query.latitude, req.query.longitude
+  // '29.97616921','-90.0764381'
+  const i = req.query.i ? req.query.i : 0;
+  // 29.976169,-90.076438
+  // 29.928714, -90.001709
+  let lat = req.query.latitude.slice(0, 9);
+  let long = req.query.longitude.slice(0, 10);
+  helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
+    // find the places nearby that aren't neighborhoods
+    const placesNearby = helpers.formatNeighborhoodData(json).filter(place => (place.type !== 'neighborhood' && place.type !== 'unincorporated community'));
+    placesNearby.forEach((_place, i) => {
+      if (placesNearby[i + 1]) {
+        if (placesNearby[i].title === placesNearby[i + 1].title) {
+          placesNearby.splice(i + 1, 1);
+        }
+      }
+    });
+    if (!placesNearby) { res.send({ content: 'sorry there are no results in your area' }); }
+    if (placesNearby) {
+      if (placesNearby[i].coord) {
+        long = placesNearby[i].coord.split(' ')[0];
+        lat = placesNearby[i].coord.split(' ')[1];
+      }
+      // set the city
+      const city = '_New_Orleans';
+      // filter out empty types
+      const descs = placesNearby[i].type === '' ? [placesNearby[i].title] : [placesNearby[i].title, placesNearby[i].type];
+      const city2 = city.replace(/_/g, ' ').trim();
+      // get the full page for the current place in current city
+      helpers.getFullPage(`${placesNearby[i].title},${city}`)
+        .then(({ data }) => {
+          const resultsNO = helpers.formatResults(data.paragraph);
+          // check for short results and only results in current city
+          if (resultsNO.join().length > 50 && resultsNO.join().includes(city2)) {
+            placesNearby[i].content = descs.concat(resultsNO);
+            res.send(placesNearby[i]);
+          } else { // search for the wikipedia article with the name without appended city
+            helpers.getFullPage(placesNearby[i].title)
+              .then(({ data }) => {
+                const results = helpers.formatResults(data.paragraph);
+                // check for short reaults and only results in current city
+                if (results.join().length > 50 && results.join().includes(city2)) {
+                  placesNearby[i].content = descs.concat(results);
+                  res.send(placesNearby[i]);
+                } else {
+                  // search for wikipedia article using generator search
+                  helpers.getPOINarrow(lat, long)
+                    .then((stuff) => {
+                      const resultsPOI = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ''));
+                      if (resultsPOI.includes(placesNearby[i].title)) {
+                        placesNearby[i].content = descs.concat(resultsPOI);
+                      } else { placesNearby[i].content = descs; }
+                      res.send(placesNearby[i]);
+                    }).catch((error) => { throw error; });
+                }
+              });
+          }
+        }).catch((error) => { throw error; });
+    }
+  }).catch((error) => { throw error; });
 });
 
 // LOGIN RELATED INFORMATION
 
-app.get('/isLoggedIn', (req, res) => {
-  res.send('hitting server!!!!');
-});
-
 app.post('/login', (req, res) => {
-  console.log('server post login endpoint');
-  console.log(req.body, 'rrreeeqqqq......bbbbooooddddyyyy');
-  // helpers.loginUser(req, res);
-  // helpers.createUser(req, res);
-  res.send(req.body);
-
-  // res.send('logged in');
+  const userInfo = req.body;
+  const password = req.body.password;
+  const success = 'true';
+  dbHelpers.findUserLogin(userInfo)
+    .then((user) => {
+      if (user !== null) {
+        dbHelpers.comparePassword(password, user.password, (err, isMatch) => {
+          if (err) {
+            throw err;
+          }
+          if (isMatch) {
+            res.send({ user, success });
+            // const token = jwt.sign(tokenData, process.env.LOCALSECRET);
+            // res.json(`JWT ${token}`);
+          } else {
+            res.send('Password is incorrect');
+          }
+        });
+      } else {
+        res.send('false');
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 });
 
-app.post('/signUp', (user, req, res) => {
-  console.log('signUp user fired');
-  console.log('user: ', user);
-  console.log(req.body);
-  res.send('sign up endpoint');
+app.post('/signup', (req, res) => {
+  const userObject = req.body;
+  dbHelpers.findUserSignup(userObject)
+    .then((response) => {
+      if (response !== 'false') {
+        dbHelpers.hashPassword(userObject);
+        res.send('true');
+      } else {
+        res.send('false');
+      }
+    })
+    .catch((error) => { throw error; });
 });
 
 // Endpoint to allow a logged in user to save favorite locations or points of interest
 app.post('/addToFavorites', (req, res) => {
   console.log('add to user favorites');
   console.log(req.body);
-  helpers.addToFavorites(req)
+  helpers.addToFavorites(req.body)
     .then(() => {
-      res.send('saved to favorites');
-    }).catch(() => {
-      console.log('unable to save');
+      console.log('saved');
+      res.send('Location Information Saved!');
+    })
+    .catch(() => {
+      console.log('error saving');
+    });
+});
+
+app.get('/getUserFavorites', (req, res) => {
+  console.log('get all user favorites ');
+  // console.log(req.query);
+  helpers.getAllUserFavorites(req.query.user)
+    .then((favorites) => {
+      console.log('server.js', favorites);
+      res.send(favorites);
+    })
+    .catch((error) => {
+      console.log('error retrieving favorites', error);
     });
 });
 // helpers.searchByTitle('Garden District, New Orleans');
@@ -186,5 +236,10 @@ app.listen(8200, () => {
 // from 8200 to 80. Works until we update the env file on the server or some
 // other solution: something similar to this:
 // https://forums.aws.amazon.com/thread.jspa?threadID=109440
+// AWS port redirect schem below
+// iptables -A INPUT -i eth0 -p tcp --dport 80 -j ACCEPT
+// iptables -A INPUT -i eth0 -p tcp --dport 8200 -j ACCEPT
+// sudo iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8200
+// sudo iptables -t nat -A OUTPUT -p tcp --dport 80 -j REDIRECT --to-ports 8200
 
 // ec2 ip address: ec2-34-238-240-14.compute-1.amazonaws.com

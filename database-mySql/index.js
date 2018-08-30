@@ -1,9 +1,13 @@
 const Sequelize = require('sequelize');
-// const dbHelpers = require('./dbHelpers.js');
-// const user = require('./models/user.js')
+
+// The below is required in this file only to enable the testing of the 
+// addFavorite function at the bottom
+const helpers = require('../helpers.js');
+
 require('dotenv').config();
 
 const sequelize = new Sequelize(`mysql://${process.env.DBUSER}:${process.env.DBPASSWORD}@${process.env.DBHOST}/ARHISTORY`);
+
 
 sequelize
   .authenticate()
@@ -16,52 +20,28 @@ sequelize
 
 // ///////////////////////////////////////////////////////////////////////////////
 //  Models -- to be exported to their own pages soon for modularness           //
-//                    "separation of concerns"                                                         //
-// ///////////////////////////////////////////////////////////////////////////////
+//     "separation of concerns"   (Said in an imitation Godfather voice)       //                                               //
+// //////////////////////////////////////////////////////////////////////////////
 
 
 const User = sequelize.define('user', {
 
-  userName: {
+  username: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
   email: {
     type: Sequelize.STRING,
     unique: true,
+    allowNull: false,
   },
   password: {
     type: Sequelize.STRING,
+    allowNull: false,
   },
-  favorites: Sequelize.STRING, // needs to be an array of strings really
-  // foreign keys etc.
 });
 
-const Neighborhood = sequelize.define('neighborHood', {
-  id: {
-    type: Sequelize.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-    unique: true,
-  },
-  name: {
-    type: Sequelize.STRING,
-    unique: true,
-  },
-  lat: {
-    type: Sequelize.STRING, // may need to be int
-  },
-  long: {
-    type: Sequelize.STRING, // may need to be int
-  },
-  fullPage: {
-    type: Sequelize.STRING,
-  },
-  pois: {
-    type: Sequelize.STRING,
-  },
-
-});
-const Poi = sequelize.define('poi', {
+const Favorite = sequelize.define('favorite', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
@@ -72,108 +52,76 @@ const Poi = sequelize.define('poi', {
     type: Sequelize.STRING,
   },
   lat: {
-    type: Sequelize.STRING, // may need to be int
+    type: Sequelize.FLOAT,
+    allowNull: false,
   },
   long: {
-    type: Sequelize.STRING, // may need to be int
+    type: Sequelize.FLOAT,
+    allowNull: false,
   },
-  address: {
+  latLong: {
+    type: Sequelize.STRING,
+    unique: true,
+    allowNull: false,
+  },
+  wide: {
     type: Sequelize.STRING,
   },
-  fullPage: {
+  narrow: {
     type: Sequelize.STRING,
+  },
+  wideWiki: {
+    type: Sequelize.STRING,
+  },
+  narrowWiki: {
+    type: Sequelize.STRING,
+  },
+  wikiImage: {
+    type: Sequelize.STRING,
+  },
+  foreignKey: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+
   },
 });
-
 
 // force: true will drop the table if it already exists
 User.sync({
-  force: true,
-}).then(() => User.create({
-  userName: 'John',
-  password: '12345',
-  email: 'me@me.com',
-  favorites: '123123',
-})).then(() => {
-  User.findAll().then((users) => {
-    console.log('find all');
-    users.forEach((user) => {
-      console.log(user.dataValues);
-    });
-    // console.log('findAll', users[0].dataValues);
-  });
-}).then(() => {
-  // add a user for testing
-  User.findOrCreate({ where: { userName: 'Josef', email: 'email@email.com' } })
-    .spread((user, created) => {
-      console.log(user.get({
-        plain: true,
-      }));
-      console.log(created);
-    });
+  force: false,
 })
   .then(() => {
-    // add the same user again to test function - should return false
-    User.findOrCreate({ where: { userName: 'Josef', email:'email@email.com' } })
-      .spread((user, created) => {
-        console.log(user.get({
-          plain: true,
-        }));
-        console.log(created);
-      });
+    console.log('User synced');
+  })
+  .catch((error) => {
+    throw error;
   });
-
-
-Neighborhood.sync({
-  force: true, // true drops database
-}).then(() => Neighborhood.create({
-  name: 'French Quarter',
-  lat: 31,
-  long: 91,
-  fullPage: 'wertwuyiweurytwertweyrtiyweritwierutyiuwert',
-  pois: '00000000',
-})).then(() => Neighborhood.findOrCreate({ 
-   long: 90,
- where : {
-  name: 'Lake View',
-  lat: 22,
-  fullPage: 'oioioiowieoiwoet',
-  pois: 'wewewewe',
-},
-}))
-  .then(() => {
-    Neighborhood.findAll().then((neighborhoods) => {
-      console.log('find all');
-      neighborhoods.forEach((neighborhood) => {
-        console.log(neighborhood.dataValues);
-      });
-      // console.log('findAll', users[0].dataValues);
-    });
-  });
-
-Poi.sync({
-  force: true, // true drops database
-}).then(() => Poi.create({
-  name: 'French Market',
-  lat: 30,
-  long: 90,
-  address: 'Magazine St.',
-  fullPage: 'some stuff goes here!!!',
-})).then(() => Poi.create({
-  name: 'Cafe Abysinnia',
-  lat: 30,
-  long: 90,
-  fullPage: 'This food is incredible',
-}))
-  .then(() => {
-    Poi.findAll().then((pois) => {
-      console.log('find all');
-      pois.forEach((poi) => {
-        console.log(poi.dataValues);
-      });
-      // console.log('findAll', users[0].dataValues);
-    });
-  });
+// .then(() => User.create({
+//   username: 'John',
+//   password: '12345',
+//   email: 'me@me.com',
+// }));
+// .then(() => {
+// add a user for testing
+//   User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
+//     .spread((user, created) => {
+//     // console.log(user.get({
+//     //   plain: true,
+//     // }));
+//     // console.log(created);
+//     });
+// })
+// .then(() => {
+//   // add the same user again to test function - should return false
+//   User.findOrCreate({ where: { username: 'Josef', email: 'email@email.com' } })
+//     .spread((user, created) => {
+//       // console.log(user.get({
+//       //   plain: true,
+//       // }));
+//       // console.log(created);
+//     });
+// })
+// .catch();
 
 const Vcs = sequelize.define('vcs', {
   id: {
@@ -185,7 +133,6 @@ const Vcs = sequelize.define('vcs', {
   lotNumber: {
     type: Sequelize.INTEGER,
     unique: true,
-
   },
   name: {
     type: Sequelize.STRING,
@@ -207,28 +154,71 @@ const Vcs = sequelize.define('vcs', {
   },
 });
 
-Poi.sync({
-  force: true, // true drops database
-}).then(() => Poi.create({
-  name: 'French Market',
-  lotNumber: 12345,
-  lat: 30,
-  long: 90,
-  address: 'Magazine St.',
-  infoText: 'some stuff goes here!!!',
-}));
-
-
-
-User.belongsToMany(Poi, {
-  through: 'UserPoi',
-});
-
+Favorite.sync({
+  force: false, // true drops database
+}).then(() => {
+  // Asscoiate the users id as a foreign key with the favorite
+  Favorite.belongsTo(User, { foreignKey: 'id' });
+})
+  .catch((error) => {
+    throw (error);
+  });
+// .then(() => Favorite.create({
+//   name: 'French Market',
+//   lat: 30,
+//   long: 90,
+//   latLong: '3090',
+//   wide: 'some stuff goes here!!!',
+//   narrow: 'Other stuff goes here',
+//   foreignKey: 2,
+//   wideWiki: 'www.stuff.com',
+//   narrowWiki: 'otherstuff.com',
+//   wikiImage: 'sdfkjhsdkjfhksjdfhkjshdf',
+// }))
+// // THIS IS HERE TO TEST THE ADD TO FAVORITES FUNCTION. CURRENTLY NO USER INFO BEING
+// // PASSED FROM THE CLIENT. I HARD CODED A FAVORITE AND A USER FOR THIS PURPOSE
+//   .then(() => {
+//     const testFavorite = {
+//       name: 'a place you want to save',
+//       latitude: 29.9773846936982,
+//       longitude: -90.07604716542896,
+//       latLong: '29.9773846936982-90.07604716542896',
+//       wideData: ['Fairgrounds'],
+//       narrowData: ['Rivoli Theatre', 'movie theater'],
+//       wideWiki: 'www.cantgetenough.com',
+//       narrowWiki: 'www.ofthatfunkystuff.com',
+//       wikiImage: 'sdfkjhsdkjfhksjdfhkjshdf',
+//     };
+//     const testFavorite2 = {
+//       name: 'the zoo',
+//       latitude: 29.9773846936982,
+//       longitude: -90.07604716542896,
+//       latLong: '29.9773846936982-90.07604716542896',
+//       wideData: ['snake and tigers'],
+//       narrowData: ['tortoises'],
+//       wideWiki: 'www.zoo.com',
+//       narrowWiki: 'www.zoo2.com',
+//       wikiImage: 'stuff ',
+//     };
+//     // const testUser = {
+//     //   username: 'Satan',
+//     //   email: '666@hell.com',
+//     //   id: 13,
+//     // };
+//     const testUser2 = {
+//       username: 'John',
+//       email: 'me@me.com',
+//       id: 2,
+//     };
+//     // Test addToFavorites
+//     // console.log('test add to favorites');
+//     // helpers.addToFavorites(testFavorite, testUser2);
+//     helpers.addToFavorites(testFavorite2, testUser2);
+//   });
 
 module.exports = {
   sequelize,
   User,
-  Poi,
+  Favorite,
   Vcs,
-  Neighborhood,
 };

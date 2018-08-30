@@ -3,7 +3,6 @@
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable prefer-destructuring */
 
-
 import React, { Component } from 'react';
 import {
   ActivityIndicator,
@@ -11,6 +10,7 @@ import {
   View,
   StyleSheet,
   TouchableHighlight,
+  TouchableOpacity,
   Image,
   Alert,
 } from 'react-native';
@@ -26,22 +26,110 @@ import {
 import { viroKey } from './config';
 import Signup from './js/Signup';
 import Map from './js/Map';
-import FavoriteMap from './js/FavoriteMap.js';
+import FavoriteMap from './js/FavoriteMap';
 import renderIf from './js/helpers/renderIf';
 
+console.disableYellowBox = true;
+
 const InitialARScene = require('./js/ARHist');
-const textIMG = require('./js/res/cracked-wallpaper-9.jpg');
+
 
 const isARSupportedOnDevice = ViroUtils.isARSupportedOnDevice;
-const textArray = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.');
+const textArray = 'A green hunting cap squeezed the top of the fleshy balloon of a head. The green earflaps, full of large ears and uncut hair and the fine bristles that grew in the ears themselves, stuck out on either side like turn signals indicating two directions at once. Full, pursed lips protruded beneath the bushy black moustache and, at their corners, sank into little folds filled with disapproval and potato chip crumbs. In the shadow under the green visor of the cap Ignatius J. Reilly’s supercilious blue and yellow eyes looked down upon the other people waiting under the clock at the D. H. Holmes department store, studying the crowd of people for signs of bad taste and dress. Several of the outfits, Ignatius noticed, were new enough and expensive enough to be properly considered offenses against taste and decency. Possession of anything new or expensive only reflected a person’s lack of theology and geometry; it could even cast doubts upon one’s soul.'.split('.');
 const textArray2 = 'cha cha changes, consectetur adipiscing elit. Etiam gravida in lectus ultricies facilisis. Donec viverra aliquam nisi sed cursus. Aenean luctus iaculis pellentesque. Vestibulum euismod a augue quis aliquam. Curabitur blandit mauris nec faucibus tristique. Ut vel varius magna. Nulla dapibus sem eget nisi iaculis, non fermentum orci tincidunt. Quisque magna nulla, tincidunt vel neque eu, pharetra sollicitudin dolor. Proin nec laoreet lacus. In ut luctus leo. Maecenas vel tincidunt tellus, id molestie justo. Praesent eu sem felis. Vivamus arcu risus, gravida ut ligula sit amet, dignissim maximus metus. Nam eget velit pellentesque, bibendum tortor quis, facilisis diam'.split('.');
-const dataLength = textArray.length - 1;
+let dataLength = textArray.length - 1;
+const user = { id: null, email: null };
 let dataCounter = 0;
-let locationProgression = 0;
+let locationProgression = 1;
+let wideWiki = '';
+let narrowWiki = '';
+let wikiImage = '';
+
+const localStyles = StyleSheet.create({
+  outer: {
+    flex: 1,
+  },
+  arView: {
+    flex: 1,
+  },
+  container: {
+    flex: 1,
+  },
+  button: {
+    // alignSelf: 'stretch',
+    alignItems: 'stretch',
+    // borderWidth: 1,
+    borderColor: '#333333',
+    padding: 33,
+    backgroundColor: '#ffee99',
+  },
+  btntext: {
+    color: '#333333',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  buttons: {
+    height: 80,
+    width: 80,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    // paddingTop:20,
+    // paddingBottom:20,
+    // marginTop: 10,
+    // marginBottom: 10,
+    backgroundColor: '#00000000',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#ffffff00',
+  },
+});
+ViroMaterials.createMaterials({
+  frontMaterial: {
+    // bloomThreshold: 0.1,
+    // shininess: 2.0,
+    // specularTexture: textIMG,
+    blendMode: 'None',
+    // lightingModel: 'Lambert',
+    diffuseColor: '#f7dc13',
+  },
+  backMaterial: {
+    // lightingModel: "Lambert",
+    bloomThreshold: 2.0,
+    diffuseColor: '#333333',
+  },
+  sideMaterial: {
+    // lightingModel: "Lambert",
+    // shininess: 2.0,
+    // bloomThreshold: 1.5,
+    diffuseColor: '#333333',
+  },
+});
+// "Comic Sans MS", cursive, sans-serif
+const styles = StyleSheet.create({
+  login: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#36485f',
+    paddingLeft: 60,
+    paddingRight: 60,
+  },
+  helloWorldTextStyle: {
+    fontFamily: 'Roboto',
+    // fontStyle: 'italic',
+    fontSize: 8,
+    color: '#ffffff',
+    textAlignVertical: 'center',
+    textAlign: 'center',
+  },
+
+});
+
 
 export default class ViroSample extends Component {
   constructor(props) {
     super(props);
+
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -50,14 +138,16 @@ export default class ViroSample extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        axios.get('http://ec2-34-238-240-14.compute-1.amazonaws.com/neighborhood', {
+        axios.get('http://ec2-54-152-18-28.compute-1.amazonaws.com/neighborhood', {
           params: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           },
         })
           .then((res) => {
-            const generalData = res.data;
+            const generalData = res.data.content;
+            wideWiki = res.data.wideWiki;
+            dataLength = generalData.length - 1;
             this.setState({ generalData });
           })
           .catch(error => this.setState({ error }));
@@ -72,17 +162,22 @@ export default class ViroSample extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        axios.get('http://ec2-34-238-240-14.compute-1.amazonaws.com/broad', {
+        axios.get('http://ec2-54-152-18-28.compute-1.amazonaws.com/broad', {
           params: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
           },
         })
           .then((res) => {
-            const narrowData = res.data;
+            const narrowData = res.data.content;
+            narrowWiki = res.data.narrowWiki;
+            wikiImage = res.data.wikiImage;
+            if (narrowData.length > dataLength) {
+              dataLength = narrowData.length - 1;
+            }
             this.setState({ narrowData });
           })
-          .catch(err => this.state.error = err);
+          .catch((error) => { this.setState({ error }); });
       },
       error => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
@@ -90,6 +185,8 @@ export default class ViroSample extends Component {
 
 
     // this._onShowObject = this._onShowObject.bind(this);
+    this._logIn = this._logIn.bind(this);
+    this._signup = this._signup.bind(this);
     this._onSaveLocation = this._onSaveLocation.bind(this);
     this._onShowText = this._onShowText.bind(this);
     this._onShowText2 = this._onShowText2.bind(this);
@@ -120,9 +217,11 @@ export default class ViroSample extends Component {
       posPhone: false,
       narrowData: textArray2,
       dataStore: null,
-      isLoggedIn: true,
+      isLoggedIn: false,
+      nonUser: true,
       mapView: false,
       favMapView: false,
+      signupView: false,
     };
   }
 
@@ -131,9 +230,17 @@ export default class ViroSample extends Component {
     isARSupportedOnDevice(this._handleARNotSupported, this._handleARSupported);
   }
 
-  logIn() {
+  _logIn() {
     this.setState({
       isLoggedIn: true,
+      nonUser: false,
+      signupView: false,
+    });
+  }
+
+  _signup() {
+    this.setState({
+      signupView: true,
     });
   }
 
@@ -171,29 +278,6 @@ export default class ViroSample extends Component {
     });
   }
 
-  // _renderTrackingText() {
-  //   if (this.state.trackingInitialized) {
-  //     return (
-  //       <View style={{
-  //         position: 'absolute', backgroundColor: '#ffffff22', left: 30, right: 30, top: 30, alignItems: 'center',
-  //       }}
-  //       >
-  //         <Text style={{ fontSize: 12, color: '#ffffff' }}>
-  //           {this.loc}
-  //             Tracking initialized.
-  //         </Text>
-  //       </View>
-  //     );
-  //   }
-  //   return (
-  //     <View style={{
-  //       position: 'absolute', backgroundColor: '#ffffff22', left: 30, right: 30, top: 30, alignItems: 'center',
-  //     }}
-  //     >
-  //       <Text style={{ fontSize: 12, color: '#ffffff' }}>Waiting for tracking to initialize.</Text>
-  //     </View>
-  //   );
-  // }
 
   _onTrackingInit() {
     this.setState({
@@ -202,7 +286,7 @@ export default class ViroSample extends Component {
   }
 
   _onDisplayDialog() {
-    if (!this.state.isLoggedIn) {
+    if (this.state.nonUser) {
       Alert.alert(
         'Learn About The Area Around You',
         'Choose an Option Below',
@@ -210,8 +294,9 @@ export default class ViroSample extends Component {
 
           // {text: 'Save Location', onPress: () => this._onSaveLocation(0, dataCounter, 0 )},
           { text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0) },
-          { text: 'New Location', onPress: () => this._onRemoveText() },
+          { text: 'Next Location', onPress: () => this._onRemoveText() },
           { text: 'Show Map', onPress: () => this._showMapView() },
+          { text: 'Signup or Login', onPress: () => this._signup() },
         ],
       );
     } else {
@@ -220,8 +305,9 @@ export default class ViroSample extends Component {
         'Choose an Option Below',
         [
           { text: 'General Fact', onPress: () => this._onShowText(0, dataCounter, 0) },
-          { text: 'New Location', onPress: () => this._onRemoveText() },
+          { text: 'Next Location', onPress: () => this._onRemoveText() },
           { text: 'Show Map', onPress: () => this._showMapView() },
+          { text: 'Favorites Map', onPress: () => this._showFavMapView() },
           {
             text: 'User Menu',
             onPress: () => Alert.alert(
@@ -278,14 +364,18 @@ export default class ViroSample extends Component {
     const notSaved = 'Sorry, We could\'nt Save the Information';
     let saveMessage;
 
-    axios.post('http://ec2-34-238-240-14.compute-1.amazonaws.com/addToFavorites', {
+    axios.post('http://ec2-54-152-18-28.compute-1.amazonaws.com/addToFavorites', {
+      id: user.id,
       latitude: this.state.latitude,
       longitude: this.state.longitude,
       wideData: this.state.generalData,
       narrowData: this.state.narrowData,
+      wideWiki,
+      narrowWiki,
+      wikiImage,
     })
-      .then(() => {
-        saveMessage = isSaved;
+      .then((res) => {
+        saveMessage = res.data;
         const currentProps = { ...this.state.viroAppProps };
         this.setState({
           viroAppProps: {
@@ -313,7 +403,7 @@ export default class ViroSample extends Component {
   }
 
   _onAttemptHNOC() {
-    axios.post('http://ec2-34-238-240-14.compute-1.amazonaws.com/', {
+    axios.post('http://ec2-54-152-18-28.compute-1.amazonaws.com/', {
       latitude: this.state.latitude,
       longitude: this.state.longitude,
     })
@@ -373,7 +463,7 @@ export default class ViroSample extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        axios.get('http://ec2-34-238-240-14.compute-1.amazonaws.com/broad', {
+        axios.get('http://ec2-54-152-18-28.compute-1.amazonaws.com/broad', {
           params: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -382,10 +472,13 @@ export default class ViroSample extends Component {
         })
           .then((res) => {
             locationProgression += 1;
-            const narrowData = res.data;
+            const narrowData = res.data.content;
+            if (narrowData.length > dataLength) {
+              dataLength = narrowData.length - 1;
+            }
             this.setState({ narrowData });
           })
-          .catch(err => this.state.error = err);
+          .catch((error) => { this.setState({ error }); });
       },
       error => this.setState({ error: error.message }),
       { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
@@ -394,7 +487,6 @@ export default class ViroSample extends Component {
     this.setState({
       viroAppProps: { ...this.state.viroAppProps, displayObject: false },
       posComp: false,
-      dataStore: this.state.generalData,
     }, () => {
       this.setState({ posComp: true });
     }, this.setState({ generalData: this.state.narrowData }));
@@ -404,14 +496,15 @@ export default class ViroSample extends Component {
   render() {
     return (
       <View style={localStyles.outer}>
-        {renderIf(!this.state.isLoggedIn && !this.state.mapView,
+        {renderIf(!this.state.mapView && this.state.signupView,
           <View style={styles.login}>
-            <Signup logIn={this.logIn} />
+            <Signup _signup={this._signup} _logIn={this._logIn} user={user} />
           </View>)}
         {renderIf(this.state.mapView,
-          <Map showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
-        {renderIf(this.state.favMapView,
-          <FavoriteMap showFavMapView={this._showFavMapView} lat={this.state.latitude} long={this.state.longitude} />)}
+          <Map user={user} showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}
+
+        {renderIf(this.state.favMapView && this.state.isLoggedIn,
+          <FavoriteMap user={user} showFavMapView={this._showFavMapView} lat={this.state.latitude} long={this.state.longitude} />)}
         {renderIf(this.state.posPhone && this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
           <View>
             <Text>
@@ -419,7 +512,7 @@ export default class ViroSample extends Component {
               {this.state.generalData[dataCounter]}
             </Text>
           </View>)}
-        {renderIf(this.state.posComp && !this.state.posPhone && this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
+        {renderIf(this.state.posComp && !this.state.posPhone && !this.state.mapView && !this.state.favMapView && !this.state.signupView,
           <ViroARSceneNavigator
             style={localStyles.arView}
             apiKey={viroKey}
@@ -438,7 +531,7 @@ export default class ViroSample extends Component {
             <ActivityIndicator size="large" animating={this.state.isLoading} color="#ffffff" />
           </View>)
       }
-        {renderIf(this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
+        {renderIf(!this.state.mapView && !this.state.favMapView && !this.state.signupView,
           <View style={{
             position: 'absolute', left: 50, right: 0, bottom: 77, alignItems: 'center', flex: 1, flexDirection: 'row', justifyContent: 'space-between',
           }}
@@ -452,7 +545,7 @@ export default class ViroSample extends Component {
             </TouchableHighlight>
             <TouchableHighlight
               style={localStyles.buttons}
-              onPress={this._onDisplayDialog}
+              onPress={() => this._onShowText(0, dataCounter, 0)}
               underlayColor="#00000000"
             >
               <Image source={require('./js/res/MainBTTN.png')} />
@@ -465,76 +558,42 @@ export default class ViroSample extends Component {
               <Image source={require('./js/res/right-gold-arrow.png')} />
             </TouchableHighlight>
           </View>)}
+
+        {renderIf(!this.state.mapView && !this.state.favMapView,
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+
+            <TouchableOpacity
+              style={localStyles.button} 
+              onPress={() => this._showMapView()}
+            >
+              <Text style={localStyles.btntext}>Map View</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={localStyles.button} onPress={() => this._onRemoveText()} >
+              <Text style={localStyles.btntext}>Next Location</Text>
+            </TouchableOpacity>
+
+            {renderIf(!this.state.isLoggedIn,
+              <TouchableOpacity style={localStyles.button} >
+                <Text
+                  style={localStyles.btntext}
+                  onPress={() => this._signup()}
+                >
+                Login
+                  </Text>
+              </TouchableOpacity>)}
+
+            {renderIf(this.state.isLoggedIn,
+              <TouchableOpacity
+                style={localStyles.button}
+                onPress={() => this._onSaveLocation(0, dataCounter, 0)}
+              >
+                <Text style={localStyles.btntext}>Save Location</Text>
+              </TouchableOpacity>)}
+          </View>)}
       </View>
     );
   }
 }
-
-const localStyles = StyleSheet.create({
-  outer: {
-    flex: 1,
-  },
-  arView: {
-    flex: 1,
-  },
-  container: {
-    flex: 1,
-  },
-  buttons: {
-    height: 80,
-    width: 80,
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    // paddingTop:20,
-    // paddingBottom:20,
-    // marginTop: 10,
-    // marginBottom: 10,
-    backgroundColor: '#00000000',
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: '#ffffff00',
-  },
-});
-ViroMaterials.createMaterials({
-  frontMaterial: {
-    // bloomThreshold: 0.1,
-    shininess: 2.0,
-    // specularTexture: textIMG,
-    blendMode: 'None',
-    // lightingModel: 'Lambert',
-    diffuseColor: '#FFFFFF',
-  },
-  backMaterial: {
-    // lightingModel: "Lambert",
-    bloomThreshold: 2.0,
-    diffuseColor: '#333333',
-  },
-  sideMaterial: {
-    // lightingModel: "Lambert",
-    // shininess: 2.0,
-    // bloomThreshold: .5,
-    diffuseColor: '#333333',
-  },
-});
-// "Comic Sans MS", cursive, sans-serif
-const styles = StyleSheet.create({
-  login: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#36485f',
-    paddingLeft: 60,
-    paddingRight: 60,
-  },
-  helloWorldTextStyle: {
-    fontFamily: 'Roboto',
-    // fontStyle: 'italic',
-    fontSize: 8,
-    color: '#ffffff',
-    textAlignVertical: 'center',
-    textAlign: 'center',
-  },
-
-});
 
 module.exports = ViroSample;
