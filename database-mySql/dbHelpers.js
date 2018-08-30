@@ -1,39 +1,121 @@
-const { User, sequelize } = require('./index.js');
+const bcrypt = require('bcryptjs');
 
+const {
+  User,
+  Favorite,
+  Vcs,
+} = require('./index.js');
 
+// finds a user - if you want to do that sort of thing
+const findUserLogin = userInfo => User.findOne({
+  where: {
+    email: userInfo.email,
+  },
+})
+  .then(user => user)
+  .catch((error) => { throw error; });
 
-findUser = (userInfo) => {
-    console.log("findUser, user: ", userInfo)
-    User.findOne({ where: {email: userInfo.email} }).then( user => {
-        console.log(user);
-        return user;
-    })
-}
+const comparePassword = (password, hash, callback) => {
+  bcrypt.compare(password, hash, (err, isMatch) => {
+    if (err) throw err;
+    callback(null, isMatch);
+  });
+};
 
-createUser = (userInfo, sequelize) => {
-    console.log('create user fired userInfo:', userInfo);
-    // if (!findUser(userInfo)){
-     return User.create({
-        firstName: userInfo.firstName,
-        lastName: userInfo.lastName,
+const findUserSignup = userInfo => User.findOne({
+  where: {
+    email: userInfo.email,
+  },
+})
+  .then((user) => {
+    if (user === null) {
+      return user;
+    }
+    return 'false';
+  })
+  .catch((err) => { throw err; });
+
+const hashPassword = (userInfo) => {
+  bcrypt.genSalt(10, (err, salt) => {
+    bcrypt.hash(userInfo.password, salt, (error, hash) => {
+      // Store hash in your password DB.
+      if (error) {
+        throw error;
+      }
+      User.create({
+        username: userInfo.username,
         email: userInfo.email,
-        favorites: userInfo.favorites //must be an array of strings-foreign keys
-      });
-    // }
-    // console.log('user already exists');
-}
+        password: hash,
+      })
+        .then((response) => {
+          console.log('dbHelpers - 0000000000000000000000000', response);
+          return response.dataValues;
+        })
+        .catch((errorr) => { throw errorr; });
+    });
+  });
+};
 
-addToUserFavorites = ((user, favoritesToAdd) => {
-    // not tested yet
-    console.log(`add to favorites, userName: ${user.firstName} ${user}`);
-    // again untested
-    user.favorites = user.favorites + favoritesToAdd;
-    // user.update({ title: 'foooo', description: 'baaaaaar'}, {fields: ['title']}).then(() => {
-    // });
+// TODO:function to create a new user
+// needs to be built out and tested
+// TODO: build out- adds an association to a particular place to a user
+const addToUserFavorites = ((favorite) => {
+  console.log(JSON.stringify(favorite));
+  return Favorite.create({
+    // name: favorite.name,
+    lat: favorite.latitude,
+    long: favorite.longitude,
+    latLong: `${favorite.latitude}${favorite.longitude}`,
+    wide: JSON.stringify(favorite.wideData),
+    narrow: JSON.stringify(favorite.narrowData),
+    wideWiki: favorite.wideWiki,
+    narrowWiki: favorite.narrowWiki,
+    wikiImage: favorite.wikiImage,
+    foreignKey: favorite.id,
+  }).then(() => {
+    console.log('favorite created');
+  }).catch((error) => {
+    throw error;
+  });
 });
 
+const findUserFavorites = ((userId) => {
+  console.log(`finding user favorite for: ${userId}`);
+  return Favorite.findAll({
+    where: {
+      foreignKey: userId,
+    },
+  });
+});
+
+// creates a database entry for the  vieux carre
+// TODO: build out the function
+const createVcs = ((vcsInfo) => {
+  console.log('createVcs fired');
+  return Vcs.findOrCreate({
+    where: {
+      lotNumber: vcsInfo.lotNumber,
+      name: vcsInfo.name,
+      lat: vcsInfo.name,
+      long: vcsInfo.long,
+      address: vcsInfo.address,
+      infoText: vcsInfo.text,
+      ownership: vcsInfo.ownership,
+    },
+    // load up vcs model here
+  });
+});
+
+// TODO: build out this query after building the addToFavorites function
+// queries the database to find a given users favorites list
+// findUserFavorites
+
 module.exports = {
-    createUser,
-    findUser,
-    addToUserFavorites
+  comparePassword,
+  hashPassword,
+  findUserLogin,
+  findUserSignup,
+  addToUserFavorites,
+  createVcs,
+  findUserFavorites,
 };
