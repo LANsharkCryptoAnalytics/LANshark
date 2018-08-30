@@ -161,7 +161,6 @@ app.post('/login', (req, res) => {
   const success = 'true';
   dbHelpers.findUserLogin(userInfo)
     .then((user) => {
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', user);
       if (user !== null) {
         dbHelpers.comparePassword(password, user.password, (err, isMatch) => {
           if (err) {
@@ -190,7 +189,6 @@ app.post('/signup', (req, res) => {
     .then((response) => {
       if (response === 'true') {
         dbHelpers.hashPassword(userObject, (err, user) => {
-          console.log('----------------------------------------------    ', user);
           if (err) {
             res.send('User not created');
           } else {

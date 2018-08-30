@@ -48,7 +48,6 @@ const hashPassword = (userInfo, callback) => {
         password: hash,
       })
         .then((user) => {
-          console.log('dbHelpers - 0000000000000000000000000', user);
           callback(null, user);
         })
         .catch((errorr) => { callback(errorr); });
