@@ -2,6 +2,8 @@
 /* eslint-disable react/jsx-filename-extension */
 /* eslint-disable react/destructuring-assignment */
 /* eslint-disable prefer-destructuring */
+/* eslint-disable global-require */
+/* eslint-disable react/no-string-refs */
 
 import React, { Component } from 'react';
 import {
@@ -407,13 +409,7 @@ export default class ViroSample extends Component {
     axios.post('http://ec2-54-152-18-28.compute-1.amazonaws.com/', {
       latitude: this.state.latitude,
       longitude: this.state.longitude,
-    })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    });
   }
 
   _onShowText2(objIndex, objUniqueName, yOffset) {
@@ -502,17 +498,19 @@ export default class ViroSample extends Component {
           </View>)}
         {renderIf(this.state.mapView,
           <Map
-            user={user} 
+            user={user}
             showMapView={this._showMapView}
             lat={this.state.latitude}
-            long={this.state.longitude} />)}
+            long={this.state.longitude}
+          />)}
 
         {renderIf(this.state.favMapView && this.state.isLoggedIn,
           <FavoriteMap
             user={user}
             showFavMapView={this._showFavMapView}
             lat={this.state.latitude}
-            long={this.state.longitude} />)}
+            long={this.state.longitude}
+          />)}
         {renderIf(
           this.state.posPhone
           && this.state.isLoggedIn
@@ -523,27 +521,45 @@ export default class ViroSample extends Component {
               Sorry your phone sucks! heres some data for you anyway
               {this.state.generalData[dataCounter]}
             </Text>
-          </View>)}
-        {renderIf(this.state.posComp && !this.state.posPhone && !this.state.mapView && !this.state.favMapView && !this.state.signupView,
+          </View>,
+        )}
+        {renderIf(
+          this.state.posComp
+          && !this.state.posPhone
+          && !this.state.mapView
+          && !this.state.favMapView
+          && !this.state.signupView,
           <ViroARSceneNavigator
             style={localStyles.arView}
             apiKey={viroKey}
-            initialScene={{ scene: InitialARScene, passProps: { displayObject: this.state.displayObject } }}
+            initialScene={{
+              scene: InitialARScene,
+              passProps: { displayObject: this.state.displayObject },
+            }}
             ref="scene"
             viroAppProps={this.state.viroAppProps}
-          />)}
+          />,
+        )}
         {/* {renderIf(this.state.isLoggedIn,
           this._renderTrackingText())} */}
 
-        {renderIf(this.state.isLoading && this.state.isLoggedIn && !this.state.mapView && !this.state.favMapView,
+        {renderIf(
+          this.state.isLoading
+          && this.state.isLoggedIn
+          && !this.state.mapView
+          && !this.state.favMapView,
           <View style={{
             position: 'absolute', left: 0, right: 0, top: 0, bottom: 0, justifyContent: 'center',
           }}
           >
             <ActivityIndicator size="large" animating={this.state.isLoading} color="#ffffff" />
-          </View>)
-      }
-        {renderIf(!this.state.mapView && !this.state.favMapView && !this.state.signupView,
+          </View>,
+        )}
+
+        {renderIf(
+          !this.state.mapView
+          && !this.state.favMapView
+          && !this.state.signupView,
           <View style={{
             position: 'absolute', left: 50, right: 0, bottom: 77, alignItems: 'center', flex: 1, flexDirection: 'row', justifyContent: 'space-between',
           }}
@@ -569,7 +585,8 @@ export default class ViroSample extends Component {
             >
               <Image source={require('./js/res/right-gold-arrow.png')} />
             </TouchableHighlight>
-          </View>)}
+          </View>,
+        )}
 
         {renderIf(!this.state.mapView && !this.state.favMapView,
           <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
