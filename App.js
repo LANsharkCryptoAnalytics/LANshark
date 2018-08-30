@@ -558,10 +558,10 @@ export default class ViroSample extends Component {
               <Image source={require('./js/res/right-gold-arrow.png')} />
             </TouchableHighlight>
           </View>)}
-          
+
         {renderIf(!this.state.mapView && !this.state.favMapView,
           <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          
+
             <TouchableOpacity
               style={localStyles.button} 
               onPress={() => this._showMapView()}
@@ -572,7 +572,6 @@ export default class ViroSample extends Component {
             <TouchableOpacity style={localStyles.button} onPress={() => this._onRemoveText()} >
               <Text style={localStyles.btntext}>Next Location</Text>
             </TouchableOpacity>
-          
 
             {renderIf(!this.state.isLoggedIn,
               <TouchableOpacity style={localStyles.button} >
@@ -591,8 +590,7 @@ export default class ViroSample extends Component {
               >
                 <Text style={localStyles.btntext}>Save Location</Text>
               </TouchableOpacity>)}
-          </View>
-          )}
+          </View>)}
       </View>
     );
   }
