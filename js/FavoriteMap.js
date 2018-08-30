@@ -104,6 +104,7 @@ var starIcon = new LeafIcon({
 for( let i = 0; i < favs.length; i++){
   let imgSrc = '';
   let name = '';
+  let narrowName = '';
   let wideLink = '';
   let narrowLink = '';
   let wideData = '';
@@ -113,9 +114,11 @@ for( let i = 0; i < favs.length; i++){
   }if(favs[i].wide){ 
   name = favs[i].wide.split(',');
   name = name[0].slice(1).replace(/("|')/g, "");
-  wideData = '<div>'+favs[i].wide.slice(1, -1).replace(/("|')/g, "").split(',').join(' ') +'</div><br>';
+  wideData = favs[i].wide.slice(1, -1).replace(/("|')/g, "").split(',').slice(1).join(' ') +'<br>';
   }if(favs[i].narrow){ 
-    narrowData = '<div>'+favs[i].narrow.slice(1, -1).replace(/("|')/g, "").split(',').join(' ') +'</div>';
+    narrowName = favs[i].narrow.split(',');
+    narrowName = '<b>'+narrowName[0].slice(1).replace(/("|')/g, "")+'</b>';
+    narrowData = '<div>'+favs[i].narrow.slice(1, -1).replace(/("|')/g, "").split(',').slice(1).join(' ') +'</div>';
     } if(wideData === narrowData) { narrowData = ''; }
   name = "Fav #"+ (i + 1) + " " + name;
   if(favs[i].wideWiki){ 
@@ -125,7 +128,7 @@ for( let i = 0; i < favs.length; i++){
   }
   
   L.marker([favs[i].lat, favs[i].long], {icon: fIcon}).addTo(map)
-.bindPopup('<div><b>'+name+'</b></div><br>'+ wideLink+ imgSrc + narrowLink + wideData + narrowData
+.bindPopup('<b>'+name+'</b><br>'+ wideData + wideLink+ imgSrc + narrowName+narrowData + narrowLink
 
 );
 
