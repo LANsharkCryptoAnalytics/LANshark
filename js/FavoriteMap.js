@@ -110,22 +110,22 @@ for( let i = 0; i < favs.length; i++){
   let narrowData = '';
   if(favs[i].wikiImage){ 
   imgSrc = '<img src="'+favs[i].wikiImage+'" alt="Image" height="100%" width="100%">';
-  }
-  if(favs[i].wide){ 
+  }if(favs[i].wide){ 
   name = favs[i].wide.split(',');
   name = name[0].slice(1).replace(/("|')/g, "");
-  wideData = '<div>'+favs[i].wide.slice(1).replace(/("|')/g, "").split(',').join(' ') +'</div>';
-  }
+  wideData = '<div>'+favs[i].wide.slice(1, -1).replace(/("|')/g, "").split(',').join(' ') +'</div><br>';
+  }if(favs[i].narrow){ 
+    narrowData = '<div>'+favs[i].narrow.slice(1, -1).replace(/("|')/g, "").split(',').join(' ') +'</div>';
+    } if(wideData === narrowData) { narrowData = ''; }
   name = "Fav #"+ (i + 1) + " " + name;
   if(favs[i].wideWiki){ 
     wideLink = '<a href="'+favs[i].wideWiki+'">Neighborhood Info</a><br>'
-  }
-  if(favs[i].narrowWiki){ 
+  }if(favs[i].narrowWiki){ 
     narrowLink = '<a href="'+favs[i].narrowWiki+'">POI Info</a><br>'
   }
   
   L.marker([favs[i].lat, favs[i].long], {icon: fIcon}).addTo(map)
-.bindPopup('<div><b>'+name+'</b></div><br>'+ wideLink+ imgSrc + narrowLink + wideData
+.bindPopup('<div><b>'+name+'</b></div><br>'+ wideLink+ imgSrc + narrowLink + wideData + narrowData
 
 );
 

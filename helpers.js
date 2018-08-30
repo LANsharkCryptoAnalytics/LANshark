@@ -245,13 +245,11 @@ exports.createUser = (user, response, reject) => {
 
 // addToUserFavorites
 exports.addToFavorites = (favorite) => {
-  // console.log('addToUserFavorites');
-  // const favorite = favorite
+  
   return db.addToUserFavorites(favorite);
 };
 
 exports.getAllUserFavorites = (user) => {
-  console.log('helpers get all user favorites');
   return db.findUserFavorites(user.id);
 };
 
