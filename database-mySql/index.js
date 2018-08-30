@@ -1,9 +1,7 @@
 const Sequelize = require('sequelize');
 
-// The below is required in this file only to enable the testing of the 
+// The below is required in this file only to enable the testing of the
 // addFavorite function at the bottom
-const helpers = require('../helpers.js');
-
 require('dotenv').config();
 
 const sequelize = new Sequelize(`mysql://${process.env.DBUSER}:${process.env.DBPASSWORD}@${process.env.DBHOST}/ARHISTORY`);
@@ -16,12 +14,6 @@ sequelize
   .catch((err) => {
     console.error('Unable to connect to the database:', err);
   });
-
-// ///////////////////////////////////////////////////////////////////////////////
-//  Models -- to be exported to their own pages soon for modularness           //
-//     "separation of concerns"   (Said in an imitation Godfather voice)       //                                               //
-// //////////////////////////////////////////////////////////////////////////////
-
 
 const User = sequelize.define('user', {
   email: {
@@ -79,6 +71,7 @@ const Favorite = sequelize.define('favorite', {
 
   },
 });
+
 // force: true will drop the table if it already exists
 User.sync({
   force: false,
