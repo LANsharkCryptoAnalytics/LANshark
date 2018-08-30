@@ -51,10 +51,10 @@ const Favorite = sequelize.define('favorite', {
     allowNull: false,
   },
   wide: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(1500),
   },
   narrow: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING(1500),
   },
   wideWiki: {
     type: Sequelize.STRING,
@@ -72,7 +72,7 @@ const Favorite = sequelize.define('favorite', {
   },
 });
 
-// force: true will drop the table if it already exists
+// Force: true will drop the table if it already exists
 User.sync({
   force: false,
 })
