@@ -10,6 +10,21 @@ import {
 } from 'react-native';
 import axios from 'axios';
 
+const styles = StyleSheet.create({
+  button: {
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#59cbbd',
+  },
+  btntext: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
+
+
 let favs2 = '';
 
 export default class FavoriteMap extends Component {
@@ -119,8 +134,8 @@ for( let i = 0; i < favs.length; i++){
           )
             : (
               <View>
-              <Text>Loading</Text>
-            </View>
+                <Text>Loading</Text>
+              </View>
             )}
         </View>
         <View>
@@ -134,17 +149,3 @@ for( let i = 0; i < favs.length; i++){
     );
   }
 }
-var styles = StyleSheet.create({
-
-  button: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#59cbbd',
-  },
-  btntext: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-});
