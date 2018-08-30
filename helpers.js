@@ -236,13 +236,9 @@ exports.searchByTitle = (titleInput) => {
 // //////////////////////////////////////////
 
 // addToUserFavorites
-exports.addToFavorites = (favorite) => {
-  return db.addToUserFavorites(favorite);
-};
+exports.addToFavorites = favorite => db.addToUserFavorites(favorite);
 
-exports.getAllUserFavorites = (user) => {
-  return db.findUserFavorites(user.id);
-};
+exports.getAllUserFavorites = user => db.findUserFavorites(user.id);
 
 // ///////////////////////////////////////////////////////
 // END OF USER RELATED FUNCTIONS                       //
