@@ -83,7 +83,7 @@ const ARHist = createReactClass({
     if (!this.props.arSceneNavigator.viroAppProps.displayObject || this.props.arSceneNavigator.viroAppProps.displayObjectName === undefined) {
       return;
     } 
-      const transformBehaviors = {};
+    const transformBehaviors = {};
     if (this.state.shouldBillboard) {
       transformBehaviors.transformBehaviors = this.state.shouldBillboard ? 'billboardY' : [];
     }
