@@ -1,9 +1,7 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable react/destructuring-assignment */
 /* eslint-disable prefer-destructuring */
-/* eslint-disable global-require */
 /* eslint-disable react/no-string-refs */
+/* eslint-disable no-undef */
+
 
 import React, { Component } from 'react';
 import {
@@ -45,8 +43,8 @@ let locationProgression = 1;
 let wideWiki = '';
 let narrowWiki = '';
 let wikiImage = '';
-//fixing a bug with asynch function calls
-if (typeof global.self === "undefined") {
+// fixing a bug with asynch function calls
+if (typeof global.self === 'undefined') {
   global.self = global;
 }
 
@@ -503,6 +501,7 @@ export default class ViroSample extends Component {
           </View>)}
         {renderIf(this.state.mapView,
           <Map
+            _signup={this._signup}
             user={user}
             showMapView={this._showMapView}
             showFavMapView={this._showFavMapView}
@@ -567,7 +566,14 @@ export default class ViroSample extends Component {
           && !this.state.favMapView
           && !this.state.signupView,
           <View style={{
-            position: 'absolute', left: 50, right: 0, bottom: 77, alignItems: 'center', flex: 1, flexDirection: 'row', justifyContent: 'space-between',
+            position: 'absolute',
+            left: 50,
+            right: 0,
+            bottom: 77,
+            alignItems: 'center',
+            flex: 1,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
           }}
           >
             <TouchableHighlight
@@ -609,10 +615,9 @@ export default class ViroSample extends Component {
             </TouchableOpacity>
 
             {renderIf(!this.state.isLoggedIn,
-              <TouchableOpacity style={localStyles.button}>
+              <TouchableOpacity style={localStyles.button} onPress={() => this._signup()}> 
                 <Text
                   style={localStyles.btntext}
-                  onPress={() => this._signup()}
                 >
                 Login
                 </Text>

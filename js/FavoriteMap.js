@@ -1,5 +1,3 @@
-// http://ec2-54-152-18-28.compute-1.amazonaws.com/getUserFavorites?id=${this.props.user.id}
-
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -11,12 +9,26 @@ import {
 import axios from 'axios';
 
 let favs2 = '';
+
+const styles = StyleSheet.create({
+  button: {
+    alignSelf: 'stretch',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#59cbbd',
+  },
+  btntext: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
+
 export default class FavoriteMap extends Component {
   constructor(props) {
     super(props);
     this.state = {
       favs: '',
-
     };
   }
 
@@ -58,36 +70,36 @@ export default class FavoriteMap extends Component {
               <!DOCTYPE html>
 <html>
 <head>
-	<title>Favorites Map</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
-	<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
+  <title>Favorites Map</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
-	<style>
-		html, body {
-			height: 100%;
-			margin: 0;
-		}
-		#map {
-			width: 600px;
-			height: 400px;
-		}
-	</style>
-	<style>body { padding: 0; margin: 0; } #map { height: 100%; width: 100vw; }</style>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    #map {
+      width: 600px;
+      height: 400px;
+    }
+  </style>
+  <style>body { padding: 0; margin: 0; } #map { height: 100%; width: 100vw; }</style>
 </head>
 <body>
 <div id='map'></div>
 <script>
 var favs = ${favs2}
   var map = L.map('map').setView([${String(this.props.lat).slice(0, 9)}, ${String(this.props.long).slice(0, 10)}], 16);
-	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-		maxZoom: 18,
-		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-			'<a href="https://creativecommons.org/licenses/by-sa/2.0/"></a>, ' +
-			'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-		id: 'mapbox.streets'
+  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    maxZoom: 18,
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+      '<a href="https://creativecommons.org/licenses/by-sa/2.0/"></a>, ' +
+      'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    id: 'mapbox.streets'
   }).addTo(map);
   var LeafIcon = L.Icon.extend({
     options: {
@@ -134,10 +146,10 @@ for( let i = 0; i < favs.length; i++){
 
 }
     
-	L.marker([${String(this.props.lat).slice(0, 9)}, ${String(this.props.long).slice(0, 10)}], {icon: starIcon}).addTo(map)
-		.bindPopup("<b>You are here</b><br />");
-	var popup = L.popup();
-	map.on('click', onMapClick);
+  L.marker([${String(this.props.lat).slice(0, 9)}, ${String(this.props.long).slice(0, 10)}], {icon: starIcon}).addTo(map)
+    .bindPopup("<b>You are here</b><br />");
+  var popup = L.popup();
+  map.on('click', onMapClick);
 </script>
 </body>`,
               }}
@@ -165,17 +177,3 @@ for( let i = 0; i < favs.length; i++){
     );
   }
 }
-var styles = StyleSheet.create({
-
-  button: {
-    alignSelf: 'stretch',
-    alignItems: 'center',
-    padding: 20,
-    backgroundColor: '#59cbbd',
-  },
-  btntext: {
-    color: '#fff',
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-});
