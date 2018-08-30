@@ -1,4 +1,4 @@
-//http://ec2-54-152-18-28.compute-1.amazonaws.com/getUserFavorites?id=${this.props.user.id}
+/* eslint-disable react/jsx-filename-extension */
 
 import React, { Component } from 'react';
 import {
@@ -24,7 +24,7 @@ export default class FavoriteMap extends Component {
     axios.get(`http://ec2-54-152-18-28.compute-1.amazonaws.com/getUserFavorites?id=${this.props.user.id}`, {
 
     }).then((favorites) => {
-    favs2 = JSON.stringify(favorites.data);
+      favs2 = JSON.stringify(favorites.data);
       console.warn(favorites.data);
       this.setState(prevState => ({
         favs: favorites.data,
@@ -55,10 +55,10 @@ export default class FavoriteMap extends Component {
     return (
       <View style={{ flex: 1 }}>
         <View style={{ flex: 1 }}>
-          {this.state.favs !== '' ? (
-<WebView
-            source={{
-              html: `
+          {favs2 !== '' ? (
+            <WebView
+              source={{
+                html: `
               <!DOCTYPE html>
 <html>
 <head>
@@ -119,15 +119,15 @@ for( let i = 0; i < favs.length; i++){
 	map.on('click', onMapClick);
 </script>
 </body>`,
-            }}
-            style={{ flex: 1 }}
-            scalesPageToFit
-            onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest} // for iOS
-            onNavigationStateChange={this.onShouldStartLoadWithRequest}
-            domStorageEnabled
+              }}
+  style={{ flex: 1 }}
+  scalesPageToFit
+  onShouldStartLoadWithRequest={this.onShouldStartLoadWithRequest} // for iOS
+  onNavigationStateChange={this.onShouldStartLoadWithRequest}
+  domStorageEnabled
           />
-)
-          :(
+          )
+            :(
             <View>
               <Text>Loading</Text>
             </View>
