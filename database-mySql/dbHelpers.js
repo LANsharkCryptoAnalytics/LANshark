@@ -87,7 +87,6 @@ const findUserFavorites = ((userId) => {
     },
   });
 });
-
 // creates a database entry for the  vieux carre
 // TODO: build out the function
 const createVcs = ((vcsInfo) => {
