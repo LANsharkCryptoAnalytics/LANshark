@@ -27,12 +27,10 @@ const styles = StyleSheet.create({
   },
   textinput: {
     backgroundColor: 'white',
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: 'black',
+    fontSize: 22,
     alignSelf: 'stretch',
-    height: 60,
-    marginBottom: 0,
+    height: 53,
+    marginBottom: 20,
     borderBottomColor: '#f8f8f8',
     borderBottomWidth: 1,
   },
@@ -68,7 +66,6 @@ export default class Login extends Component {
       password: '',
       loginPage: true,
       signupPage: false,
-      userId: null,
     };
 
     this._signup = this._signup.bind(this);
@@ -84,17 +81,16 @@ export default class Login extends Component {
 
   _submit() {
     const deployedServer = 'http://ec2-54-152-18-28.compute-1.amazonaws.com/login';
+
     axios({
       method: 'post',
       url: deployedServer,
       data: {
-        username: this.state.username,
         email: this.state.email,
         password: this.state.password,
       },
     })
       .then((response) => {
-        // console.warn(response.data)
         if (response.data.success === 'true') {
           this.props.user.id = response.data.user.id;
           this.props.arView();
@@ -124,7 +120,7 @@ export default class Login extends Component {
             <Text style={styles.btntext}>Login</Text>
           </TouchableOpacity>
 
-          <Text style={styles.signuptext} onPress={() => { this._signup() }}>Sign Up</Text>
+          <Text style={styles.signuptext} onPress={() => { this._signup() }}>Sign Up Here</Text>
         </View>)}
 
         {renderIf(this.state.signupPage,

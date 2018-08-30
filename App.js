@@ -44,6 +44,11 @@ let locationProgression = 1;
 let wideWiki = '';
 let narrowWiki = '';
 let wikiImage = '';
+//fixing a bug with asynch function calls
+if (typeof global.self === "undefined") {
+  global.self = global;
+}
+
 
 const localStyles = StyleSheet.create({
   outer: {
@@ -185,7 +190,7 @@ export default class ViroSample extends Component {
 
 
     // this._onShowObject = this._onShowObject.bind(this);
-    this._logIn = this._logIn.bind(this);
+    this._arView = this._arView.bind(this);
     this._signup = this._signup.bind(this);
     this._onSaveLocation = this._onSaveLocation.bind(this);
     this._onShowText = this._onShowText.bind(this);
@@ -209,8 +214,8 @@ export default class ViroSample extends Component {
       trackingInitialized: false,
       isLoading: false,
       posComp: true,
-      latitude: '29.97616921',
-      longitude: '-90.0764381',
+      latitude: 29.97616921,
+      longitude: -90.0764381,
       success: null,
       error: null,
       generalData: textArray,
@@ -230,7 +235,7 @@ export default class ViroSample extends Component {
     isARSupportedOnDevice(this._handleARNotSupported, this._handleARSupported);
   }
 
-  _logIn() {
+  _arView() {
     this.setState({
       isLoggedIn: true,
       nonUser: false,
@@ -498,7 +503,7 @@ export default class ViroSample extends Component {
       <View style={localStyles.outer}>
         {renderIf(!this.state.mapView && this.state.signupView,
           <View style={styles.login}>
-            <Signup _signup={this._signup} _logIn={this._logIn} user={user} />
+            <Signup _signup={this._signup} _arView={this._arView} user={user} />
           </View>)}
         {renderIf(this.state.mapView,
           <Map user={user} showMapView={this._showMapView} lat={this.state.latitude} long={this.state.longitude} />)}

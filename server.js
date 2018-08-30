@@ -1,5 +1,5 @@
 let passport = require('passport'),
-LocalStrategy = require('passport-local').Strategy;
+  LocalStrategy = require('passport-local').Strategy;
 const express = require('express');
 const bodyParser = require('body-parser');
 const hnocSearch = require('./hnocSearch.js');
@@ -185,11 +185,16 @@ app.post('/login', (req, res) => {
 
 app.post('/signup', (req, res) => {
   const userObject = req.body;
-  dbHelpers.findUserSignup(userObject)
+  dbHelpers.canUserSignup(userObject)
     .then((response) => {
-      if (response !== 'false') {
-        dbHelpers.hashPassword(userObject);
-        res.send('true');
+      if (response === 'true') {
+        dbHelpers.hashPassword(userObject, (err, user) => {
+          if (err) {
+            res.send('User not created');
+          } else {
+            res.send(user);
+          }
+        });
       } else {
         res.send('false');
       }
@@ -212,11 +217,11 @@ app.post('/addToFavorites', (req, res) => {
 });
 
 app.get('/getUserFavorites', (req, res) => {
+
   console.log('get all user favorites ');
   // console.log(req.query);
-  helpers.getAllUserFavorites(req.query.user)
+  helpers.getAllUserFavorites(req.query)
     .then((favorites) => {
-      console.log('server.js', favorites);
       res.send(favorites);
     })
     .catch((error) => {
