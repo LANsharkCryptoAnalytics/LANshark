@@ -10,6 +10,7 @@ import {
   View,
   StyleSheet,
   TouchableHighlight,
+  TouchableOpacity,
   Image,
   Alert,
 } from 'react-native';
@@ -28,7 +29,7 @@ import Map from './js/Map';
 import FavoriteMap from './js/FavoriteMap';
 import renderIf from './js/helpers/renderIf';
 
-// console.disableYellowBox = true;
+console.disableYellowBox = true;
 
 const InitialARScene = require('./js/ARHist');
 
@@ -58,6 +59,19 @@ const localStyles = StyleSheet.create({
   },
   container: {
     flex: 1,
+  },
+  button: {
+    // alignSelf: 'stretch',
+    alignItems: 'stretch',
+    // borderWidth: 1,
+    borderColor: '#333333',
+    padding: 33,
+    backgroundColor: '#ffee99',
+  },
+  btntext: {
+    color: '#333333',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   buttons: {
     height: 80,
@@ -129,7 +143,7 @@ export default class ViroSample extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        axios.get('http://ec2-34-238-240-14.compute-1.amazonaws.com/neighborhood', {
+        axios.get('http://ec2-54-152-18-28.compute-1.amazonaws.com/neighborhood', {
           params: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -153,7 +167,7 @@ export default class ViroSample extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        axios.get('http://ec2-34-238-240-14.compute-1.amazonaws.com/broad', {
+        axios.get('http://ec2-54-152-18-28.compute-1.amazonaws.com/broad', {
           params: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -355,7 +369,7 @@ export default class ViroSample extends Component {
     const notSaved = 'Sorry, We could\'nt Save the Information';
     let saveMessage;
 
-    axios.post('http://ec2-34-238-240-14.compute-1.amazonaws.com/addToFavorites', {
+    axios.post('http://ec2-54-152-18-28.compute-1.amazonaws.com/addToFavorites', {
       id: user.id,
       latitude: this.state.latitude,
       longitude: this.state.longitude,
@@ -365,8 +379,8 @@ export default class ViroSample extends Component {
       narrowWiki,
       wikiImage,
     })
-      .then(() => {
-        saveMessage = isSaved;
+      .then((res) => {
+        saveMessage = res.data;
         const currentProps = { ...this.state.viroAppProps };
         this.setState({
           viroAppProps: {
@@ -394,7 +408,7 @@ export default class ViroSample extends Component {
   }
 
   _onAttemptHNOC() {
-    axios.post('http://ec2-34-238-240-14.compute-1.amazonaws.com/', {
+    axios.post('http://ec2-54-152-18-28.compute-1.amazonaws.com/', {
       latitude: this.state.latitude,
       longitude: this.state.longitude,
     })
@@ -454,7 +468,7 @@ export default class ViroSample extends Component {
           longitude: position.coords.longitude,
           error: null,
         });
-        axios.get('http://ec2-34-238-240-14.compute-1.amazonaws.com/broad', {
+        axios.get('http://ec2-54-152-18-28.compute-1.amazonaws.com/broad', {
           params: {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
@@ -536,7 +550,7 @@ export default class ViroSample extends Component {
             </TouchableHighlight>
             <TouchableHighlight
               style={localStyles.buttons}
-              onPress={this._onDisplayDialog}
+              onPress={() => this._onShowText(0, dataCounter, 0)}
               underlayColor="#00000000"
             >
               <Image source={require('./js/res/MainBTTN.png')} />
@@ -548,6 +562,39 @@ export default class ViroSample extends Component {
             >
               <Image source={require('./js/res/right-gold-arrow.png')} />
             </TouchableHighlight>
+          </View>)}
+
+        {renderIf(!this.state.mapView && !this.state.favMapView,
+          <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+
+            <TouchableOpacity
+              style={localStyles.button} 
+              onPress={() => this._showMapView()}
+            >
+              <Text style={localStyles.btntext}>Map View</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={localStyles.button} onPress={() => this._onRemoveText()} >
+              <Text style={localStyles.btntext}>Next Location</Text>
+            </TouchableOpacity>
+
+            {renderIf(!this.state.isLoggedIn,
+              <TouchableOpacity style={localStyles.button} >
+                <Text
+                  style={localStyles.btntext}
+                  onPress={() => this._signup()}
+                >
+                Login
+                  </Text>
+              </TouchableOpacity>)}
+
+            {renderIf(this.state.isLoggedIn,
+              <TouchableOpacity
+                style={localStyles.button}
+                onPress={() => this._onSaveLocation(0, dataCounter, 0)}
+              >
+                <Text style={localStyles.btntext}>Save Location</Text>
+              </TouchableOpacity>)}
           </View>)}
       </View>
     );

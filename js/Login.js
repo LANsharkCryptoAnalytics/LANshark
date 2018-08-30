@@ -83,7 +83,7 @@ export default class Login extends Component {
   }
 
   _submit() {
-    const deployedServer = 'http://ec2-34-238-240-14.compute-1.amazonaws.com/login';
+    const deployedServer = 'http://ec2-54-152-18-28.compute-1.amazonaws.com/login';
     axios({
       method: 'post',
       url: deployedServer,
