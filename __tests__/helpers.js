@@ -16,38 +16,41 @@ const places= [
 
 
 test(`Get address`, () => {
-  const spy = jest.spyOn(helpers, 'searchByAddress')
+  const spy = jest.spyOn(helpers, 'searchByAddress');
   helpers.searchByAddress('1403 Washington Ave');
-    
-  expect(helpers.searchByAddress).toHaveBeenCalled()
-})
+  expect(helpers.searchByAddress).toHaveBeenCalled();
+});
+// TODO: Test to check if get address pull information for that actual address
+// Build here
+
+
 test(`Get neighborhood`, () => {
-  const spy = jest.spyOn(helpers, 'getNeighborhood')
+  const spy = jest.spyOn(helpers, 'getNeighborhood');
   helpers.getNeighborhood(29.92878, -90.08422);
-    
-  expect(helpers.getNeighborhood).toHaveBeenCalled()
-})
+  
+  expect(helpers.getNeighborhood).toHaveBeenCalled();
+});
 test(`Get neighborhood map`, () => {
-  const spy = jest.spyOn(helpers, 'getNeighborhoodMap')
+  const spy = jest.spyOn(helpers, 'getNeighborhoodMap');
   helpers.getNeighborhoodMap(29.92878, -90.08422);
     
-  expect(helpers.getNeighborhoodMap).toHaveBeenCalled()
-})
+  expect(helpers.getNeighborhoodMap).toHaveBeenCalled();
+});
 test(`Get full page`, () => {
-  const spy = jest.spyOn(helpers, 'getFullPage')
+  const spy = jest.spyOn(helpers, 'getFullPage');
   helpers.getFullPage('Garden Disctrict');
     
-  expect(helpers.getFullPage).toHaveBeenCalled()
-})
+  expect(helpers.getFullPage).toHaveBeenCalled();
+});
 test(`Search by title`, () => {
-  const spy = jest.spyOn(helpers, 'searchByTitle')
+  const spy = jest.spyOn(helpers, 'searchByTitle');
   helpers.searchByTitle('Garden District');
     
-  expect(helpers.searchByTitle).toHaveBeenCalled()
-})
+  expect(helpers.searchByTitle).toHaveBeenCalled();
+});
 test(`Search by address`, () => {
-  const spy = jest.spyOn(helpers, 'searchByAddress')
+  const spy = jest.spyOn(helpers, 'searchByAddress');
   helpers.searchByAddress('1403 Washington Ave');
     
-  expect(helpers.searchByAddress).toHaveBeenCalled()
-})
+  expect(helpers.searchByAddress).toHaveBeenCalled();
+});
