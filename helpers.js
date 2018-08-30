@@ -237,11 +237,11 @@ exports.searchByTitle = (titleInput) => {
 
 // addToUserFavorites
 exports.addToFavorites = (favorite) => {
-  db.addToUserFavorites(favorite)
+  return db.addToUserFavorites(favorite);
 };
 
 exports.getAllUserFavorites = (user) => {
-  db.findUserFavorites(user.id)
+  return db.findUserFavorites(user.id);
 };
 
 // ///////////////////////////////////////////////////////
