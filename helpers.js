@@ -1,7 +1,7 @@
 const axios = require('axios');
 const fetch = require('node-fetch');
 const scrapeIt = require('scrape-it');
-const db = require('./database-mySql/dbHelpers.js').default;
+const db = require('./database-mySql/dbHelpers.js');
 
 /**
  * format and parse the string from html
@@ -236,9 +236,13 @@ exports.searchByTitle = (titleInput) => {
 // //////////////////////////////////////////
 
 // addToUserFavorites
-exports.addToFavorites = favorite => db.addToUserFavorites(favorite);
+exports.addToFavorites = (favorite) => {
+  db.addToUserFavorites(favorite)
+};
 
-exports.getAllUserFavorites = user => db.findUserFavorites(user.id);
+exports.getAllUserFavorites = (user) => {
+  db.findUserFavorites(user.id)
+};
 
 // ///////////////////////////////////////////////////////
 // END OF USER RELATED FUNCTIONS                       //
