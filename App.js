@@ -44,6 +44,11 @@ let locationProgression = 1;
 let wideWiki = '';
 let narrowWiki = '';
 let wikiImage = '';
+//fixing a bug with asynch function calls
+if (typeof global.self === "undefined") {
+  global.self = global;
+}
+
 
 const localStyles = StyleSheet.create({
   outer: {
@@ -209,8 +214,8 @@ export default class ViroSample extends Component {
       trackingInitialized: false,
       isLoading: false,
       posComp: true,
-      latitude: '29.97616921',
-      longitude: '-90.0764381',
+      latitude: 29.97616921,
+      longitude: -90.0764381,
       success: null,
       error: null,
       generalData: textArray,
