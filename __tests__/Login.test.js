@@ -58,29 +58,28 @@ LoginComp._signup();
 expect(LoginComp.state.loginPage).toBeFalsy();
 });
 
-test('_Login() promise should return an object', () => {
-  const LoginComp = renderer.create(
-    <Login />
-  ).getInstance();
-  expect.assertions(1);
-  return LoginComp._submit().then((response) => {
-    expect(typeof response).toEqual('object');
-  });
-});
+// test('_Login() promise should return an object', () => {
+//   const LoginComp = renderer.create(
+//     <Login />
+//   ).getInstance();
+//   expect.assertions(1);
+//   return LoginComp._submit().then((response) => {
+//     expect(typeof response).toEqual('object');
+//   });
+// });
 
-test('response.data to be truthy', () => {
-  const LoginComp = renderer.create(
-    <Login />
-  ).getInstance();
-  expect.assertions(1);
-  return LoginComp._signin().then((response) => {
-    expect(response.data).toBeTruthy();
-  });
-});
+// test('response.data to be truthy', () => {
+//   const LoginComp = renderer.create(
+//     <Login />
+//   ).getInstance();
+//   return LoginComp._signup().then((response) => {
+//     expect(response.data).toBeTruthy();
+//   });
+// });
 
-test('signupPage in state should be true when _signupPage is called', () => {
-  const SignComp = renderer.create(
-    <Login />
-  ).getInstance();
-expect(typeof SignComp.styles).toBe('object');
-});
+// test('signupPage in state should be true when _signupPage is called', () => {
+//   const LoginComp = renderer.create(
+//     <Login />
+//   ).getInstance();
+// expect(typeof LoginComp.styles).toEqual('object');
+// });
