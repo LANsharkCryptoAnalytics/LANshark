@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#59cbbd',
+    backgroundColor: '#ffee99',
   },
   btntext: {
     color: '#fff',
