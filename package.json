@@ -50,15 +50,15 @@
     "babel-register": "^6.26.0",
     "babel-tape-runner": "^2.0.1",
     "editorconfig-tools": "^0.1.1",
-    "jest": "^23.5.0",
-    "react-test-renderer": "16.3.1"
+    "jest": "23.5.0",
+    "react-test-renderer": "^16.4.2"
   },
   "jest": {
-    "collectCoverage": true,
+    "collectCoverage": false,
     "collectCoverageFrom": [
       "**/*.{js,jsx}",
       "!**/node_modules/**",
-      "!**/js/**",
+      "!**/coverage/**",
       "!**index.js**",
       "!**App.js**"
     ],
