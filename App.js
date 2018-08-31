@@ -246,6 +246,9 @@ export default class ViroSample extends Component {
     this.setState({
       signupView: true,
     });
+    if (this.state.mapView) {
+      this.setState({ mapView: false });
+    }
   }
 
   _showMapView() {
@@ -601,7 +604,9 @@ export default class ViroSample extends Component {
           </View>,
         )}
 
-        {renderIf(!this.state.mapView && !this.state.favMapView,
+        {renderIf(!this.state.mapView
+        && !this.state.favMapView
+        && !this.state.signupView,
           <View style={{
             backgroundColor: '#ffee99',
             flexDirection: 'row',
