@@ -60,7 +60,12 @@
       "**/*.{js,jsx}",
       "!**/node_modules/**",
       "!**/coverage/**",
+      "!**rn-cli.config.js**",
+      "!**/database-mySql/config.js**",
+      "!**config.js**",
+      "!**hnocSearch.js**",
       "!**index.js**",
+      "!**/js/ARHist.js**",
       "!**App.js**"
     ],
     "preset": "react-native"
