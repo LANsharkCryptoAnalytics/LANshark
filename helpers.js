@@ -2,7 +2,7 @@ const axios = require('axios');
 const fetch = require('node-fetch');
 const scrapeIt = require('scrape-it');
 const db = require('./database-mySql/dbHelpers.js');
-
+require('dotenv').config();
 /**
  * format and parse the string from html
  * @param {String} text the string to format
@@ -205,9 +205,9 @@ exports.getPOINarrow = (lat, long) => axios.get(`https://en.wikipedia.org/w/api.
  * @param {String} lat the latitude of the current location
  * @param {String} long the longitude of the current location
  * @returns {function} the axios get request for mapquest
+ * https://www.mapquestapi.com/geocoding/v1/reverse?key=ltRCsaZ5plzozbdFqEmQ3skrHufmSx76&location=29.97616921%2C-90.0764381&outFormat=json&thumbMaps=false
  */
-exports.getAddress = (lat, long) => axios.get(`https://www.mapquestapi.com/geocoding/v1/reverse?key=${process.env.MAPQUESTKEY}&location=${lat}%2C${long}&outFormat=json&thumbMaps=false`);
-// https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=1403+Washington+Ave
+exports.getAddress = (lat, long) => axios.get(`https://us1.locationiq.com/v1/reverse.php?key=${process.env.LOCIQ}&lat=${lat}&lon=${long}&format=json`);
 
 
 /**
@@ -220,7 +220,7 @@ exports.searchByAddress = (address) => {
   return axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${add}+New+Orleans`);
 };
 
-//exports.searchHnoc = searchString => db.hnocSearch(searchString);
+// exports.searchHnoc = searchString => db.hnocSearch(searchString);
 /**
  * gets a search results from wikipedia by title
  * @param {String} titleInput the title to search
