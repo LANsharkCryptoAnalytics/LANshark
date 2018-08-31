@@ -61,16 +61,17 @@ const localStyles = StyleSheet.create({
   },
   button: {
     // alignSelf: 'stretch',
-    alignItems: 'stretch',
+    // alignItems: 'stretch',
     // borderWidth: 1,
     borderColor: '#333333',
-    padding: 33,
+    padding: 10,
     backgroundColor: '#ffee99',
   },
   btntext: {
     color: '#333333',
     fontSize: 16,
     fontWeight: 'bold',
+    // alignContent: 'center',
   },
   buttons: {
     height: 80,
@@ -567,9 +568,9 @@ export default class ViroSample extends Component {
           && !this.state.signupView,
           <View style={{
             position: 'absolute',
-            left: 50,
+            left: 70,
             right: 0,
-            bottom: 77,
+            bottom: 70,
             alignItems: 'center',
             flex: 1,
             flexDirection: 'row',
@@ -601,7 +602,13 @@ export default class ViroSample extends Component {
         )}
 
         {renderIf(!this.state.mapView && !this.state.favMapView,
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <View style={{
+            backgroundColor: '#ffee99',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+          >
 
             <TouchableOpacity
               style={localStyles.button}
