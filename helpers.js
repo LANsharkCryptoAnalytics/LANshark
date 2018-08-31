@@ -220,7 +220,7 @@ exports.searchByAddress = (address) => {
   return axios.get(`https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${add}+New+Orleans`);
 };
 
-exports.searchHnoc = searchString => db.hnocSearch(searchString);
+//exports.searchHnoc = searchString => db.hnocSearch(searchString);
 /**
  * gets a search results from wikipedia by title
  * @param {String} titleInput the title to search
