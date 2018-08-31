@@ -5,7 +5,8 @@
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "server": "node server.js",
-    "test": "jest --watchAll"
+    "test": "jest --coverage",
+    "testwatch": "jest --watchAll"
   },
   "dependencies": {
     "axios": "^0.18.0",
