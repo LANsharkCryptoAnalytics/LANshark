@@ -33,7 +33,6 @@ const styles = StyleSheet.create({
 export default class Map extends Component {
   // constructor(props) {
   //   super(props);
-
   // }
 
   render() {
@@ -51,7 +50,12 @@ export default class Map extends Component {
             geolocationEnabled
           />
         </View>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          backgroundColor: '#ffee99',
+        }}
+        >
           <TouchableOpacity
             style={styles.button}
             onPress={() => { this.props.showMapView(); }}
