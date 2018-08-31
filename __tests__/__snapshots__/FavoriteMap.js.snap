@@ -39,7 +39,7 @@ exports[`renders correctly 1`] = `
         Object {
           "alignItems": "center",
           "alignSelf": "stretch",
-          "backgroundColor": "#59cbbd",
+          "backgroundColor": "#ffee99",
           "opacity": 1,
           "padding": 20,
         }
