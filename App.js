@@ -499,7 +499,7 @@ export default class ViroSample extends Component {
           <View style={styles.login}>
             <Signup _signup={this._signup} _arView={this._arView} user={user} />
           </View>)}
-        {renderIf(this.state.mapView,
+        {renderIf(this.state.mapView && !this.state.favMapView,
           <Map
             _signup={this._signup}
             user={user}
@@ -615,7 +615,7 @@ export default class ViroSample extends Component {
             </TouchableOpacity>
 
             {renderIf(!this.state.isLoggedIn,
-              <TouchableOpacity style={localStyles.button} onPress={() => this._signup()}> 
+              <TouchableOpacity style={localStyles.button} onPress={() => this._signup()}>
                 <Text
                   style={localStyles.btntext}
                 >
