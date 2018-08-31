@@ -1,0 +1,239 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login snapShot 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "alignSelf": "center",
+    }
+  }
+>
+  <View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Object {
+          "borderBottomColor": "#199187",
+          "borderBottomWidth": 1,
+          "color": "#fff",
+          "fontSize": 40,
+          "fontWeight": "bold",
+          "marginBottom": 40,
+          "paddingBottom": 10,
+          "textAlign": "center",
+        }
+      }
+    >
+      Welcome to AR History Tour
+    </Text>
+    <TextInput
+      allowFontScaling={true}
+      onChangeText={[Function]}
+      placeholder="   Email"
+      style={
+        Object {
+          "alignSelf": "stretch",
+          "backgroundColor": "white",
+          "borderBottomColor": "#f8f8f8",
+          "borderBottomWidth": 1,
+          "fontSize": 22,
+          "height": 53,
+          "marginBottom": 20,
+        }
+      }
+    />
+    <TextInput
+      allowFontScaling={true}
+      onChangeText={[Function]}
+      placeholder="   Password"
+      secureTextEntry={true}
+      style={
+        Object {
+          "alignSelf": "stretch",
+          "backgroundColor": "white",
+          "borderBottomColor": "#f8f8f8",
+          "borderBottomWidth": 1,
+          "fontSize": 22,
+          "height": 53,
+          "marginBottom": 20,
+        }
+      }
+    />
+    <View
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "alignSelf": "stretch",
+          "backgroundColor": "#59cbbd",
+          "marginTop": 30,
+          "opacity": 1,
+          "padding": 20,
+        }
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Object {
+            "color": "#fff",
+            "fontSize": 20,
+            "fontWeight": "bold",
+          }
+        }
+      >
+        Sign Up
+      </Text>
+    </View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Object {
+          "alignSelf": "stretch",
+          "color": "#fff",
+          "fontSize": 20,
+          "fontWeight": "bold",
+          "marginTop": 30,
+          "textAlign": "center",
+        }
+      }
+    >
+      Login Here
+    </Text>
+  </View>
+</View>
+`;
+
+exports[`Signup snapShot 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "alignSelf": "center",
+    }
+  }
+>
+  <View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      style={
+        Object {
+          "borderBottomColor": "#199187",
+          "borderBottomWidth": 1,
+          "color": "#fff",
+          "fontSize": 40,
+          "fontWeight": "bold",
+          "marginBottom": 40,
+          "paddingBottom": 10,
+          "textAlign": "center",
+        }
+      }
+    >
+      Welcome to AR History Tour
+    </Text>
+    <TextInput
+      allowFontScaling={true}
+      onChangeText={[Function]}
+      placeholder="   Email"
+      style={
+        Object {
+          "alignSelf": "stretch",
+          "backgroundColor": "white",
+          "borderBottomColor": "#f8f8f8",
+          "borderBottomWidth": 1,
+          "fontSize": 22,
+          "height": 53,
+          "marginBottom": 20,
+        }
+      }
+    />
+    <TextInput
+      allowFontScaling={true}
+      onChangeText={[Function]}
+      placeholder="   Password"
+      secureTextEntry={true}
+      style={
+        Object {
+          "alignSelf": "stretch",
+          "backgroundColor": "white",
+          "borderBottomColor": "#f8f8f8",
+          "borderBottomWidth": 1,
+          "fontSize": 22,
+          "height": 53,
+          "marginBottom": 20,
+        }
+      }
+    />
+    <View
+      accessible={true}
+      isTVSelectable={true}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "alignItems": "center",
+          "alignSelf": "stretch",
+          "backgroundColor": "#59cbbd",
+          "marginTop": 30,
+          "opacity": 1,
+          "padding": 20,
+        }
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        ellipsizeMode="tail"
+        style={
+          Object {
+            "color": "#fff",
+            "fontSize": 20,
+            "fontWeight": "bold",
+          }
+        }
+      >
+        Sign Up
+      </Text>
+    </View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Object {
+          "alignSelf": "stretch",
+          "color": "#fff",
+          "fontSize": 20,
+          "fontWeight": "bold",
+          "marginTop": 30,
+          "textAlign": "center",
+        }
+      }
+    >
+      Login Here
+    </Text>
+  </View>
+</View>
+`;
