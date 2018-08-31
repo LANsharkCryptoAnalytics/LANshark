@@ -10,22 +10,77 @@ test('Login snapShot', () => {
 expect(snap).toMatchSnapshot();
 });
 
-test('expect login to be a function', () => {
-  expect(typeof Login).toEqual('function');
+test('Email in state should be an empty string', () => {
+  const LoginComp = renderer.create(
+    <Login />
+  ).getInstance();
+
+expect(LoginComp.state.email).toBe('');
 });
 
-test('expect login to be defined', () => {
-  expect(Login).toBeDefined();
+test('Password in state should be an empty string', () => {
+  const LoginComp = renderer.create(
+    <Login />
+  ).getInstance();
+
+expect(LoginComp.state.password).toBe('');
 });
 
-test('expect state to be empty', () => {
-  expect(Login._submit).toBeDefined();
+test('loginPage in state should be true', () => {
+  const LoginComp = renderer.create(
+    <Login />
+  ).getInstance();
+
+expect(LoginComp.state.loginPage).toBeTruthy();
 });
 
-// test('expect the return of submit to be an object', () => {
-//   expect.assertions(1);
-//   return Login._submit()
-//     .then((data) => {
-//       expect(typeof data).toEqual('object');
-//   });
-// });
+test('signupPage in state should be false', () => {
+  const LoginComp = renderer.create(
+    <Login />
+  ).getInstance();
+
+expect(LoginComp.state.signupPage).toBeFalsy();
+});
+
+test('signupPage in state should be true when _signupPage() is called', () => {
+  const LoginComp = renderer.create(
+    <Login />
+  ).getInstance();
+LoginComp._signup();
+expect(LoginComp.state.signupPage).toBeTruthy();
+});
+
+test('loginPage in state should be false when _signupPage() is called', () => {
+  const LoginComp = renderer.create(
+    <Login />
+  ).getInstance();
+LoginComp._signup();
+expect(LoginComp.state.loginPage).toBeFalsy();
+});
+
+test('_Login() promise should return an object', () => {
+  const LoginComp = renderer.create(
+    <Login />
+  ).getInstance();
+  expect.assertions(1);
+  return LoginComp._submit().then((response) => {
+    expect(typeof response).toEqual('object');
+  });
+});
+
+test('response.data to be truthy', () => {
+  const LoginComp = renderer.create(
+    <Login />
+  ).getInstance();
+  expect.assertions(1);
+  return LoginComp._signin().then((response) => {
+    expect(response.data).toBeTruthy();
+  });
+});
+
+test('signupPage in state should be true when _signupPage is called', () => {
+  const SignComp = renderer.create(
+    <Login />
+  ).getInstance();
+expect(typeof SignComp.styles).toBe('object');
+});

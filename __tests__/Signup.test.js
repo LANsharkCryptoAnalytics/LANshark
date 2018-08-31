@@ -15,7 +15,7 @@ test('Email in state should be an empty string', () => {
     <Signup />
   ).getInstance();
 
-expect(SignComp.state.email).toBeFalsy();
+expect(SignComp.state.email).toBe('');
 });
 
 test('Password in state should be an empty string', () => {
@@ -79,19 +79,15 @@ test('_signup() should return an object', (done) => {
     <Signup />
   ).getInstance();
   expect.assertions(1);
-  return SignComp._signin().then((data) => {
-    expect(typeof data).toEqual('object');
+  return SignComp._signin().then((response) => {
+    expect(typeof response.data).toBe('object');
     done();
   });
 });
 
-test('signupPage in state should be true when _loginPage is called', (done) => {
+test('signupPage in state should be true when _signupPage is called', () => {
   const SignComp = renderer.create(
     <Signup />
   ).getInstance();
-  expect.assertions(1);
-  return SignComp._signin().then((data) => {
-    expect(data.response).toBeTruthy();
-    done();
-  });
+expect(typeof SignComp.styles).toBeTruthy();
 });
