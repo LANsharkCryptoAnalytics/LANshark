@@ -1,8 +1,8 @@
-let passport = require('passport'),
-  LocalStrategy = require('passport-local').Strategy;
+const passport = require('passport');
+// const LocalStrategy = require('passport-local').Strategy;
 const express = require('express');
 const bodyParser = require('body-parser');
-const hnocSearch = require('./hnocSearch.js');
+// const hnocSearch = require('./hnocSearch.js');
 const helpers = require('./helpers.js');
 const dbHelpers = require('./database-mySql/dbHelpers');
 const db = require('./database-mySql/index.js');
@@ -21,7 +21,6 @@ app.get('/', (req, res) => {
 });
 
 app.get('/vcs', (req, res) => {
-  console.log('vcs endpoint hit');
   res.send('vcs endpoint');
 });
 
@@ -101,10 +100,10 @@ app.get('/broad', (req, res) => {
   helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
     // find the places nearby that aren't neighborhoods
     const placesNearby = helpers.formatNeighborhoodData(json).filter(place => (place.type !== 'neighborhood' && place.type !== 'unincorporated community'));
-    placesNearby.forEach((_place, i) => {
-      if (placesNearby[i + 1]) {
-        if (placesNearby[i].title === placesNearby[i + 1].title) {
-          placesNearby.splice(i + 1, 1);
+    placesNearby.forEach((_place, j) => {
+      if (placesNearby[j + 1]) {
+        if (placesNearby[j].title === placesNearby[j + 1].title) {
+          placesNearby.splice(j + 1, 1);
         }
       }
     });
@@ -179,7 +178,7 @@ app.post('/login', (req, res) => {
       }
     })
     .catch((error) => {
-      console.error(error);
+      throw error;
     });
 });
 
@@ -204,32 +203,24 @@ app.post('/signup', (req, res) => {
 
 // Endpoint to allow a logged in user to save favorite locations or points of interest
 app.post('/addToFavorites', (req, res) => {
-  console.log('add to user favorites');
-  console.log(req.body);
   helpers.addToFavorites(req.body)
     .then(() => {
-      console.log('saved');
       res.send('Location Information Saved!');
     })
-    .catch(() => {
-      console.log('error saving');
+    .catch((error) => {
+      throw error;
     });
 });
 
 app.get('/getUserFavorites', (req, res) => {
-
-  console.log('get all user favorites ');
-  // console.log(req.query);
   helpers.getAllUserFavorites(req.query)
     .then((favorites) => {
       res.send(favorites);
     })
     .catch((error) => {
-      console.log('error retrieving favorites', error);
+      throw error;
     });
 });
-// helpers.searchByTitle('Garden District, New Orleans');
-// helpers.getFullPage('Garden District, New Orleans');
 
 app.listen(8200, () => {
   console.log('App listening on port 8200');

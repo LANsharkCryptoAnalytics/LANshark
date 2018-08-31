@@ -500,7 +500,7 @@ export default class ViroSample extends Component {
           <View style={styles.login}>
             <Signup _signup={this._signup} _arView={this._arView} user={user} />
           </View>)}
-        {renderIf(this.state.mapView,
+        {renderIf(this.state.mapView && !this.state.favMapView,
           <Map
             _signup={this._signup}
             user={user}
