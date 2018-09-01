@@ -120,7 +120,7 @@ exports.formatNeighborhoodData = ((json) => {
     if (currPlace.image) {
       wikiImage = currPlace.image.value;
     }
-    if (currPlace.coord) {
+    if (currPlace.coordinate_location) {
       coord = currPlace.coordinate_location.value.slice(6, -1);
     }
     // check for distance
@@ -138,7 +138,7 @@ exports.formatNeighborhoodData = ((json) => {
           wideWiki,
           narrowWiki,
           wikiImage,
-        })
+        });
       }
     }
   });
