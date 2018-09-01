@@ -35,12 +35,12 @@ app.get('/neighborhood', (req, res) => {
   // 29.976169,-90.076438
   // req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)
   const i = 0;
-  let lat = req.query.latitude.slice(0, 9);
-  let long = req.query.longitude.slice(0, 10);
+  let lat = '29.928714'.slice(0, 9);
+  let long = '-90.076438'.slice(0, 10);
   helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
     // find the neighborhoods
     const neighborhoods = helpers.formatNeighborhoodData(json).filter(placeNearby => placeNearby.type === 'neighborhood');
-    if (neighborhoods.length === 0) { res.send({ content: 'sorry there are no neighborhood results in your area' }); }
+    if (neighborhoods.length === 0) { res.send({ content: ['sorry there are no neighborhood results in your area'] }); }
     if (neighborhoods[i]) {
       if (neighborhoods[i].coord) {
         long = neighborhoods[i].coord.split(' ')[0];
@@ -112,7 +112,7 @@ app.get('/broad', (req, res) => {
           }
         }
       });
-      if (!placesNearby) { res.send({ content: 'sorry there are no results in your area' }); }
+      if (!placesNearby) { res.send({ content: ['sorry there are no results in your area'] }); }
       if (placesNearby) {
         if (placesNearby[i].coord) {
           long = placesNearby[i].coord.split(' ')[0];
@@ -150,7 +150,7 @@ app.get('/broad', (req, res) => {
                         res.send(placesNearby[i]);
                       }).catch((error) => { throw error; });
                   }
-                });
+                }).catch((error) => { throw error; });
             }
           }).catch((error) => { throw error; });
       }

@@ -138,7 +138,7 @@ exports.formatNeighborhoodData = ((json) => {
           wideWiki,
           narrowWiki,
           wikiImage,
-        })
+        });
       }
     }
   });
