@@ -40,8 +40,8 @@ app.get('/neighborhood', (req, res) => {
   helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
     // find the neighborhoods
     const neighborhoods = helpers.formatNeighborhoodData(json).filter(placeNearby => placeNearby.type === 'neighborhood');
-    if (!neighborhoods) { res.send({ content: 'sorry there are no results in your area' }); }
-    if (neighborhoods) {
+    if (neighborhoods.length === 0) { res.send({ content: 'sorry there are no neighborhood results in your area' }); }
+    if (neighborhoods[i]) {
       if (neighborhoods[i].coord) {
         long = neighborhoods[i].coord.split(' ')[0];
         lat = neighborhoods[i].coord.split(' ')[1];
@@ -78,7 +78,7 @@ app.get('/neighborhood', (req, res) => {
                       res.send(neighborhoods[i]);
                     }).catch((error) => { throw error; });
                 }
-              });
+              }).catch((error) => { throw error; });
           }
         }).catch((error) => { throw error; });
     }
@@ -96,8 +96,9 @@ app.get('/broad', (req, res) => {
   // 29.928714, -90.001709
   // 37.569120, 126.978533
   // 8.9800689 38.7989319;
+  // 29.921729,-89.9945913
   let lat = req.query.latitude.slice(0, 9);
-  let long =req.query.longitude.slice(0, 10);
+  let long = req.query.longitude.slice(0, 10);
   let city = '_New_Orleans';
   helpers.getAddress(lat, long).then((info) => {
     city = `_${ info.data.address.city.split(' ').join('_')}`;

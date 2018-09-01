@@ -107,7 +107,7 @@ exports.formatNeighborhoodData = ((json) => {
     let wideWiki = '';
     let narrowWiki = '';
     let wikiImage = '';
-
+    let coord = '';
     // check for instance of label
     if (currPlace.instance_ofLabel !== undefined) {
       type = currPlace.instance_ofLabel.value;
@@ -120,6 +120,9 @@ exports.formatNeighborhoodData = ((json) => {
     if (currPlace.image) {
       wikiImage = currPlace.image.value;
     }
+    if (currPlace.coord) {
+      coord = currPlace.coordinate_location.value.slice(6, -1);
+    }
     // check for distance
     if (currPlace.dist !== undefined) {
       dist = currPlace.dist.value;
@@ -129,13 +132,13 @@ exports.formatNeighborhoodData = ((json) => {
       if (currPlace.placeLabel) {
         places.push({
           title: currPlace.placeLabel.value,
-          coord: currPlace.coordinate_location.value.slice(6, -1),
+          coord,
           dist,
           type,
           wideWiki,
           narrowWiki,
           wikiImage,
-        });
+        })
       }
     }
   });
