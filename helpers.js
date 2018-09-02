@@ -208,7 +208,7 @@ exports.getPOINarrow = (lat, long) => axios.get(`https://en.wikipedia.org/w/api.
  * @param {String} lat the latitude of the current location
  * @param {String} long the longitude of the current location
  * @returns {function} the axios get request for mapquest
- * https://www.mapquestapi.com/geocoding/v1/reverse?key=ltRCsaZ5plzozbdFqEmQ3skrHufmSx76&location=29.97616921%2C-90.0764381&outFormat=json&thumbMaps=false
+ * https://www.mapquestapi.com/geocoding/v1/reverse?key==${process.env.LOCIQ}&location=29.97616921%2C-90.0764381&outFormat=json&thumbMaps=false
  */
 exports.getAddress = (lat, long) => axios.get(`https://us1.locationiq.com/v1/reverse.php?key=${process.env.LOCIQ}&lat=${lat}&lon=${long}&format=json`);
 
