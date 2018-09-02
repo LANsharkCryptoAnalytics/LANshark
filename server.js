@@ -34,7 +34,7 @@ app.get('/neighborhood', (req, res) => {
   // 29.928714, -90.001709
   // 29.976169,-90.076438
   // req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)
-  const i = 0;
+  let i = 0;
   let lat =  req.query.latitude.slice(0, 9);
   let long = req.query.longitude.slice(0, 10);
   helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
@@ -102,13 +102,13 @@ app.get('/broad', (req, res) => {
   let long = req.query.longitude.slice(0, 10);
   let city = '_New_Orleans';
   helpers.getAddress(lat, long).then((info) => {
-    if(info.data.address.city){
-    city = `_${ info.data.address.city.split(' ').join('_')}`;
+    if (info.data.address.city) {
+      city = `_${info.data.address.city.split(' ').join('_')}`;
     }
     helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
       // find the places nearby that aren't neighborhoods
       const placesNearby = helpers.formatNeighborhoodData(json).filter(place => (place.type !== 'neighborhood' && place.type !== 'unincorporated community'));
-      if(placesNearby.length > 0){ i = 0; }
+      if (placesNearby.length < 1) { i = 0; }
       placesNearby.forEach((_place, j) => {
         if (placesNearby[j + 1]) {
           if (placesNearby[j].title === placesNearby[j + 1].title) {
