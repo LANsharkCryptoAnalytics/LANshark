@@ -91,7 +91,8 @@ app.get('/broad', (req, res) => {
   // req.query.i the current index passed from the client
   // req.query.latitude, req.query.longitude
   // '29.97616921','-90.0764381'
-  const i = req.query.i ? req.query.i : 0;
+  console.log(req.query.i);
+  let i = req.query.i || 0;
   // 29.976169,-90.076438
   // 29.928714, -90.001709
   // 37.569120, 126.978533
@@ -101,10 +102,13 @@ app.get('/broad', (req, res) => {
   let long = req.query.longitude.slice(0, 10);
   let city = '_New_Orleans';
   helpers.getAddress(lat, long).then((info) => {
+    if(info.data.address.city){
     city = `_${ info.data.address.city.split(' ').join('_')}`;
+    }
     helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
       // find the places nearby that aren't neighborhoods
       const placesNearby = helpers.formatNeighborhoodData(json).filter(place => (place.type !== 'neighborhood' && place.type !== 'unincorporated community'));
+      if(placesNearby.length > 0){ i = 0; }
       placesNearby.forEach((_place, j) => {
         if (placesNearby[j + 1]) {
           if (placesNearby[j].title === placesNearby[j + 1].title) {
@@ -112,8 +116,8 @@ app.get('/broad', (req, res) => {
           }
         }
       });
-      if (!placesNearby) { res.send({ content: ['sorry there are no results in your area'] }); }
-      if (placesNearby) {
+      if (placesNearby.length === 0) { res.send({ content: ['sorry there are no results in your area'] }); }
+      if (placesNearby[i]) {
         if (placesNearby[i].coord) {
           long = placesNearby[i].coord.split(' ')[0];
           lat = placesNearby[i].coord.split(' ')[1];
