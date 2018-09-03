@@ -40,8 +40,7 @@ app.get('/neighborhood', (req, res) => {
   helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
     // find the neighborhoods
     const neighborhoods = helpers.formatNeighborhoodData(json).filter(placeNearby => placeNearby.type === 'neighborhood');
-    if (neighborhoods.length === 0){ 
-      res.send({ content: ['sorry there are no results in your area'] }); }
+    if (neighborhoods.length === 0) { res.send({ content: ['false'] }); }
     if (neighborhoods[i]) {
       if (neighborhoods[i].coord) {
         long = neighborhoods[i].coord.split(' ')[0];
