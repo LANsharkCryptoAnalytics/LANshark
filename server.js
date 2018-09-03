@@ -34,14 +34,14 @@ app.get('/neighborhood', (req, res) => {
   // 29.928714, -90.001709
   // 29.976169,-90.076438
   // req.query.latitude.slice(0,9), req.query.longitude.slice(0,10)
-  const i = 0;
-  let lat = req.query.latitude.slice(0, 9);
+  let i = 0;
+  let lat =  req.query.latitude.slice(0, 9);
   let long = req.query.longitude.slice(0, 10);
   helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
     // find the neighborhoods
     const neighborhoods = helpers.formatNeighborhoodData(json).filter(placeNearby => placeNearby.type === 'neighborhood');
-    if (!neighborhoods) { res.send({ content: 'sorry there are no results in your area' }); }
-    if (neighborhoods) {
+    if (neighborhoods.length === 0) { res.send({ content: ['sorry there are no neighborhood results in your area'] }); }
+    if (neighborhoods[i]) {
       if (neighborhoods[i].coord) {
         long = neighborhoods[i].coord.split(' ')[0];
         lat = neighborhoods[i].coord.split(' ')[1];
@@ -78,13 +78,12 @@ app.get('/neighborhood', (req, res) => {
                       res.send(neighborhoods[i]);
                     }).catch((error) => { throw error; });
                 }
-              });
+              }).catch((error) => { throw error; });
           }
         }).catch((error) => { throw error; });
     }
   }).catch((error) => { throw error; });
 });
-
 /**
  *  Endpoint for retrieving broad information about the users current location
  */
@@ -92,63 +91,74 @@ app.get('/broad', (req, res) => {
   // req.query.i the current index passed from the client
   // req.query.latitude, req.query.longitude
   // '29.97616921','-90.0764381'
-  const i = req.query.i ? req.query.i : 0;
+  console.log(req.query.i);
+  let i = req.query.i || 0;
   // 29.976169,-90.076438
   // 29.928714, -90.001709
+  // 37.569120, 126.978533
+  // 8.9800689 38.7989319;
+  // 29.921729,-89.9945913
   let lat = req.query.latitude.slice(0, 9);
   let long = req.query.longitude.slice(0, 10);
-  helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
-    // find the places nearby that aren't neighborhoods
-    const placesNearby = helpers.formatNeighborhoodData(json).filter(place => (place.type !== 'neighborhood' && place.type !== 'unincorporated community'));
-    placesNearby.forEach((_place, j) => {
-      if (placesNearby[j + 1]) {
-        if (placesNearby[j].title === placesNearby[j + 1].title) {
-          placesNearby.splice(j + 1, 1);
-        }
-      }
-    });
-    if (!placesNearby) { res.send({ content: 'sorry there are no results in your area' }); }
-    if (placesNearby) {
-      if (placesNearby[i].coord) {
-        long = placesNearby[i].coord.split(' ')[0];
-        lat = placesNearby[i].coord.split(' ')[1];
-      }
-      // set the city
-      const city = '_New_Orleans';
-      // filter out empty types
-      const descs = placesNearby[i].type === '' ? [placesNearby[i].title] : [placesNearby[i].title, placesNearby[i].type];
-      const city2 = city.replace(/_/g, ' ').trim();
-      // get the full page for the current place in current city
-      helpers.getFullPage(`${placesNearby[i].title},${city}`)
-        .then(({ data }) => {
-          const resultsNO = helpers.formatResults(data.paragraph);
-          // check for short results and only results in current city
-          if (resultsNO.join().length > 50 && resultsNO.join().includes(city2)) {
-            placesNearby[i].content = descs.concat(resultsNO);
-            res.send(placesNearby[i]);
-          } else { // search for the wikipedia article with the name without appended city
-            helpers.getFullPage(placesNearby[i].title)
-              .then(({ data }) => {
-                const results = helpers.formatResults(data.paragraph);
-                // check for short reaults and only results in current city
-                if (results.join().length > 50 && results.join().includes(city2)) {
-                  placesNearby[i].content = descs.concat(results);
-                  res.send(placesNearby[i]);
-                } else {
-                  // search for wikipedia article using generator search
-                  helpers.getPOINarrow(lat, long)
-                    .then((stuff) => {
-                      const resultsPOI = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ''));
-                      if (resultsPOI.includes(placesNearby[i].title)) {
-                        placesNearby[i].content = descs.concat(resultsPOI);
-                      } else { placesNearby[i].content = descs; }
-                      res.send(placesNearby[i]);
-                    }).catch((error) => { throw error; });
-                }
-              });
-          }
-        }).catch((error) => { throw error; });
+  let city = '_New_Orleans';
+  helpers.getAddress(lat, long).then((info) => {
+    if (info.data.address.city) {
+      city = `_${info.data.address.city.split(' ').join('_')}`;
     }
+    helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
+      // find the places nearby that aren't neighborhoods
+      const placesNearby = helpers.formatNeighborhoodData(json).filter(place => (place.type !== 'neighborhood' && place.type !== 'unincorporated community'));
+      if (placesNearby.length < 1) { i = 0; }
+      placesNearby.forEach((_place, j) => {
+        if (placesNearby[j + 1]) {
+          if (placesNearby[j].title === placesNearby[j + 1].title) {
+            placesNearby.splice(j + 1, 1);
+          }
+        }
+      });
+      if (placesNearby.length === 0) { res.send({ content: ['sorry there are no results in your area'] }); }
+      if (placesNearby[i]) {
+        if (placesNearby[i].coord) {
+          long = placesNearby[i].coord.split(' ')[0];
+          lat = placesNearby[i].coord.split(' ')[1];
+        }
+        // set the city
+
+        // filter out empty types
+        const descs = placesNearby[i].type === '' ? [placesNearby[i].title] : [placesNearby[i].title, placesNearby[i].type];
+        const city2 = city.replace(/_/g, ' ').trim();
+        // get the full page for the current place in current city
+        helpers.getFullPage(`${placesNearby[i].title},${city}`)
+          .then(({ data }) => {
+            const resultsNO = helpers.formatResults(data.paragraph);
+            // check for short results and only results in current city
+            if (resultsNO.join().length > 50 && resultsNO.join().includes(city2)) {
+              placesNearby[i].content = descs.concat(resultsNO);
+              res.send(placesNearby[i]);
+            } else { // search for the wikipedia article with the name without appended city
+              helpers.getFullPage(placesNearby[i].title)
+                .then(({ data }) => {
+                  const results = helpers.formatResults(data.paragraph);
+                  // check for short reaults and only results in current city
+                  if (results.join().length > 50 && results.join().includes(city2)) {
+                    placesNearby[i].content = descs.concat(results);
+                    res.send(placesNearby[i]);
+                  } else {
+                    // search for wikipedia article using generator search
+                    helpers.getPOINarrow(lat, long)
+                      .then((stuff) => {
+                        const resultsPOI = helpers.formatResults(stuff.data.query.pages[Object.keys(stuff.data.query.pages)].extract.replace(/[\r\n]/g, ''));
+                        if (resultsPOI.includes(placesNearby[i].title)) {
+                          placesNearby[i].content = descs.concat(resultsPOI);
+                        } else { placesNearby[i].content = descs; }
+                        res.send(placesNearby[i]);
+                      }).catch((error) => { throw error; });
+                  }
+                }).catch((error) => { throw error; });
+            }
+          }).catch((error) => { throw error; });
+      }
+    }).catch((error) => { throw error; });
   }).catch((error) => { throw error; });
 });
 
