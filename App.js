@@ -351,6 +351,15 @@ export default class ViroSample extends Component {
   //   });
   // }
   _onShowText(objIndex, objUniqueName, yOffset) {
+    if (this.state.generalData[0] === 'false') {
+      this.setState((prevState) => {
+        const genData = prevState.narrowData
+        return {
+          generalData: genData,
+        }
+      })
+      
+    }
     dataCounter = 0;
     const currentProps = { ...this.state.viroAppProps };
     this.setState((prevState) => {
@@ -573,7 +582,9 @@ export default class ViroSample extends Component {
             // position: 'absolute',
             // left: 70,
             // right: 0,
-            bottom: 70,
+            padding: 10,
+            // bottom: 60,
+            backgroundColor: '#ffee99',
             alignItems: 'center',
             // flex: 1,
             flexDirection: 'row',
@@ -583,22 +594,30 @@ export default class ViroSample extends Component {
             <TouchableOpacity
               style={localStyles.button}
               onPress={() => this._onShowText3(0, dataCounter, 0)}
-              underlayColor="#00000000"
+              // underlayColor="#00000000"
+              backgroundColor="#ffee99"
+
             >
+              <Text style={localStyles.btntext}>Previous Fact</Text>
+
               {/* <Image source={require('./js/res/left-gold-arrow.png')} /> */}
             </TouchableOpacity>
             <TouchableOpacity
               style={localStyles.button}
               onPress={() => this._onShowText(0, dataCounter, 0)}
-              underlayColor="#00000000"
+              // underlayColor="#00000000"
             >
+              <Text style={localStyles.btntext}>Get Fact</Text>
+
               {/* <Image source={require('./js/res/MainBTTN.png')} /> */}
             </TouchableOpacity>
             <TouchableOpacity
               style={localStyles.button}
               onPress={() => this._onShowText2(0, dataCounter, 0)}
-              underlayColor="#00000000"
+              // underlayColor="#00000000"
             >
+              <Text style={localStyles.btntext}>Next Fact</Text>
+
               {/* <Image source={require('./js/res/right-gold-arrow.png')} /> */}
             </TouchableOpacity>
           </View>,
