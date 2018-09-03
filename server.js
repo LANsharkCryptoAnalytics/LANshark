@@ -40,7 +40,8 @@ app.get('/neighborhood', (req, res) => {
   helpers.getNeighborhood(lat, long).then(body => body.json()).then((json) => {
     // find the neighborhoods
     const neighborhoods = helpers.formatNeighborhoodData(json).filter(placeNearby => placeNearby.type === 'neighborhood');
-    if (neighborhoods.length === 0) { res.send({ content: ['sorry there are no neighborhood results in your area'] }); }
+    if (neighborhoods.length === 0){ 
+      res.send({ content: ['sorry there are no results in your area'] }); }
     if (neighborhoods[i]) {
       if (neighborhoods[i].coord) {
         long = neighborhoods[i].coord.split(' ')[0];
@@ -91,7 +92,6 @@ app.get('/broad', (req, res) => {
   // req.query.i the current index passed from the client
   // req.query.latitude, req.query.longitude
   // '29.97616921','-90.0764381'
-  console.log(req.query.i);
   let i = req.query.i || 0;
   // 29.976169,-90.076438
   // 29.928714, -90.001709
