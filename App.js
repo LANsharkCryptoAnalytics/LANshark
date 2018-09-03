@@ -353,7 +353,7 @@ export default class ViroSample extends Component {
   _onShowText(objIndex, objUniqueName, yOffset) {
     if (this.state.generalData[0] === 'false') {
       this.setState((prevState) => {
-        const genData = prevState.narrowData
+        const genData = prevState.narrowData;
         return {
           generalData: genData,
         }
