@@ -91,7 +91,6 @@ app.get('/broad', (req, res) => {
   // req.query.i the current index passed from the client
   // req.query.latitude, req.query.longitude
   // '29.97616921','-90.0764381'
-  console.log(req.query.i);
   let i = req.query.i || 0;
   // 29.976169,-90.076438
   // 29.928714, -90.001709

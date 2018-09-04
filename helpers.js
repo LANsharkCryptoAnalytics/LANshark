@@ -59,7 +59,7 @@ exports.getNeighborhood = (lat, long) => {
       SERVICE wikibase:around {
         ?place wdt:P625 ?coordinate_location.
         bd:serviceParam wikibase:center "Point(${long} ${lat})"^^geo:wktLiteral.
-        bd:serviceParam wikibase:radius "1".
+        bd:serviceParam wikibase:radius "2".
         bd:serviceParam wikibase:distance ?dist.
       }
       SERVICE wikibase:label { bd:serviceParam wikibase:language "[AUTO_LANGUAGE],en". }
