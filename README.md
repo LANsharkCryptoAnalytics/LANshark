@@ -16,8 +16,7 @@ Use augmented reality to discover facts about your city.
 ## How It Works
 A fun way to explore the city around you! With an ARkit or ARcore enabled smartphone, go on an augmented reality tour of your local points of interest.
 With a minimal interface, the focus stays on the area around you, while a click of a button will bring 3 dimensional text information into view, rooted to the area around you.
-Easily switch to a map view, and get a view of what else is around you that you may want to explore. Sign up, and the ability to save favorite places, as well
-as see those saved locations on a favorites map.
+Easily switch to a map view, and get a view of what else is around you that you may want to explore. Sign up, save your favorite places, and see those saved locations on a favorites map.
 
 ## <a name="Database"></a>Database
 ![database](images/arhistoryschema.png)
