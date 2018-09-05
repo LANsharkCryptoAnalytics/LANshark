@@ -1,6 +1,6 @@
  
 ## LANshark ##
- > Working Title: AR History Tour
+ > AR History Tour
 
 ## Use Augmented Reality to discover facts about your city ##
   > This app is for history lovers and travelers who are seeking an immersive real-time history experience.
