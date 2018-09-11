@@ -51,7 +51,7 @@ exports[`renders correctly 1`] = `
         ellipsizeMode="tail"
         style={
           Object {
-            "color": "#fff",
+            "color": "#333333",
             "fontSize": 20,
             "fontWeight": "bold",
           }
