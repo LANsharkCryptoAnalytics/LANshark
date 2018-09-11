@@ -64,13 +64,15 @@ const localStyles = StyleSheet.create({
     // alignItems: 'stretch',
     // borderWidth: 1,
     borderColor: '#333333',
-    padding: 10,
+    padding: 5,
     backgroundColor: '#ffee99',
   },
   btntext: {
     color: '#333333',
     fontSize: 16,
     fontWeight: 'bold',
+    textAlignVertical: 'center',
+    textAlign: 'center',
     // alignContent: 'center',
   },
   buttons: {
@@ -78,7 +80,7 @@ const localStyles = StyleSheet.create({
     width: 80,
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    //justifyContent: 'space-between',
     // paddingTop:20,
     // paddingBottom:20,
     // marginTop: 10,
@@ -579,10 +581,10 @@ export default class ViroSample extends Component {
           && !this.state.favMapView
           && !this.state.signupView,
           <View style={{
-            // position: 'absolute',
-            // left: 70,
-            // right: 0,
-            padding: 10,
+            //position: 'absolute',
+            // left: 0,
+            // right: 5,
+            // padding: 5,
             // bottom: 60,
             backgroundColor: '#ffee99',
             alignItems: 'center',
@@ -630,7 +632,7 @@ export default class ViroSample extends Component {
             backgroundColor: '#ffee99',
             flexDirection: 'row',
             justifyContent: 'space-between',
-            alignItems: 'center',
+            //alignItems: 'center',
           }}
           >
 
