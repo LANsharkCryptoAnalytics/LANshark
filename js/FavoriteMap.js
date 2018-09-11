@@ -168,7 +168,7 @@ for( let i = 0; i < favs.length; i++){
         </View>
         <View>
           <TouchableOpacity style={styles.button} onPress={() => { this.props.showFavMapView(); }}>
-            <Text style={styles.btntext}>AR View</Text>
+            <Text style={styles.btntext}>Map View</Text>
           </TouchableOpacity>
         </View>
 

@@ -57,7 +57,7 @@ exports[`renders correctly 1`] = `
           }
         }
       >
-        AR View
+        Map View
       </Text>
     </View>
   </View>
