@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 # AR History Tour
 Use augmented reality to discover facts about your city.
@@ -95,9 +94,3 @@ one for the client/front-end and one for the back end.
 
 ## <a name="acknowledgments"></a>Acknowledgments
 Big thanks to The Wikimedia Foundation, ViroReact, and Opspark
-=======
-# LANshark
-Thesis Project
-## <a name="tech-stack"></a>Tech Stack
-![techstack](/images/techstack.png)
->>>>>>> cd56892cfdac80a429260352df14fa7116d6a59f
