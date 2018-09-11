@@ -5,19 +5,39 @@ Use augmented reality to discover facts about your city.
 ## Table of Contents
 
 1. [How it works](#how-it-works)
-2. [Database](#database)
-3. [Tech Stack](#tech-stack)
-4. [Development](#development)
+2. [On Location](#On-Location)
+3. [Database](#database)
+4. [Tech Stack](#tech-stack)
+5. [Development](#development)
     1. [System Requirements](#system-requirements) 
     2. [Installation](#installation)
-5. [Running Tests](#tests)
-6. [Deployment](#deployment)
-7. [Authors](#authors)
-8. [Acknowledgments](#acknowledgments)
+6. [Running Tests](#tests)
+7. [Deployment](#deployment)
+8. [Authors](#authors)
+9. [Acknowledgments](#acknowledgments)
 ## How It Works
 A fun way to explore the city around you! With an ARkit or ARcore enabled smartphone, go on an augmented reality tour of your local points of interest.
 With a minimal interface, the focus stays on the area around you, while a click of a button will bring 3 dimensional text information into view, rooted to the area around you.
 Easily switch to a map view, and get a view of what else is around you that you may want to explore. Sign up, save your favorite places, and see those saved locations on a favorites map.
+
+## <a name="On-Location"></a>On Location
+<div>
+<img src="images/appArmstrong.png" width="350" height="650">
+<img src="images/map1.png" width="350" height="650">
+</ div>
+<div>
+<img src="images/appSlantText.png" width="350" height="650">
+<img src="images/appLafitte1.png" width="350" height="650">
+</ div>
+<div>
+<img src="images/appLafitte3.png" width="350" height="650">
+<img src="images/appChicago.png" width="350" height="650">
+</ div>
+<div>
+<img src="images/mapPicLoaded.png" width="350" height="650">
+<img src="images/map3.png" width="350" height="650">
+</ div>
+
 
 ## <a name="Database"></a>Database
 ![database](images/arhistoryschema.png)
